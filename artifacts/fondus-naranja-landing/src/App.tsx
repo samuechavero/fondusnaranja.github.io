@@ -13,7 +13,6 @@ import {
   Info,
   LockKeyhole,
   Mail,
-  MessageCircle,
   ShieldCheck,
   Sparkles,
   Star,
@@ -28,7 +27,6 @@ import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
 
 import Architectural3DCanvas from '@/components/canvas/Architectural3DCanvas';
 import TiltCard from '@/components/ui/TiltCard';
-import TextMaskReveal from '@/components/ui/TextMaskReveal';
 import ArchitecturalButton from '@/components/ui/ArchitecturalButton';
 import LegalModal from '@/components/ui/LegalModal';
 
@@ -47,28 +45,28 @@ type Plan = {
 const plans: Plan[] = [
   {
     id: 'inicio',
-    title: 'Ideal para empezar',
+    title: 'Plan Inicial',
     capital: '$7.500.000',
     first: '$43.800',
     regular: '$25.875',
-    eyebrow: 'Capital inicial y ahorro',
+    eyebrow: 'Ideal para empezar tu ahorro',
   },
   {
     id: 'elegido',
-    title: 'El más elegido',
+    title: 'Plan Vehículo 0KM',
     capital: '$10.000.000',
     first: '$58.400',
     regular: '$34.500',
-    eyebrow: 'Equilibrio · Vehículo 0KM',
+    eyebrow: 'El más elegido por la comunidad',
     featured: true,
   },
   {
     id: 'mayor',
-    title: 'Mayor capital',
+    title: 'Plan Vivienda & Futuro',
     capital: '$20.000.000',
     first: '$116.800',
     regular: '$69.000',
-    eyebrow: 'Vivienda y proyectos de escala',
+    eyebrow: 'Mayor capital y grandes proyectos',
   },
 ];
 
@@ -76,7 +74,7 @@ const socialProof = [
   ['Martín G.', 'Córdoba', '$10.000.000'],
   ['Valeria R.', 'Mendoza', '$20.000.000'],
   ['Luciano P.', 'Rosario', '$7.500.000'],
-  ['Agustina M.', 'Buenos Aires', 'Auto 0KM'],
+  ['Agustina M.', 'Buenos Aires', 'Plan 0KM'],
 ];
 
 function LogoLockup() {
@@ -84,16 +82,16 @@ function LogoLockup() {
     <div className="flex items-center gap-3 select-none" data-testid="brand-lockup">
       <div className="flex flex-col">
         <div className="flex items-center gap-2.5">
-          <span className="display text-[1.65rem] font-black tracking-[-0.07em] text-[#f4f4ee]">
+          <span className="text-2xl font-black tracking-tight text-white font-sans">
             fondus
           </span>
-          <span className="h-6 w-px bg-white/20" />
-          <span className="display text-[1.35rem] font-black tracking-[-0.06em] text-[#ff6a12]">
-            Naranja<span className="text-[#f4f4ee]">X</span>
+          <span className="h-5 w-px bg-white/20" />
+          <span className="text-xl font-black tracking-tight text-[#ff6a12] font-sans">
+            Naranja<span className="text-white">X</span>
           </span>
         </div>
-        <span className="text-[9px] font-mono tracking-[0.25em] text-white/40 uppercase -mt-0.5">
-          SISTEMA DE CAPITALIZACIÓN
+        <span className="text-[10px] font-semibold tracking-wider text-white/50 uppercase -mt-0.5">
+          SISTEMA DE CAPITALIZACIÓN Y AHORRO
         </span>
       </div>
     </div>
@@ -102,10 +100,11 @@ function LogoLockup() {
 
 function StepHeader({ step, onBack }: { step: number; onBack: () => void }) {
   return (
-    <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between gap-4 border-b border-white/10 px-6 py-6 sm:px-10 lg:px-12">
+    <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between gap-4 border-b border-white/10 px-6 py-5 sm:px-10 lg:px-12 backdrop-blur-md">
       <div className="shrink-0">
         <LogoLockup />
       </div>
+
       <div
         className="hidden items-center gap-3 sm:flex"
         aria-label={`Paso ${step} de 5`}
@@ -115,33 +114,36 @@ function StepHeader({ step, onBack }: { step: number; onBack: () => void }) {
           {[1, 2, 3, 4, 5].map((item) => (
             <span
               key={item}
-              className={`h-1.5 w-7 transition-all duration-300 ${
-                item <= step ? 'bg-[#ff5a00]' : 'bg-white/15'
+              className={`h-2 rounded-full transition-all duration-300 ${
+                item === step
+                  ? 'w-8 bg-[#ff5a00]'
+                  : item < step
+                  ? 'w-4 bg-[#10b981]'
+                  : 'w-4 bg-white/20'
               }`}
             />
           ))}
         </div>
-        <span className="ml-2 font-mono text-xs font-bold tracking-[0.2em] text-white/50">
-          0{step} / 05
+        <span className="ml-2 text-xs font-bold text-white/70">
+          Paso {step} de 5
         </span>
       </div>
+
       {step > 1 ? (
         <button
           type="button"
           onClick={onBack}
-          className="group flex shrink-0 items-center gap-2.5 border border-white/15 bg-white/5 px-4 py-2 text-xs font-mono font-bold tracking-[0.12em] uppercase text-white/70 transition-colors hover:border-[#ff5a00] hover:text-white"
+          className="group flex shrink-0 items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-xs font-bold text-white/80 transition-all hover:border-[#ff5a00] hover:bg-[#ff5a00] hover:text-white"
           data-testid="button-back"
         >
           <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />
-          VOLVER
+          <span>Volver</span>
         </button>
       ) : (
         <div className="text-right">
-          <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff7b35]">
-            FASE INICIAL
-          </span>
-          <span className="hidden font-mono text-[11px] tracking-[0.14em] text-white/45 sm:inline-block">
-            ARQUITECTURA DE CAPITAL
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400 border border-emerald-500/20">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Simulación 100% Online
           </span>
         </div>
       )}
@@ -159,11 +161,11 @@ function SocialProof() {
       const item = socialProof[index % socialProof.length];
       index += 1;
       setSide(index % 2 ? 'left' : 'right');
-      setNotice(`${item[0]} de ${item[1]} se acaba de adherir al plan de ${item[2]}`);
-      window.setTimeout(() => setNotice(null), 3200);
+      setNotice(`${item[0]} de ${item[1]} acaba de unirse al plan de ${item[2]}`);
+      window.setTimeout(() => setNotice(null), 3600);
     };
-    const interval = window.setInterval(show, 4500);
-    const initial = window.setTimeout(show, 2500);
+    const interval = window.setInterval(show, 5000);
+    const initial = window.setTimeout(show, 2000);
     return () => {
       window.clearInterval(interval);
       window.clearTimeout(initial);
@@ -175,36 +177,31 @@ function SocialProof() {
       {notice && (
         <motion.div
           key={notice}
-          initial={{ opacity: 0, rotateX: 85, y: 35, scale: 0.94 }}
-          animate={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }}
-          exit={{ opacity: 0, rotateX: -85, y: 25, scale: 0.94 }}
-          transition={{ type: 'spring', stiffness: 120, damping: 16 }}
-          style={{ perspective: 1000 }}
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.95 }}
+          transition={{ type: 'spring', stiffness: 140, damping: 18 }}
           className={`fixed bottom-6 z-40 w-[calc(100%-2.5rem)] max-w-[340px] ${
             side === 'left' ? 'left-5 sm:left-8' : 'right-5 sm:right-8'
           }`}
           data-testid="social-proof"
         >
-          <div className="relative overflow-hidden border border-white/20 bg-[#091122]/90 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-2xl">
-            {/* Architectural corner markings */}
-            <span className="absolute top-0 left-0 h-1.5 w-1.5 border-t-2 border-l-2 border-[#ff5a00]" />
-            <span className="absolute top-0 right-0 h-1.5 w-1.5 border-t-2 border-r-2 border-[#ff5a00]" />
-            <span className="absolute bottom-0 left-0 h-1.5 w-1.5 border-b-2 border-l-2 border-[#ff5a00]" />
-            <span className="absolute bottom-0 right-0 h-1.5 w-1.5 border-b-2 border-r-2 border-[#ff5a00]" />
-
+          <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#0e172a]/95 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl">
             <div className="flex items-start gap-3.5">
-              <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center border border-[#ff5a00]/40 bg-[#ff5a00]/15 text-[#ff8751]">
-                <BadgeCheck size={18} />
+              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff5a00] to-[#ff7a29] text-white shadow-md shadow-orange-500/30">
+                <BadgeCheck size={20} />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="m-0 font-mono text-[9px] uppercase tracking-[0.2em] text-[#a6d2b9]">
-                  // ADHESIÓN EN TIEMPO REAL
+                <p className="m-0 text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+                  Adhesión reciente
                 </p>
-                <p className="m-0 mt-1 text-xs font-medium leading-5 text-white/90">{notice}</p>
+                <p className="m-0 mt-1 text-xs font-medium leading-relaxed text-white/95">
+                  {notice}
+                </p>
               </div>
               <button
                 type="button"
-                className="text-white/40 transition-colors hover:text-white"
+                className="text-white/40 transition-colors hover:text-white p-1"
                 onClick={() => setNotice(null)}
                 aria-label="Cerrar notificación"
                 data-testid="button-close-social"
@@ -221,144 +218,128 @@ function SocialProof() {
 
 function Hero({ onStart }: { onStart: () => void }) {
   return (
-    <div className="relative min-h-[100dvh] overflow-hidden blueprint-grid">
-      {/* 3D Interactive Canvas in Background */}
-      <Architectural3DCanvas />
+    <div className="relative min-h-[100dvh] overflow-hidden">
+      {/* 3D Interactive Canvas in Background (subtle depth) */}
+      <div className="opacity-60 pointer-events-none">
+        <Architectural3DCanvas />
+      </div>
 
       <StepHeader step={1} onBack={() => undefined} />
 
-      {/* Blueprint Subgrid overlay */}
-      <div className="absolute inset-0 blueprint-subgrid pointer-events-none opacity-40" />
-
-      {/* Technical Blueprint Border Guides */}
-      <div className="pointer-events-none absolute left-6 top-28 hidden font-mono text-[9px] tracking-[0.2em] text-white/20 lg:block select-none">
-        AXIS: 31.4201° S / 64.1888° W
-      </div>
-      <div className="pointer-events-none absolute right-6 top-28 hidden font-mono text-[9px] tracking-[0.2em] text-white/20 lg:block select-none">
-        SYS.FONDUS.V4 // ARCH-MINIMAL
-      </div>
-
-      <main className="relative z-10 mx-auto grid max-w-7xl gap-16 px-6 py-20 sm:px-10 md:py-28 lg:grid-cols-[1.12fr_0.88fr] lg:items-center lg:gap-24 lg:px-12">
+      <main className="relative z-10 mx-auto grid max-w-7xl gap-12 px-6 py-12 sm:px-10 md:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16 lg:px-12">
         <div>
-          {/* Rating Badge */}
+          {/* Trust Rating Badge */}
           <div
-            className="mb-8 inline-flex items-center gap-2.5 border border-[#83bea3]/30 bg-[#83bea3]/10 px-3.5 py-1.5 text-xs font-mono font-bold tracking-[0.1em] text-[#a6d2b9]"
+            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold text-emerald-300 backdrop-blur-md"
             data-testid="badge-rating"
           >
-            <Star size={13} fill="currentColor" />
-            <span>GOOGLE RATING 4.9</span>
-            <span className="flex gap-0.5 text-[#ffb537]" aria-label="5 estrellas">
-              {[1, 2, 3, 4, 5].map((item) => (
-                <Star key={item} size={11} fill="currentColor" />
-              ))}
-            </span>
+            <Star size={14} className="text-amber-400 fill-amber-400" />
+            <span>Google Rating 4.9</span>
+            <span className="text-white/40">·</span>
+            <span className="text-white/80 font-normal">Más de 15.000 clientes satisfechos</span>
           </div>
 
-          <p className="mb-4 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
-            // UNA ALIANZA PARA MIRAR HACIA ADELANTE
+          {/* High-Converting Catchy Title */}
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.08]">
+            Con <span className="text-[#ff6a12]">FONDUS</span> y{' '}
+            <span className="whitespace-nowrap">Naranja <span className="text-[#ff6a12]">X</span></span> <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200">
+              vas a poder.
+            </span>
+          </h1>
+
+          <p className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-slate-300">
+            Ahorrá en pesos con cuotas accesibles y participá todos los meses por la adjudicación
+            total de tu capital. <strong>Si tu número sale sorteado, ¡no pagás más cuotas y recibís todo el dinero!</strong>
           </p>
 
-          {/* Masked Headline Reveal */}
-          <TextMaskReveal
-            className="display text-5xl sm:text-7xl lg:text-8xl font-black tracking-[-0.05em] text-[#f4f4ee]"
-            lines={[
-              {
-                words: [
-                  { text: 'Con' },
-                  { text: 'FONDUS', className: 'text-[#ff6a12]' },
-                ],
-              },
-              {
-                words: [
-                  { text: 'y' },
-                  { text: 'Naranja' },
-                  { text: 'X', className: 'text-[#f4f4ee]' },
-                ],
-              },
-              {
-                words: [
-                  { text: 'vas', className: 'text-[#a6d2b9]' },
-                  { text: 'a', className: 'text-[#a6d2b9]' },
-                  { text: 'poder.', className: 'text-[#a6d2b9]' },
-                ],
-              },
-            ]}
-          />
-
-          <p className="mt-8 max-w-lg text-base sm:text-lg font-light leading-relaxed text-white/65">
-            Elegí tu plan de capitalización en pesos, conocé tus beneficios y comenzá a construir tu
-            objetivo patrimonial con respaldo institucional.
-          </p>
-
-          <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-            <ArchitecturalButton onClick={onStart} data-testid="button-start">
-              INICIAR SIMULACIÓN
+          {/* Prominent High Converting CTA Button */}
+          <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <ArchitecturalButton
+              onClick={onStart}
+              data-testid="button-start"
+              className="w-full sm:w-auto text-base py-4 px-10 shadow-xl shadow-orange-500/25"
+            >
+              COMENZAR SIMULACIÓN GRATUITA
             </ArchitecturalButton>
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-xs font-mono text-white/45">
+          {/* Value Micro-Pills */}
+          <div className="mt-10 flex flex-wrap items-center gap-4 sm:gap-6 border-t border-white/10 pt-6 text-xs font-medium text-slate-300">
             <span className="flex items-center gap-2">
-              <LockKeyhole size={14} className="text-[#a6d2b9]" /> 100% ONLINE
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+                <LockKeyhole size={12} />
+              </span>
+              100% Online y seguro
             </span>
             <span className="flex items-center gap-2">
-              <ShieldCheck size={14} className="text-[#a6d2b9]" /> SIN COMPROMISO
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+                <ShieldCheck size={12} />
+              </span>
+              Sin compromiso ni costos ocultos
             </span>
             <span className="flex items-center gap-2">
-              <Sparkles size={14} className="text-[#ff7b35]" /> ADJUDICACIÓN MENSUAL
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#ff5a00]/20 text-[#ff7b35]">
+                <Sparkles size={12} />
+              </span>
+              Adjudicación mensual por Lotería
             </span>
           </div>
         </div>
 
-        {/* Hero Visual Card with Architectural Frame */}
+        {/* Hero Visual Card with Warm Friendly Glow */}
         <div className="relative">
-          {/* Subtle Ambient Glow */}
-          <div className="absolute -inset-6 bg-[#ff5a00]/10 blur-3xl rounded-none pointer-events-none" />
+          {/* Ambient Glow */}
+          <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-[#ff5a00]/20 to-emerald-500/10 blur-2xl pointer-events-none" />
 
-          <div className="relative border border-white/20 bg-[#091224]/80 p-3 shadow-2xl backdrop-blur-md">
-            {/* Technical corner indicators */}
-            <span className="absolute -top-1 -left-1 font-mono text-[10px] text-[#ff7b35] select-none">+</span>
-            <span className="absolute -top-1 -right-1 font-mono text-[10px] text-[#ff7b35] select-none">+</span>
-            <span className="absolute -bottom-1 -left-1 font-mono text-[10px] text-[#ff7b35] select-none">+</span>
-            <span className="absolute -bottom-1 -right-1 font-mono text-[10px] text-[#ff7b35] select-none">+</span>
-
-            <div className="relative overflow-hidden border border-white/10 bg-[#eaf0ed]">
+          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#111c33] to-[#0c1424] p-3.5 shadow-2xl backdrop-blur-xl">
+            <div className="relative overflow-hidden rounded-2xl bg-slate-900">
               <img
                 src={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
                 alt="Promoción Fondus y Naranja X por el sorteo de una moto 0KM"
-                className="block aspect-[9/13] w-full object-cover object-top sm:aspect-[9/11] lg:aspect-[9/12] filter contrast-105"
+                className="block aspect-[9/12] w-full object-cover object-top filter contrast-105"
                 data-testid="img-hero-campaign"
               />
 
-              {/* Frosted Banner Inside Card */}
-              <div className="absolute inset-x-3 bottom-3 flex items-center justify-between border border-white/15 bg-[#091224]/90 px-4 py-3.5 backdrop-blur-md">
-                <div>
-                  <p className="m-0 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#a6d2b9]">
-                    // BENEFICIO EXCLUSIVO
-                  </p>
-                  <p className="m-0 mt-1 text-sm font-bold text-white">
-                    Cuota de suscripción bonificada
-                  </p>
+              {/* Floating Promoted Banner */}
+              <div className="absolute inset-x-3 bottom-3 rounded-xl border border-white/20 bg-[#0c1628]/95 p-4 shadow-xl backdrop-blur-md">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <span className="inline-flex items-center gap-1 rounded-full bg-[#ff5a00]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#ff9b6a]">
+                      <Gift size={12} /> Beneficio Exclusivo
+                    </span>
+                    <p className="m-0 mt-1 text-sm font-bold text-white">
+                      Cuota de suscripción bonificada
+                    </p>
+                    <p className="m-0 text-xs text-slate-300">
+                      Válido vinculando tu cuenta Naranja X
+                    </p>
+                  </div>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff5a00] to-[#ff7a29] text-white shadow-lg shadow-orange-500/30">
+                    <Gift size={24} />
+                  </div>
                 </div>
-                <Gift size={24} className="text-[#ff6a12]" />
               </div>
             </div>
 
-            {/* Floating Technical Badge */}
-            <div className="absolute -bottom-5 -left-4 hidden border border-white/20 bg-[#121c2e] px-4 py-3 shadow-2xl sm:block">
-              <p className="m-0 font-mono text-[10px] uppercase tracking-[0.16em] text-white/50">
-                PARTICIPÁS POR
-              </p>
-              <p className="m-0 font-mono text-base font-black tracking-tight text-[#ff8141]">
-                UNA MOTO 0KM
-              </p>
+            {/* Bottom Campaign Pill */}
+            <div className="mt-3.5 flex items-center justify-between rounded-xl bg-white/5 px-4 py-3 border border-white/10">
+              <div>
+                <span className="text-[11px] font-semibold text-white/60">SORTEO ESPECIAL</span>
+                <p className="m-0 text-sm font-extrabold text-[#ff8141]">UNA MOTO 0KM</p>
+              </div>
+              <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/25">
+                Participás gratis
+              </span>
             </div>
           </div>
         </div>
       </main>
 
-      <div className="relative z-10 mx-auto flex max-w-7xl items-center justify-between border-t border-white/10 px-6 py-5 font-mono text-xs text-white/35 sm:px-10 lg:px-12">
-        <span>FONDUS · EL PODER DE TUS AHORROS</span>
-        <span>ARGENTINA // REG. IGJ 289/11</span>
+      {/* Trust Bottom Bar */}
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col sm:flex-row items-center justify-between gap-2 border-t border-white/10 px-6 py-4 text-xs text-white/50 sm:px-10 lg:px-12">
+        <span className="font-medium">FONDUS · El poder de tus ahorros con respaldo de Naranja X</span>
+        <span className="rounded-full bg-white/5 px-3 py-1 border border-white/10">Planes aprobados por IGJ Resolución 289/11</span>
       </div>
     </div>
   );
@@ -372,112 +353,117 @@ function PlanSelector({
   onBack: () => void;
 }) {
   return (
-    <div className="relative min-h-[100dvh] blueprint-grid">
+    <div className="relative min-h-[100dvh]">
       <StepHeader step={2} onBack={onBack} />
 
-      <main className="mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-10 lg:px-12 lg:pt-16">
-        <div className="max-w-3xl">
-          <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
-            // PASO 02 · ESTRUCTURA DEL PLAN
-          </p>
-          <h1 className="display text-4xl sm:text-6xl font-black tracking-[-0.05em] text-white">
-            Un plan para cada <br />
-            <span className="text-[#a6d2b9]">proyecto patrimonial.</span>
+      <main className="mx-auto max-w-7xl px-6 pb-24 pt-10 sm:px-10 lg:px-12 lg:pt-14">
+        <div className="max-w-3xl text-left">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ff5a00]/15 px-3.5 py-1 text-xs font-bold text-[#ff9b6a] border border-[#ff5a00]/30 mb-3">
+            Paso 2 de 5 · Elegí tu plan
+          </span>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white">
+            Un plan pensado para <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+              hacer realidad tu proyecto.
+            </span>
           </h1>
-          <p className="mt-5 text-base sm:text-lg font-light leading-relaxed text-white/60">
-            Tres alternativas con la misma solidez: capitalizar tus ahorros en cuotas en pesos y
-            participar por adjudicación desde la primera cuota.
+          <p className="mt-4 text-base sm:text-lg leading-relaxed text-slate-300">
+            Elegí el monto que mejor se adapte a tus posibilidades. Capitalizás tus ahorros mes a mes y
+            participás de los sorteos desde la primera cuota.
           </p>
         </div>
 
-        {/* Plans Grid with Framer Motion Spring Scroll Reveal */}
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+        {/* Plans Grid */}
+        <div className="mt-12 grid gap-8 lg:grid-cols-3">
           {plans.map((plan, index) => (
             <motion.div
               key={plan.id}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
                 type: 'spring',
-                stiffness: 100,
-                damping: 20,
-                delay: index * 0.12,
+                stiffness: 120,
+                damping: 18,
+                delay: index * 0.1,
               }}
               className="h-full"
             >
               <TiltCard
                 featured={Boolean(plan.featured)}
                 onClick={() => onSelect(plan)}
-                className={`flex flex-col p-7 text-left border ${
+                className={`flex flex-col p-6 sm:p-7 text-left rounded-3xl border transition-all duration-300 ${
                   plan.featured
-                    ? 'border-[#ff5a00] bg-[#121d33] shadow-[0_0_50px_rgba(255,90,0,0.18)]'
-                    : 'border-white/12 bg-[#0a1224]/80 hover:border-[#ff5a00]/60'
+                    ? 'border-[#ff5a00] bg-gradient-to-b from-[#16223a] to-[#0f172a] shadow-[0_15px_45px_-10px_rgba(255,90,0,0.35)] ring-2 ring-[#ff5a00]/50'
+                    : 'border-white/15 bg-gradient-to-b from-[#10192e] to-[#0a1122] shadow-xl hover:border-emerald-500/50 hover:shadow-emerald-500/10'
                 }`}
                 data-testid={`card-plan-${plan.id}`}
               >
-                {/* Header of Card */}
                 <div>
-                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                    <span className="font-mono text-xs font-bold tracking-[0.2em] text-[#a6d2b9]">
-                      // SPEC.0{index + 1}
+                  {/* Top Badge */}
+                  <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                    <span className="text-xs font-bold text-emerald-400">
+                      Opción 0{index + 1}
                     </span>
-                    {plan.featured && (
-                      <span className="border border-[#ff5a00] bg-[#ff5a00]/20 px-2.5 py-0.5 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#ff8751]">
-                        RECOMENDADO
+                    {plan.featured ? (
+                      <span className="rounded-full bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] px-3 py-1 text-xs font-black uppercase tracking-wide text-white shadow-md shadow-orange-500/30">
+                        ⭐ Más Elegido
+                      </span>
+                    ) : (
+                      <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/70">
+                        Ahorro Mensual
                       </span>
                     )}
                   </div>
 
-                  <p className="mt-5 font-mono text-xs uppercase tracking-[0.12em] text-white/50">
+                  <p className="mt-4 text-xs font-semibold text-slate-400">
                     {plan.eyebrow}
                   </p>
-                  <h2 className="display mt-1 text-2xl font-black text-white">{plan.title}</h2>
+                  <h2 className="mt-1 text-2xl font-black text-white">{plan.title}</h2>
 
-                  <div className="mt-6 border-b border-white/10 pb-6">
-                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
-                      CAPITAL A ADJUDICAR
+                  {/* Capital */}
+                  <div className="mt-5 rounded-2xl bg-white/5 p-4 border border-white/10">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                      Capital a adjudicar
                     </span>
-                    <p className="display mt-1 text-4xl sm:text-5xl font-black tracking-[-0.06em] text-[#ff8141]">
+                    <p className="mt-1 text-3xl sm:text-4xl font-black tracking-tight text-[#ff8141]">
                       {plan.capital}
                     </p>
                   </div>
 
-                  {/* Quota breakdown */}
-                  <div className="mt-5 grid grid-cols-2 gap-4 border-b border-white/10 pb-6">
+                  {/* Cuotas Breakdown */}
+                  <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl bg-white/5 p-4 border border-white/10">
                     <div>
-                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/45">
-                        Cuotas 1 a 4
-                      </p>
-                      <p className="display mt-1 text-xl font-bold text-white">{plan.first}</p>
+                      <p className="text-[11px] font-medium text-slate-400">Cuotas 1 a 4</p>
+                      <p className="mt-1 text-lg sm:text-xl font-bold text-white">{plan.first}</p>
+                      <p className="text-[10px] text-white/40">Gastos adm. iniciales</p>
                     </div>
                     <div>
-                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/45">
-                        Desde cuota 5
-                      </p>
-                      <p className="display mt-1 text-xl font-bold text-[#a6d2b9]">{plan.regular}</p>
+                      <p className="text-[11px] font-medium text-emerald-400 font-bold">Desde cuota 5</p>
+                      <p className="mt-1 text-lg sm:text-xl font-bold text-emerald-400">{plan.regular}</p>
+                      <p className="text-[10px] text-emerald-400/70 font-semibold">¡Baja de valor!</p>
                     </div>
                   </div>
 
-                  {/* Benefits */}
-                  <div className="mt-6 space-y-3.5 text-xs text-white/75 font-normal">
-                    <Benefit text="Sorteos mensuales desde cuota 1; si ganás, no pagás más" />
-                    <Benefit text="Disponibilidad de fondos desde cuota 18" />
-                    <Benefit text="Telemedicina 24/7 sin cargo" />
-                    <Benefit text="Seguro de vida integral incluido" />
+                  {/* Benefits List */}
+                  <div className="mt-6 space-y-3 text-xs sm:text-sm text-slate-200">
+                    <Benefit text="Sorteos mensuales desde cuota 1 (si ganás, no pagás más)" />
+                    <Benefit text="Disponibilidad y rescate de fondos desde cuota 18" />
+                    <Benefit text="Telemedicina 24/7 sin cargo para vos y tu familia" />
+                    <Benefit text="Seguro de vida integral bonificado" />
                   </div>
                 </div>
 
-                {/* Card Action Button */}
-                <div className="mt-8 pt-4">
+                {/* Card Button */}
+                <div className="mt-8 pt-2">
                   <div
-                    className={`group/btn relative overflow-hidden flex items-center justify-center gap-2 py-3.5 px-4 text-xs font-mono font-black tracking-[0.15em] uppercase border transition-colors ${
+                    className={`flex items-center justify-center gap-2 rounded-xl py-3.5 px-4 text-sm font-bold transition-all duration-200 ${
                       plan.featured
-                        ? 'border-[#ff5a00] bg-[#ff5a00] text-[#0b1329]'
-                        : 'border-white/20 bg-white/5 text-white group-hover:border-[#ff5a00] group-hover:bg-[#ff5a00] group-hover:text-[#0b1329]'
+                        ? 'bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] text-white shadow-lg shadow-orange-500/30'
+                        : 'bg-white/10 text-white hover:bg-white/20 border border-white/15'
                     }`}
                   >
-                    <span>SELECCIONAR PLAN</span>
-                    <ArrowRight size={14} />
+                    <span>Quiero este plan</span>
+                    <ArrowRight size={16} />
                   </div>
                 </div>
               </TiltCard>
@@ -485,11 +471,12 @@ function PlanSelector({
           ))}
         </div>
 
-        <p className="mt-12 flex items-center gap-2 font-mono text-xs text-white/40">
-          <CircleHelp size={14} className="text-[#a6d2b9]" />
-          Seleccioná cualquier tarjeta para avanzar. Podrás revisar y confirmar todos los términos
-          antes de la suscripción.
-        </p>
+        <div className="mt-12 flex items-center justify-center gap-2 rounded-2xl bg-white/5 p-4 text-xs sm:text-sm text-slate-300 border border-white/10 max-w-2xl mx-auto text-center">
+          <CircleHelp size={16} className="text-emerald-400 shrink-0" />
+          <span>
+            Hacé click en cualquier tarjeta para continuar. Podrás revisar todos los detalles antes de confirmar.
+          </span>
+        </div>
       </main>
     </div>
   );
@@ -497,10 +484,12 @@ function PlanSelector({
 
 function Benefit({ text }: { text: string }) {
   return (
-    <span className="flex items-start gap-2.5">
-      <Check size={14} className="mt-0.5 shrink-0 text-[#a6d2b9]" strokeWidth={2.5} />
+    <div className="flex items-start gap-2.5">
+      <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+        <Check size={11} strokeWidth={3} />
+      </div>
       <span className="leading-snug">{text}</span>
-    </span>
+    </div>
   );
 }
 
@@ -514,81 +503,91 @@ function Advisor({
   onBack: () => void;
 }) {
   return (
-    <div className="relative min-h-[100dvh] blueprint-grid">
+    <div className="relative min-h-[100dvh]">
       <StepHeader step={3} onBack={onBack} />
 
-      <main className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-10 sm:px-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:px-12 lg:pt-16">
+      <main className="mx-auto grid max-w-7xl gap-10 px-6 pb-24 pt-10 sm:px-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-14 lg:px-12 lg:pt-14">
         <div>
-          <div className="mb-6 flex h-14 w-14 items-center justify-center border border-[#a6d2b9]/40 bg-[#a6d2b9]/10 text-[#a6d2b9]">
-            <MessageCircle size={26} />
-          </div>
-          <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
-            // PASO 03 · ASESORÍA DIGITAL
-          </p>
-          <h1 className="display text-4xl sm:text-6xl font-black tracking-[-0.05em] text-white">
-            Hablemos de <br />
-            <span className="text-[#a6d2b9]">tu número.</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ff5a00]/15 px-3.5 py-1 text-xs font-bold text-[#ff9b6a] border border-[#ff5a00]/30 mb-3">
+            Paso 3 de 5 · Asignación de número
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+            Elegí cómo participar <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+              del sorteo mensual.
+            </span>
           </h1>
-          <p className="mt-5 max-w-md text-base sm:text-lg font-light leading-relaxed text-white/60">
-            Sofia, tu asesora experta, te guía sobre la modalidad de asignación antes del sorteo
-            oficial.
+          <p className="mt-4 max-w-md text-base sm:text-lg leading-relaxed text-slate-300">
+            Sofia, tu asesora experta, te acompaña en el proceso para que tengas tu número de la suerte listo.
           </p>
         </div>
 
-        <div className="relative border border-white/15 bg-[#0a1224]/90 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
-          {/* Corner brackets */}
-          <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#ff5a00]" />
-          <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#ff5a00]" />
-          <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#ff5a00]" />
-          <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#ff5a00]" />
-
-          <div className="flex items-center gap-3.5 border-b border-white/10 pb-5">
-            <div className="flex h-10 w-10 items-center justify-center bg-[#ff5a00] font-mono font-black text-[#0a1224]">
-              S
+        {/* Chat UI Box */}
+        <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#121c32] to-[#0c1424] p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+          {/* Header of Chat */}
+          <div className="flex items-center gap-3.5 border-b border-white/10 pb-4">
+            <div className="relative">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-[#ff5a00] to-[#ff7a29] text-base font-black text-white shadow-md shadow-orange-500/30">
+                S
+              </div>
+              <span className="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full border-2 border-[#121c32] bg-emerald-400" />
             </div>
             <div>
               <p className="m-0 text-sm font-bold text-white">Sofia</p>
-              <p className="m-0 font-mono text-[11px] text-[#a6d2b9]">// ASESORA DIGITAL · ONLINE</p>
+              <p className="m-0 text-xs font-medium text-emerald-400">Asesora Digital Fondus · En línea</p>
             </div>
-            <span className="ml-auto flex items-center gap-2 font-mono text-[11px] text-white/40">
-              <span className="h-2 w-2 rounded-full bg-[#83bea3] animate-pulse" /> ACTIVA
-            </span>
           </div>
 
           <div className="mt-6 space-y-4">
-            <ChatBubble text="Hola, soy Sofia. ¡Felicitaciones por dar este paso hacia tu capitalización con Fondus y Naranja X!" />
-            <ChatBubble text="Tu plan opera en cuotas fijas y en pesos. Las primeras 4 cuotas cubren los gastos administrativos iniciales y desde la 5ta baja al valor regular. ¡Si salís adjudicado por sorteo, no pagás ninguna cuota más!" />
+            <ChatBubble text="¡Hola! Soy Sofia. ¡Felicitaciones por dar este gran paso hacia tu capitalización con Fondus y Naranja X!" />
+            <ChatBubble text="Tu plan opera con cuotas accesibles en pesos. Las primeras 4 cubren los gastos administrativos iniciales y a partir de la 5ta cuota baja al valor regular. ¡Y recordá: si salís adjudicado en el sorteo mensual, no abonás ninguna cuota más!" />
 
-            <div className="ml-auto max-w-[90%] border border-[#ff5a00]/50 bg-[#ff5a00]/15 p-4 text-sm font-semibold text-white">
-              <p className="m-0 font-mono text-[10px] uppercase tracking-wider text-[#ff8751]">
-                PLAN SELECCIONADO
-              </p>
-              <p className="mt-1 text-base font-bold text-white">
-                {plan.capital} · {plan.regular} desde cuota 5
+            {/* Selected Plan Summary Banner */}
+            <div className="ml-auto max-w-[92%] rounded-2xl border border-[#ff5a00]/40 bg-[#ff5a00]/10 p-4 text-white shadow-md">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-[#ff9b6a]">
+                Plan seleccionado: {plan.title}
+              </span>
+              <p className="mt-1 text-base font-extrabold text-white">
+                Capital {plan.capital} · Cuota regular {plan.regular}
               </p>
             </div>
 
-            <ChatBubble text="Para participar del sorteo mensual, ¿cómo preferís determinar tu número de adhesión?" />
+            <ChatBubble text="Para participar del próximo sorteo oficial por Quiniela de la Ciudad, ¿cómo preferís definir tu número?" />
 
+            {/* Selection Options */}
             <div className="grid gap-3 pt-3 sm:grid-cols-2">
               <button
                 type="button"
                 onClick={() => onChoose('seleccionado')}
-                className="group relative flex items-center justify-between border border-[#ff5a00]/60 bg-[#ff5a00]/10 p-4 text-left font-mono text-xs font-bold tracking-wider text-[#ff9b6a] transition-all hover:bg-[#ff5a00] hover:text-[#0a1224]"
+                className="group relative flex flex-col justify-between rounded-2xl border border-[#ff5a00]/60 bg-gradient-to-br from-[#ff5a00]/20 to-[#ff5a00]/5 p-5 text-left transition-all hover:scale-[1.02] hover:border-[#ff5a00] hover:bg-[#ff5a00] hover:text-white shadow-lg shadow-orange-500/10"
                 data-testid="button-select-number"
               >
-                <span>SELECCIONAR MI NÚMERO</span>
-                <ArrowRight size={15} />
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-sm font-bold text-white group-hover:text-white">
+                    🎯 Elegir mi número
+                  </span>
+                  <ArrowRight size={16} className="text-[#ff8141] group-hover:text-white group-hover:translate-x-1 transition-all" />
+                </div>
+                <span className="mt-2 text-xs text-slate-300 group-hover:text-white/90">
+                  Seleccioná tus 3 dígitos de la suerte
+                </span>
               </button>
 
               <button
                 type="button"
                 onClick={() => onChoose('aleatorio')}
-                className="group relative flex items-center justify-between border border-white/15 bg-white/5 p-4 text-left font-mono text-xs font-bold tracking-wider text-white/80 transition-all hover:border-[#a6d2b9] hover:bg-[#a6d2b9]/15 hover:text-white"
+                className="group relative flex flex-col justify-between rounded-2xl border border-white/15 bg-white/5 p-5 text-left transition-all hover:scale-[1.02] hover:border-emerald-400 hover:bg-emerald-500/15 hover:text-white shadow-lg"
                 data-testid="button-random-number"
               >
-                <span>ASIGNACIÓN ALEATORIA</span>
-                <Sparkles size={15} className="text-[#a6d2b9]" />
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-sm font-bold text-white">
+                    🎲 Asignación al azar
+                  </span>
+                  <Sparkles size={16} className="text-emerald-400 group-hover:rotate-12 transition-all" />
+                </div>
+                <span className="mt-2 text-xs text-slate-300 group-hover:text-white/90">
+                  Generá un número aleatorio al instante
+                </span>
               </button>
             </div>
           </div>
@@ -600,7 +599,7 @@ function Advisor({
 
 function ChatBubble({ text }: { text: string }) {
   return (
-    <div className="max-w-[90%] border border-white/10 bg-white/5 p-4 text-sm leading-relaxed text-white/85">
+    <div className="max-w-[90%] rounded-2xl rounded-tl-sm border border-white/10 bg-white/10 p-4 text-sm leading-relaxed text-slate-200">
       {text}
     </div>
   );
@@ -616,66 +615,73 @@ function LuckyNumber({
   onBack: () => void;
 }) {
   return (
-    <div className="relative min-h-[100dvh] blueprint-grid">
+    <div className="relative min-h-[100dvh]">
       <StepHeader step={4} onBack={onBack} />
 
-      <main className="mx-auto flex max-w-4xl flex-col items-center px-6 pb-24 pt-16 text-center sm:px-10">
-        <div className="flex h-16 w-16 items-center justify-center border border-[#a6d2b9]/40 bg-[#a6d2b9]/10 text-[#a6d2b9]">
-          <Trophy size={30} />
+      <main className="mx-auto flex max-w-4xl flex-col items-center px-6 pb-24 pt-12 text-center sm:px-10">
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white shadow-xl shadow-amber-500/25">
+          <Trophy size={32} />
         </div>
 
-        <p className="mt-8 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
-          // PASO 04 · NÚMERO DE SORTEO ASIGNADO
-        </p>
+        <span className="mt-6 inline-flex items-center gap-1.5 rounded-full bg-[#ff5a00]/15 px-3.5 py-1 text-xs font-bold text-[#ff9b6a] border border-[#ff5a00]/30">
+          Paso 4 de 5 · Número asignado
+        </span>
 
-        <h1 className="display mt-3 text-4xl sm:text-6xl font-black tracking-[-0.05em] text-white">
-          Ya sos parte del <br />
-          <span className="text-[#a6d2b9]">próximo sorteo.</span>
+        <h1 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+          ¡Tu número de la suerte <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+            está registrado!
+          </span>
         </h1>
 
-        {/* Gamification Box wrapped in Framer Motion spring scroll reveal */}
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-          className="relative mt-12 w-full max-w-md border border-[#ff5a00]/60 bg-[#0c162a]/95 p-8 shadow-[0_0_60px_rgba(255,90,0,0.2)]"
-        >
-          {/* Technical corner markers */}
-          <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#ff5a00]" />
-          <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#ff5a00]" />
-          <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#ff5a00]" />
-          <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#ff5a00]" />
+        <p className="mt-3 text-base text-slate-300 max-w-lg">
+          Con este número participás en la adjudicación oficial de fin de mes.
+        </p>
 
-          <p className="m-0 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ffab80]">
-            NÚMERO ASIGNADO EN SISTEMA
-          </p>
+        {/* Gamified Celebration Card */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ type: 'spring', stiffness: 120, damping: 18 }}
+          className="relative mt-8 w-full max-w-md rounded-3xl border border-[#ff5a00]/50 bg-gradient-to-b from-[#16223a] to-[#0c1424] p-8 shadow-[0_20px_60px_-15px_rgba(255,90,0,0.3)]"
+        >
+          <span className="text-xs font-bold uppercase tracking-wider text-[#ff9b6a]">
+            Tu número oficial de adjudicación
+          </span>
 
           <p
-            className="display mt-3 font-mono text-8xl sm:text-9xl font-black tracking-tight text-[#ff7132]"
+            className="mt-3 text-7xl sm:text-8xl font-black tracking-tight text-white drop-shadow-[0_4px_12px_rgba(255,90,0,0.4)]"
             data-testid="text-lucky-number"
           >
             {number}
           </p>
 
-          <div className="mt-4 flex items-center justify-center gap-2 font-mono text-xs text-white/50 border-t border-white/10 pt-4">
-            <Check size={14} className="text-[#a6d2b9]" /> REGISTRADO PARA EL SORTEO MENSUAL
+          <div className="mt-5 flex items-center justify-center gap-2 rounded-xl bg-white/5 py-2.5 px-4 text-xs font-semibold text-emerald-400 border border-white/10">
+            <Check size={14} className="text-emerald-400" />
+            <span>Participa en el sorteo de Quiniela LOTBA S.E.</span>
           </div>
         </motion.div>
 
         {/* Exclusive Benefit Callout */}
-        <div className="mt-8 max-w-xl border border-[#a6d2b9]/30 bg-[#a6d2b9]/10 p-5 text-left">
+        <div className="mt-6 max-w-xl rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5 text-left backdrop-blur-md">
           <div className="flex gap-3.5">
-            <Gift className="mt-0.5 shrink-0 text-[#ffb537]" size={22} />
-            <p className="m-0 text-sm leading-relaxed text-white/80">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-400/20 text-amber-300">
+              <Gift size={20} />
+            </div>
+            <p className="m-0 text-sm leading-relaxed text-slate-200">
               <strong className="text-white font-bold">¡BENEFICIO EXCLUSIVO!</strong> Al
               continuar y vincular tu cuenta con <strong className="text-[#ff6a12]">Naranja X</strong>,
-              tu cuota de suscripción queda <strong className="text-[#a6d2b9]">100% bonificada</strong>.
+              tu cuota de suscripción inicial queda <strong className="text-emerald-300">100% bonificada ($0)</strong>.
             </p>
           </div>
         </div>
 
-        <div className="mt-10">
-          <ArchitecturalButton onClick={onContinue} data-testid="button-continue-lucky">
+        <div className="mt-8">
+          <ArchitecturalButton
+            onClick={onContinue}
+            data-testid="button-continue-lucky"
+            className="text-base py-4 px-10 shadow-xl shadow-orange-500/25"
+          >
             CONTINUAR AL REGISTRO
           </ArchitecturalButton>
         </div>
@@ -713,101 +719,100 @@ function Adhesion({
   };
 
   return (
-    <div className="relative min-h-[100dvh] blueprint-grid">
+    <div className="relative min-h-[100dvh]">
       <StepHeader step={5} onBack={onBack} />
 
-      <main className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-10 sm:px-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-16 lg:px-12 lg:pt-16">
+      <main className="mx-auto grid max-w-7xl gap-10 px-6 pb-24 pt-10 sm:px-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14 lg:px-12 lg:pt-14">
         <div>
-          <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
-            // PASO 05 · REVISIÓN Y REGISTRO
-          </p>
-          <h1 className="display text-4xl sm:text-6xl font-black tracking-[-0.05em] text-white">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#ff5a00]/15 px-3.5 py-1 text-xs font-bold text-[#ff9b6a] border border-[#ff5a00]/30 mb-3">
+            Paso 5 de 5 · Resumen y confirmación
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
             Repasemos <br />
-            <span className="text-[#a6d2b9]">los detalles.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
+              los detalles de tu plan.
+            </span>
           </h1>
-          <p className="mt-5 max-w-md text-base sm:text-lg font-light leading-relaxed text-white/60">
-            Revisá el resumen de tu plan de capitalización y completá tus datos de contacto para
-            simular la adhesión.
+          <p className="mt-4 max-w-md text-base sm:text-lg leading-relaxed text-slate-300">
+            Revisá el resumen de tu suscripción y completá tus datos para que un asesor te contacte.
           </p>
 
-          <div className="mt-8 border border-white/15 bg-[#0a1224]/85 p-6 backdrop-blur-md">
+          {/* Plan Summary Card */}
+          <div className="mt-8 rounded-3xl border border-white/15 bg-gradient-to-b from-[#121c32] to-[#0c1424] p-6 backdrop-blur-xl shadow-xl">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <p className="m-0 font-mono text-xs uppercase tracking-[0.2em] text-white/50">
-                PLAN SELECCIONADO
-              </p>
-              <span className="border border-[#a6d2b9]/40 bg-[#a6d2b9]/15 px-3 py-1 font-mono text-xs font-bold text-[#a6d2b9]">
-                NÚMERO {number}
+              <div>
+                <span className="text-xs font-bold text-slate-400 uppercase">Plan elegido</span>
+                <p className="m-0 text-lg font-bold text-white">{plan.title}</p>
+              </div>
+              <span className="rounded-full bg-emerald-500/15 px-3.5 py-1 text-xs font-bold text-emerald-400 border border-emerald-500/30">
+                N° {number}
               </span>
             </div>
 
-            <p className="display mt-5 text-4xl font-black text-white">{plan.capital}</p>
+            <div className="mt-4">
+              <span className="text-xs font-medium text-slate-400">Capital a adjudicar</span>
+              <p className="text-3xl font-extrabold text-[#ff8141]">{plan.capital}</p>
+            </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
+            <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl bg-white/5 p-4 border border-white/10">
               <div>
-                <p className="m-0 font-mono text-xs text-white/45">Cuotas 1 a 4</p>
-                <p className="display mt-1 text-xl font-bold text-[#ff8141]">{plan.first}</p>
+                <p className="m-0 text-xs text-slate-400">Cuotas 1 a 4</p>
+                <p className="mt-1 text-lg font-bold text-white">{plan.first}</p>
               </div>
               <div>
-                <p className="m-0 font-mono text-xs text-white/45">Desde cuota 5</p>
-                <p className="display mt-1 text-xl font-bold text-[#ff8141]">{plan.regular}</p>
+                <p className="m-0 text-xs text-emerald-400 font-semibold">Desde cuota 5</p>
+                <p className="mt-1 text-lg font-bold text-emerald-400">{plan.regular}</p>
               </div>
             </div>
 
-            <p className="mt-5 text-xs sm:text-sm leading-relaxed text-white/65">
-              Participás el último sábado de cada mes con el número asignado ({number}). Si salís
-              adjudicado, no abonás ninguna cuota más. A partir del mes 18, disponés del rescate del
-              capital acumulado.
+            <p className="mt-4 text-xs leading-relaxed text-slate-300">
+              Participás el último sábado de cada mes con el número asignado ({number}). Si salís adjudicado,
+              no abonás ninguna cuota más. A partir del mes 18, disponés del rescate del capital acumulado.
             </p>
           </div>
         </div>
 
-        {/* Form Container */}
+        {/* Adhesion Form Card */}
         <form
           onSubmit={submit}
-          className="relative border border-white/15 bg-[#0a1224]/90 p-6 shadow-2xl backdrop-blur-xl sm:p-8"
+          className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#141f36] to-[#0c1424] p-6 shadow-2xl backdrop-blur-xl sm:p-8"
           data-testid="form-adhesion"
         >
-          {/* Corner brackets */}
-          <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#ff5a00]" />
-          <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#ff5a00]" />
-          <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#ff5a00]" />
-          <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#ff5a00]" />
-
           <div className="flex items-center gap-3.5 border-b border-white/10 pb-5">
-            <div className="flex h-10 w-10 items-center justify-center border border-[#ff5a00]/40 bg-[#ff5a00]/15 text-[#ff8141]">
-              <FileText size={20} />
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ff5a00]/20 text-[#ff8141] border border-[#ff5a00]/40">
+              <FileText size={22} />
             </div>
             <div>
               <h2 className="m-0 text-lg font-bold text-white">Completá tus datos</h2>
-              <p className="m-0 mt-0.5 font-mono text-xs text-white/45">
-                // SIMULACIÓN SEGURA Y SIN COMPROMISO
+              <p className="m-0 text-xs text-slate-300">
+                Simulación segura, rápida y sin compromiso
               </p>
             </div>
           </div>
 
           <div
-            className={`mt-6 space-y-4 transition-opacity ${
-              understands ? 'opacity-100' : 'opacity-40'
+            className={`mt-6 space-y-4 transition-opacity duration-300 ${
+              understands ? 'opacity-100' : 'opacity-50'
             }`}
           >
             <label className="block">
-              <span className="mb-2 block font-mono text-xs uppercase tracking-[0.14em] text-white/55">
-                Nombre completo
+              <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                Nombre y Apellido
               </span>
               <input
                 required
                 disabled={!understands}
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full border border-white/15 bg-[#0c1628] px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#ff5a00]"
-                placeholder="Por ejemplo, María González"
+                className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#ff5a00] focus:ring-2 focus:ring-[#ff5a00]/30"
+                placeholder="Por ejemplo, Juan Pérez"
                 data-testid="input-name"
               />
             </label>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block">
-                <span className="mb-2 block font-mono text-xs uppercase tracking-[0.14em] text-white/55">
+                <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
                   DNI
                 </span>
                 <input
@@ -815,14 +820,14 @@ function Adhesion({
                   disabled={!understands}
                   value={form.dni}
                   onChange={(e) => setForm({ ...form, dni: e.target.value })}
-                  className="w-full border border-white/15 bg-[#0c1628] px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#ff5a00]"
-                  placeholder="Tu número de documento"
+                  className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#ff5a00] focus:ring-2 focus:ring-[#ff5a00]/30"
+                  placeholder="Sin puntos ni espacios"
                   data-testid="input-dni"
                 />
               </label>
 
               <label className="block">
-                <span className="mb-2 block font-mono text-xs uppercase tracking-[0.14em] text-white/55">
+                <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
                   WhatsApp
                 </span>
                 <input
@@ -830,8 +835,8 @@ function Adhesion({
                   disabled={!understands}
                   value={form.whatsapp}
                   onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-                  className="w-full border border-white/15 bg-[#0c1628] px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#ff5a00]"
-                  placeholder="11 5555 5555"
+                  className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#ff5a00] focus:ring-2 focus:ring-[#ff5a00]/30"
+                  placeholder="Ej: 11 5555 5555"
                   data-testid="input-whatsapp"
                 />
               </label>
@@ -839,33 +844,33 @@ function Adhesion({
           </div>
 
           {!understands && (
-            <p className="mt-4 flex items-center gap-2 font-mono text-xs text-[#ffb18e]">
-              <LockKeyhole size={14} /> Marcá la casilla inferior para confirmar y habilitar el
-              formulario.
+            <p className="mt-4 flex items-center gap-2 rounded-xl bg-amber-500/10 p-3 text-xs font-semibold text-amber-300 border border-amber-500/20">
+              <LockKeyhole size={14} className="shrink-0" />
+              <span>Marcá la casilla inferior de confirmación para habilitar los campos.</span>
             </p>
           )}
 
           <div className="mt-6 space-y-3 border-t border-white/10 pt-5">
-            <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-white/80">
+            <label className="flex cursor-pointer items-start gap-3 text-xs sm:text-sm leading-relaxed text-slate-200">
               <input
                 type="checkbox"
                 checked={understands}
                 onChange={(e) => setUnderstands(e.target.checked)}
-                className="mt-1 h-4 w-4 accent-[#ff5a00]"
+                className="mt-0.5 h-4 w-4 rounded accent-[#ff5a00] cursor-pointer"
                 data-testid="checkbox-understands"
               />
               <span>Entiendo que me estoy suscribiendo a un sistema de capitalización y ahorro.</span>
             </label>
 
-            <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-white/80">
+            <label className="flex cursor-pointer items-start gap-3 text-xs sm:text-sm leading-relaxed text-slate-200">
               <input
                 type="checkbox"
                 checked={terms}
                 onChange={(e) => setTerms(e.target.checked)}
-                className="mt-1 h-4 w-4 accent-[#ff5a00]"
+                className="mt-0.5 h-4 w-4 rounded accent-[#ff5a00] cursor-pointer"
                 data-testid="checkbox-terms"
               />
-              <span>Acepto las bases y condiciones contractuales.</span>
+              <span>Acepto las bases y condiciones contractuales de Fondus y Naranja X.</span>
             </label>
           </div>
 
@@ -873,16 +878,16 @@ function Adhesion({
             <ArchitecturalButton
               type="submit"
               disabled={!valid || sent}
-              className="w-full py-4 text-sm"
+              className="w-full py-4 text-base shadow-xl shadow-orange-500/25"
               data-testid="button-adhere"
             >
-              {sent ? 'SOLICITUD RECIBIDA' : 'ADHERIRME CON NARANJA X'}
+              {sent ? 'SOLICITUD ENVIADA' : 'ADHERIRME CON NARANJA X'}
             </ArchitecturalButton>
           </div>
 
-          <p className="mt-4 flex justify-center gap-2 font-mono text-center text-[11px] text-white/40">
-            <ShieldCheck size={14} /> Tus datos están cifrados y se utilizan únicamente para la
-            simulación.
+          <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-white/50">
+            <ShieldCheck size={14} className="text-emerald-400" />
+            <span>Tus datos están protegidos y se utilizan únicamente para la simulación.</span>
           </p>
         </form>
       </main>
@@ -895,52 +900,52 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
   const [modalRendimientos, setModalRendimientos] = useState(false);
 
   return (
-    <footer className="border-t border-white/10 bg-[#070c18] px-6 py-12 sm:px-10 lg:px-12">
+    <footer className="border-t border-white/10 bg-[#070d1a] px-6 py-12 sm:px-10 lg:px-12">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
           <div>
             <LogoLockup />
-            <p className="mt-5 max-w-sm text-xs sm:text-sm leading-relaxed text-white/50">
+            <p className="mt-4 max-w-sm text-xs sm:text-sm leading-relaxed text-slate-400">
               El poder de tus ahorros. Una alianza institucional entre Fondus y Naranja X para
-              impulsar tus metas con transparencia y solidez.
+              impulsar tus metas con total transparencia y respaldo.
             </p>
             <button
               type="button"
               onClick={onRegret}
-              className="mt-6 flex items-center gap-2 border border-[#ff5a00]/50 bg-[#ff5a00]/10 px-4 py-2.5 font-mono text-xs font-bold text-[#ff9b6a] transition-colors hover:bg-[#ff5a00] hover:text-[#0a1224]"
+              className="mt-6 flex items-center gap-2 rounded-xl border border-[#ff5a00]/40 bg-[#ff5a00]/10 px-4 py-2.5 text-xs font-bold text-[#ff9b6a] transition-all hover:bg-[#ff5a00] hover:text-white"
               data-testid="button-regret"
             >
-              <Mail size={14} /> BOTÓN DE ARREPENTIMIENTO · 10 DÍAS
+              <Mail size={14} /> Botón de Arrepentimiento (10 días)
             </button>
           </div>
 
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="h-2 w-2 bg-[#ff5a00]" />
-              <p className="m-0 font-mono text-xs font-bold uppercase tracking-[0.2em] text-white/70">
-                CONDICIONES GENERALES
+              <span className="h-2 w-2 rounded-full bg-[#ff5a00]" />
+              <p className="m-0 text-xs font-bold uppercase tracking-wider text-slate-200">
+                Condiciones Generales y Descargas
               </p>
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {/* Botón 1: CONDICIONES GENERALES (Descarga PDF) */}
               <a
                 href={`${import.meta.env.BASE_URL}condiciones.pdf`}
                 download="condiciones.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#0f1b30]"
+                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#121f3a] shadow-md"
                 data-testid="button-legal-condiciones-generales"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#ff9b6a]">
-                    CONDICIONES GENERALES
+                  <span className="text-xs font-bold text-white group-hover:text-[#ff9b6a]">
+                    Condiciones Generales
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center bg-[#a6d2b9]/10 text-[#a6d2b9] group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
                     <Download size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                <span className="mt-2 text-[11px] text-slate-400 leading-tight">
                   Objeto del contrato, cálculo de cuotas y normativas de la IGJ (PDF)
                 </span>
               </a>
@@ -951,18 +956,18 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
                 download="titulo.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#0f1b30]"
+                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#121f3a] shadow-md"
                 data-testid="button-legal-título-de-capitalización"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#ff9b6a]">
-                    TÍTULO DE CAPITALIZACIÓN
+                  <span className="text-xs font-bold text-white group-hover:text-[#ff9b6a]">
+                    Título de Capitalización
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center bg-[#a6d2b9]/10 text-[#a6d2b9] group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
                     <Download size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                <span className="mt-2 text-[11px] text-slate-400 leading-tight">
                   Modelo del título, vigencia y capital nominal (PDF)
                 </span>
               </a>
@@ -973,18 +978,18 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
                 download="rescate.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#0f1b30]"
+                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#121f3a] shadow-md"
                 data-testid="button-legal-tabla-de-rescate-y-endoso"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#ff9b6a]">
-                    TABLA DE RESCATE Y ENDOSO
+                  <span className="text-xs font-bold text-white group-hover:text-[#ff9b6a]">
+                    Tabla de Rescate
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center bg-[#a6d2b9]/10 text-[#a6d2b9] group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
                     <Download size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                <span className="mt-2 text-[11px] text-slate-400 leading-tight">
                   Valores de rescate para planes de 300 meses (PDF)
                 </span>
               </a>
@@ -993,18 +998,18 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
               <button
                 type="button"
                 onClick={() => setModalSorteo(true)}
-                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#a6d2b9]/50 hover:bg-[#0f1b30]"
+                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left transition-all duration-200 hover:border-emerald-500/50 hover:bg-[#121f3a] shadow-md"
                 data-testid="button-legal-sorteo"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#a6d2b9]">
-                    SORTEO
+                  <span className="text-xs font-bold text-white group-hover:text-emerald-400">
+                    Sorteo Oficial
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center bg-white/10 text-white/70 group-hover:bg-[#a6d2b9]/20 group-hover:text-[#a6d2b9]">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/10 text-white/70 group-hover:bg-emerald-500/20 group-hover:text-emerald-400">
                     <Info size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                <span className="mt-2 text-[11px] text-slate-400 leading-tight">
                   Mecanismo y fechas de adjudicación mensual por Quiniela LOTBA S.E.
                 </span>
               </button>
@@ -1013,18 +1018,18 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
               <button
                 type="button"
                 onClick={() => setModalRendimientos(true)}
-                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#a6d2b9]/50 hover:bg-[#0f1b30]"
+                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left transition-all duration-200 hover:border-emerald-500/50 hover:bg-[#121f3a] shadow-md"
                 data-testid="button-legal-participación-y-rendimientos"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#a6d2b9]">
-                    PARTICIPACIÓN Y RENDIMIENTOS
+                  <span className="text-xs font-bold text-white group-hover:text-emerald-400">
+                    Rendimientos
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center bg-white/10 text-white/70 group-hover:bg-[#a6d2b9]/20 group-hover:text-[#a6d2b9]">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/10 text-white/70 group-hover:bg-emerald-500/20 group-hover:text-emerald-400">
                     <Info size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                <span className="mt-2 text-[11px] text-slate-400 leading-tight">
                   Participación en los resultados de Reservas Matemáticas
                 </span>
               </button>
@@ -1032,10 +1037,10 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 font-mono text-[11px] text-white/40 sm:flex-row sm:justify-between">
-          <span>PLANES AUTORIZADOS POR IGJ N° RES. 289/11</span>
-          <span className="font-bold text-[#ff9b6a]">NO CONTAMOS CON COBRADORES A DOMICILIO</span>
-          <span>© FONDUS · NARANJA X · TODOS LOS DERECHOS RESERVADOS</span>
+        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:justify-between">
+          <span>Planes autorizados por IGJ N° Res. 289/11</span>
+          <span className="font-bold text-[#ff9b6a]">No contamos con cobradores a domicilio</span>
+          <span>© Fondus · Naranja X · Todos los derechos reservados</span>
         </div>
       </div>
 
@@ -1099,7 +1104,7 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
       >
         <div className="space-y-4 text-slate-700">
           <div className="border-b border-slate-200 pb-3">
-            <span className="inline-block rounded bg-emerald-50 px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider text-emerald-800 border border-emerald-200">
+            <span className="inline-block rounded bg-emerald-50 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-800 border border-emerald-200">
               ARTÍCULO NOVENO · BASES TÉCNICAS
             </span>
             <p className="mt-3 text-base font-semibold text-slate-900 leading-relaxed">
@@ -1109,42 +1114,42 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
 
           <div className="space-y-3 text-xs sm:text-sm leading-relaxed text-slate-600">
             <div className="flex gap-3">
-              <span className="font-mono font-bold text-emerald-700 shrink-0">a-</span>
+              <span className="font-bold text-emerald-700 shrink-0">a-</span>
               <p className="m-0">
                 Mensualmente se calculará la tasa de rendimiento promedio de las inversiones que respaldan a la Reserva Matemática. A tales efectos se tomarán los intereses devengados de los Títulos Públicos, los Alquileres, los Intereses de las Prendas e Hipotecas y todo otro rendimiento proveniente de las inversiones permitidas por el Decreto N° 142.277/43, sus modificaciones y de toda otra disposición futura sobre inversiones, dictada por el Organismo competente. La tasa de rendimiento promedio se obtiene dividiendo el total de la rentabilidad obtenida por el total de la Reserva Matemática invertida.
               </p>
             </div>
 
             <div className="flex gap-3">
-              <span className="font-mono font-bold text-emerald-700 shrink-0">b-</span>
+              <span className="font-bold text-emerald-700 shrink-0">b-</span>
               <p className="m-0">
                 La unidad más el rendimiento determinado en (a) se lo dividirá por 1,00371 (uno más la tasa de interés técnico).
               </p>
             </div>
 
             <div className="flex gap-3">
-              <span className="font-mono font-bold text-emerald-700 shrink-0">c-</span>
+              <span className="font-bold text-emerald-700 shrink-0">c-</span>
               <p className="m-0">
                 El cociente determinado en (b) —que nunca podrá ser inferior a 1— menos la unidad será la tasa de rendimiento promedio mensual de las inversiones netas de la tasa técnica.
               </p>
             </div>
 
             <div className="flex gap-3">
-              <span className="font-mono font-bold text-emerald-700 shrink-0">d-</span>
+              <span className="font-bold text-emerald-700 shrink-0">d-</span>
               <p className="m-0">
                 De esta tasa se participará el 50 % a los Titulares, lo que constituirá el coeficiente de participación.
               </p>
             </div>
 
             <div className="flex gap-3">
-              <span className="font-mono font-bold text-emerald-700 shrink-0">e-</span>
+              <span className="font-bold text-emerald-700 shrink-0">e-</span>
               <p className="m-0">
                 El coeficiente de participación determinado en (d) se aplicará a las Reservas Matemáticas que dieron lugar a la rentabilidad, determinando de ese modo la participación en el resultado de las operaciones financieras de cada Titular.
               </p>
             </div>
 
             <div className="flex gap-3">
-              <span className="font-mono font-bold text-emerald-700 shrink-0">f-</span>
+              <span className="font-bold text-emerald-700 shrink-0">f-</span>
               <p className="m-0">
                 La participación determinada en (e) se adicionará mensualmente a la Reserva Matemática del Titular, pero se contabilizará en forma separada a efectos de su mejor individualización. La participación en los resultados financieros determinada mediante el procedimiento indicado en el presente artículo, será invertida conjuntamente con la Reserva Matemática de cada Titular y participará de los rendimientos mensuales de las inversiones en los meses sucesivos. Al formar parte de la Reserva Matemática esta participación se cobrará: 1) en el momento en que el Titular solicite el Rescate, según el artículo octavo; ó 2) cuando salga favorecido por sorteo en la proporción correspondiente a la Reserva Matemática alcanzada ó 3) al final del vencimiento del plazo del contrato, según el artículo cuarto.
               </p>
@@ -1166,20 +1171,15 @@ function RegretModal({ onClose }: { onClose: () => void }) {
       aria-modal="true"
       data-testid="modal-regret"
     >
-      <div className="relative w-full max-w-md border border-white/20 bg-[#0c1628] p-6 shadow-2xl sm:p-8">
-        <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#ff5a00]" />
-        <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#ff5a00]" />
-        <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#ff5a00]" />
-        <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#ff5a00]" />
-
+      <div className="relative w-full max-w-md rounded-3xl border border-white/15 bg-gradient-to-b from-[#141f36] to-[#0c1424] p-6 shadow-2xl sm:p-8">
         <div className="flex items-start justify-between">
-          <div className="flex h-11 w-11 items-center justify-center border border-[#ff5a00]/40 bg-[#ff5a00]/15 text-[#ff8141]">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#ff5a00]/20 text-[#ff8141] border border-[#ff5a00]/40">
             <Mail size={20} />
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="text-white/50 transition-colors hover:text-white"
+            className="text-white/50 transition-colors hover:text-white p-1"
             aria-label="Cerrar modal"
             data-testid="button-close-regret"
           >
@@ -1188,46 +1188,44 @@ function RegretModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {sent ? (
-          <div className="py-6">
-            <h2 className="display text-2xl font-bold text-white">Solicitud enviada.</h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/65">
-              Te contactaremos para gestionar tu solicitud de arrepentimiento dentro de los próximos
-              días hábiles.
+          <div className="py-6 text-center">
+            <h2 className="text-2xl font-bold text-white">Solicitud enviada</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-300">
+              Te contactaremos a la brevedad para gestionar tu solicitud de arrepentimiento dentro de los plazos legales.
             </p>
             <button
               type="button"
               onClick={onClose}
-              className="mt-6 border border-[#ff5a00] bg-[#ff5a00] px-6 py-3 font-mono text-xs font-black uppercase text-[#0a1224]"
+              className="mt-6 rounded-xl bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] px-6 py-3 text-xs font-bold uppercase text-white shadow-lg"
               data-testid="button-close-sent"
             >
-              CERRAR
+              Cerrar
             </button>
           </div>
         ) : (
           <>
-            <p className="mt-5 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-[#ff8141]">
-              DERECHO DE ARREPENTIMIENTO
-            </p>
-            <h2 className="display mt-2 text-2xl font-bold text-white">
+            <span className="mt-5 inline-block text-xs font-bold uppercase tracking-wider text-[#ff8141]">
+              Derecho de Arrepentimiento
+            </span>
+            <h2 className="mt-1 text-2xl font-bold text-white">
               ¿Querés registrar tu solicitud?
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/65">
-              Disponés de 10 días para revocar tu adhesión. Dejanos tu correo para registrar la
-              gestión formal.
+            <p className="mt-3 text-sm leading-relaxed text-slate-300">
+              Disponés de 10 días para revocar tu adhesión sin ningún costo. Ingresá tu correo electrónico para asentar la gestión:
             </p>
             <input
               type="email"
               placeholder="tu@email.com"
-              className="mt-5 w-full border border-white/15 bg-[#070c18] px-4 py-3 text-sm text-white outline-none focus:border-[#ff5a00]"
+              className="mt-5 w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3 text-sm text-white outline-none focus:border-[#ff5a00]"
               data-testid="input-regret-email"
             />
             <button
               type="button"
               onClick={() => setSent(true)}
-              className="mt-5 flex w-full items-center justify-center gap-2 border border-[#ff5a00] bg-[#ff5a00] py-3.5 font-mono text-xs font-black uppercase text-[#0a1224] transition-transform hover:scale-[1.01]"
+              className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] py-3.5 text-sm font-bold uppercase text-white shadow-lg shadow-orange-500/25 transition-transform hover:scale-[1.01]"
               data-testid="button-send-regret"
             >
-              <span>ENVIAR SOLICITUD</span>
+              <span>Enviar Solicitud</span>
               <ArrowRight size={15} />
             </button>
           </>
@@ -1245,29 +1243,23 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
       aria-modal="true"
       data-testid="modal-success"
     >
-      <div className="relative w-full max-w-md border border-[#a6d2b9]/40 bg-[#0c1628] p-8 text-center shadow-2xl">
-        <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#a6d2b9]" />
-        <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#a6d2b9]" />
-        <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#a6d2b9]" />
-        <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#a6d2b9]" />
-
-        <div className="mx-auto flex h-14 w-14 items-center justify-center border border-[#a6d2b9]/40 bg-[#a6d2b9]/15 text-[#a6d2b9]">
-          <Check size={28} />
+      <div className="relative w-full max-w-md rounded-3xl border border-emerald-500/40 bg-gradient-to-b from-[#142338] to-[#0c1424] p-8 text-center shadow-2xl">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+          <Check size={32} />
         </div>
 
-        <h2 className="display mt-5 text-3xl font-black text-white">¡Estamos en contacto!</h2>
-        <p className="mt-3 text-sm leading-relaxed text-white/65">
-          Recibimos tus datos. Un asesor oficial de Naranja X se comunicará con vos para finalizar
-          la adhesión a tu plan de capitalización.
+        <h2 className="mt-5 text-2xl sm:text-3xl font-extrabold text-white">¡Estamos en contacto!</h2>
+        <p className="mt-3 text-sm leading-relaxed text-slate-300">
+          Recibimos tus datos correctamente. Un asesor oficial de Fondus y Naranja X se comunicará con vos por WhatsApp para finalizar tu adhesión y enviarte tu comprobante.
         </p>
 
         <button
           type="button"
           onClick={onClose}
-          className="mt-7 border border-[#ff5a00] bg-[#ff5a00] px-8 py-3.5 font-mono text-xs font-black uppercase text-[#0a1224]"
+          className="mt-7 w-full rounded-xl bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] py-3.5 text-sm font-bold uppercase text-white shadow-lg shadow-orange-500/25 transition-transform hover:scale-[1.01]"
           data-testid="button-success-close"
         >
-          FINALIZAR
+          Finalizar
         </button>
       </div>
     </div>

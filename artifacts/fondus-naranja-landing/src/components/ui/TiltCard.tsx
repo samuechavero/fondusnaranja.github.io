@@ -73,25 +73,19 @@ export function TiltCard({
         }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        className={`relative overflow-hidden cursor-pointer transition-shadow duration-300 ${className}`}
+        className={`relative overflow-hidden cursor-pointer rounded-2xl sm:rounded-3xl transition-all duration-300 ${className}`}
         data-testid={testId}
       >
-        {/* Dynamic orange/cyan rim-glow spotlight following the cursor */}
+        {/* Dynamic ambient rim-glow spotlight following the cursor */}
         <div
-          className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10"
+          className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10 rounded-2xl sm:rounded-3xl"
           style={{
             opacity: isHovered ? 1 : 0,
             background: `radial-gradient(400px circle at ${glowPos.x}% ${glowPos.y}%, ${
-              featured ? 'rgba(255, 255, 255, 0.35)' : 'rgba(255, 90, 0, 0.28)'
+              featured ? 'rgba(255, 90, 0, 0.25)' : 'rgba(16, 185, 129, 0.2)'
             }, transparent 70%)`,
           }}
         />
-
-        {/* Subtle architectural corner markings */}
-        <div className="absolute top-1 left-1 text-[9px] font-mono text-white/20 select-none pointer-events-none">+</div>
-        <div className="absolute top-1 right-1 text-[9px] font-mono text-white/20 select-none pointer-events-none">+</div>
-        <div className="absolute bottom-1 left-1 text-[9px] font-mono text-white/20 select-none pointer-events-none">+</div>
-        <div className="absolute bottom-1 right-1 text-[9px] font-mono text-white/20 select-none pointer-events-none">+</div>
 
         {/* Content */}
         <div className="relative z-20 h-full flex flex-col justify-between">
