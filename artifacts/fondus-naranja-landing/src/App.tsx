@@ -10,6 +10,7 @@ import {
   Download,
   FileText,
   Gift,
+  Info,
   LockKeyhole,
   Mail,
   MessageCircle,
@@ -29,6 +30,7 @@ import Architectural3DCanvas from '@/components/canvas/Architectural3DCanvas';
 import TiltCard from '@/components/ui/TiltCard';
 import TextMaskReveal from '@/components/ui/TextMaskReveal';
 import ArchitecturalButton from '@/components/ui/ArchitecturalButton';
+import LegalModal from '@/components/ui/LegalModal';
 
 const queryClient = new QueryClient();
 
@@ -889,17 +891,13 @@ function Adhesion({
 }
 
 function LegalFooter({ onRegret }: { onRegret: () => void }) {
-  const resources = [
-    'TÍTULO DE CAPITALIZACIÓN',
-    'TABLA DE RESCATE Y ENDOSO',
-    'SORTEO',
-    'PARTICIPACIÓN Y RENDIMIENTOS',
-  ];
+  const [modalSorteo, setModalSorteo] = useState(false);
+  const [modalRendimientos, setModalRendimientos] = useState(false);
 
   return (
     <footer className="border-t border-white/10 bg-[#070c18] px-6 py-12 sm:px-10 lg:px-12">
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
           <div>
             <LogoLockup />
             <p className="mt-5 max-w-sm text-xs sm:text-sm leading-relaxed text-white/50">
@@ -917,24 +915,119 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
           </div>
 
           <div>
-            <p className="m-0 font-mono text-xs font-bold uppercase tracking-[0.2em] text-white/60">
-              // INFORMACIÓN Y BASES LEGALES
-            </p>
-            <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
-              {resources.map((resource) => (
-                <button
-                  type="button"
-                  key={resource}
-                  onClick={() =>
-                    window.alert(`${resource}: el documento se abriría en una nueva ventana.`)
-                  }
-                  className="flex items-center gap-2.5 border border-white/5 bg-white/5 p-3 text-left font-mono text-xs text-white/70 transition-colors hover:border-[#ff5a00]/40 hover:text-[#ff9b6a]"
-                  data-testid={`button-legal-${resource.toLowerCase().replaceAll(' ', '-')}`}
-                >
-                  <Download size={13} className="text-[#a6d2b9]" />
-                  <span>{resource}</span>
-                </button>
-              ))}
+            <div className="flex items-center gap-2.5">
+              <span className="h-2 w-2 bg-[#ff5a00]" />
+              <p className="m-0 font-mono text-xs font-bold uppercase tracking-[0.2em] text-white/70">
+                CONDICIONES GENERALES
+              </p>
+            </div>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {/* Botón 1: CONDICIONES GENERALES (Descarga PDF) */}
+              <a
+                href={`${import.meta.env.BASE_URL}condiciones.pdf`}
+                download="condiciones.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#0f1b30]"
+                data-testid="button-legal-condiciones-generales"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#ff9b6a]">
+                    CONDICIONES GENERALES
+                  </span>
+                  <span className="flex h-6 w-6 items-center justify-center bg-[#a6d2b9]/10 text-[#a6d2b9] group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
+                    <Download size={13} />
+                  </span>
+                </div>
+                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                  Objeto del contrato, cálculo de cuotas y normativas de la IGJ (PDF)
+                </span>
+              </a>
+
+              {/* Botón 2: TÍTULO DE CAPITALIZACIÓN (Descarga PDF) */}
+              <a
+                href={`${import.meta.env.BASE_URL}titulo.pdf`}
+                download="titulo.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#0f1b30]"
+                data-testid="button-legal-título-de-capitalización"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#ff9b6a]">
+                    TÍTULO DE CAPITALIZACIÓN
+                  </span>
+                  <span className="flex h-6 w-6 items-center justify-center bg-[#a6d2b9]/10 text-[#a6d2b9] group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
+                    <Download size={13} />
+                  </span>
+                </div>
+                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                  Modelo del título, vigencia y capital nominal (PDF)
+                </span>
+              </a>
+
+              {/* Botón 3: TABLA DE RESCATE Y ENDOSO (Descarga PDF) */}
+              <a
+                href={`${import.meta.env.BASE_URL}rescate.pdf`}
+                download="rescate.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#0f1b30]"
+                data-testid="button-legal-tabla-de-rescate-y-endoso"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#ff9b6a]">
+                    TABLA DE RESCATE Y ENDOSO
+                  </span>
+                  <span className="flex h-6 w-6 items-center justify-center bg-[#a6d2b9]/10 text-[#a6d2b9] group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
+                    <Download size={13} />
+                  </span>
+                </div>
+                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                  Valores de rescate para planes de 300 meses (PDF)
+                </span>
+              </a>
+
+              {/* Botón 4: SORTEO (Modal) */}
+              <button
+                type="button"
+                onClick={() => setModalSorteo(true)}
+                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#a6d2b9]/50 hover:bg-[#0f1b30]"
+                data-testid="button-legal-sorteo"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#a6d2b9]">
+                    SORTEO
+                  </span>
+                  <span className="flex h-6 w-6 items-center justify-center bg-white/10 text-white/70 group-hover:bg-[#a6d2b9]/20 group-hover:text-[#a6d2b9]">
+                    <Info size={13} />
+                  </span>
+                </div>
+                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                  Mecanismo y fechas de adjudicación mensual por Quiniela LOTBA S.E.
+                </span>
+              </button>
+
+              {/* Botón 5: PARTICIPACIÓN Y RENDIMIENTOS (Modal) */}
+              <button
+                type="button"
+                onClick={() => setModalRendimientos(true)}
+                className="group flex flex-col justify-between border border-white/10 bg-[#0b1424] p-3.5 text-left transition-all duration-200 hover:border-[#a6d2b9]/50 hover:bg-[#0f1b30]"
+                data-testid="button-legal-participación-y-rendimientos"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-xs font-bold text-white group-hover:text-[#a6d2b9]">
+                    PARTICIPACIÓN Y RENDIMIENTOS
+                  </span>
+                  <span className="flex h-6 w-6 items-center justify-center bg-white/10 text-white/70 group-hover:bg-[#a6d2b9]/20 group-hover:text-[#a6d2b9]">
+                    <Info size={13} />
+                  </span>
+                </div>
+                <span className="mt-2 text-[10px] text-white/50 leading-tight">
+                  Participación en los resultados de Reservas Matemáticas
+                </span>
+              </button>
             </div>
           </div>
         </div>
@@ -945,6 +1038,120 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
           <span>© FONDUS · NARANJA X · TODOS LOS DERECHOS RESERVADOS</span>
         </div>
       </div>
+
+      {/* Modal 1: SORTEO */}
+      <LegalModal
+        isOpen={modalSorteo}
+        onClose={() => setModalSorteo(false)}
+        title="SORTEO"
+      >
+        <div className="space-y-4 text-slate-700">
+          <p className="text-base font-semibold text-slate-900 leading-relaxed">
+            El sorteo mensual se realiza a través de Quiniela de la Lotería de la Ciudad de Buenos Aires (LOTBA S.E.), el último sábado de cada mes, última jugada.
+          </p>
+
+          <p className="text-sm leading-relaxed text-slate-700">
+            En caso de que LOTBA S.E. no efectuase el último sábado sorteos de lotería, se tomará para la adjudicación el que realice LOTBA S.E. para sí el último sábado de cada mes como última jugada de Quiniela.
+          </p>
+
+          <p className="text-xs leading-relaxed text-slate-500 bg-slate-50 border border-slate-200 p-3 rounded-lg">
+            Si LOTBA S.E. no realizara para sí, el último sábado de cada mes sorteos de Lotería o Quiniela, se tomará para la adjudicación, el primer sorteo de Quiniela que realice para sí LOTBA S.E. con posterioridad al último sábado sin sorteo.
+          </p>
+
+          {/* Pie del Modal con Logotipo IGJ */}
+          <div className="mt-6 rounded-xl border border-slate-200 bg-slate-100 p-4 sm:p-5">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl font-black tracking-tighter text-slate-900 font-sans">IGJ</span>
+                  <svg className="w-8 h-8 text-sky-600 shrink-0" viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" strokeWidth="2.5" />
+                    <circle cx="20" cy="20" r="8" fill="currentColor" fillOpacity="0.15" stroke="currentColor" strokeWidth="2" />
+                    <circle cx="20" cy="11" r="2.5" fill="currentColor" />
+                    <circle cx="20" cy="29" r="2.5" fill="currentColor" />
+                    <circle cx="11" cy="20" r="2.5" fill="currentColor" />
+                    <circle cx="29" cy="20" r="2.5" fill="currentColor" />
+                  </svg>
+                </div>
+                <div className="text-[10px] leading-tight text-slate-600 border-l border-slate-300 pl-3">
+                  <p className="font-semibold text-slate-800 m-0">Ministerio de Justicia y Derechos Humanos</p>
+                  <p className="m-0 text-slate-500">Presidencia de la Nación</p>
+                </div>
+              </div>
+
+              <div className="hidden sm:block w-px h-10 bg-slate-300" />
+
+              <div className="text-center sm:text-right">
+                <p className="m-0 text-xs font-bold text-slate-800 uppercase tracking-wide">Planes Aprobados</p>
+                <p className="m-0 text-xs font-mono font-bold text-slate-900">RES 000289/11</p>
+                <p className="m-0 text-xs font-mono text-slate-600">0800-3333-445</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </LegalModal>
+
+      {/* Modal 2: PARTICIPACIÓN Y RENDIMIENTOS */}
+      <LegalModal
+        isOpen={modalRendimientos}
+        onClose={() => setModalRendimientos(false)}
+        title="PARTICIPACIÓN EN LOS RESULTADOS FINANCIEROS"
+      >
+        <div className="space-y-4 text-slate-700">
+          <div className="border-b border-slate-200 pb-3">
+            <span className="inline-block rounded bg-emerald-50 px-2.5 py-1 font-mono text-[11px] font-bold uppercase tracking-wider text-emerald-800 border border-emerald-200">
+              ARTÍCULO NOVENO · BASES TÉCNICAS
+            </span>
+            <p className="mt-3 text-base font-semibold text-slate-900 leading-relaxed">
+              Los Titulares participarán en los resultados de las inversiones de sus Reservas Matemáticas de acuerdo al siguiente esquema:
+            </p>
+          </div>
+
+          <div className="space-y-3 text-xs sm:text-sm leading-relaxed text-slate-600">
+            <div className="flex gap-3">
+              <span className="font-mono font-bold text-emerald-700 shrink-0">a-</span>
+              <p className="m-0">
+                Mensualmente se calculará la tasa de rendimiento promedio de las inversiones que respaldan a la Reserva Matemática. A tales efectos se tomarán los intereses devengados de los Títulos Públicos, los Alquileres, los Intereses de las Prendas e Hipotecas y todo otro rendimiento proveniente de las inversiones permitidas por el Decreto N° 142.277/43, sus modificaciones y de toda otra disposición futura sobre inversiones, dictada por el Organismo competente. La tasa de rendimiento promedio se obtiene dividiendo el total de la rentabilidad obtenida por el total de la Reserva Matemática invertida.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <span className="font-mono font-bold text-emerald-700 shrink-0">b-</span>
+              <p className="m-0">
+                La unidad más el rendimiento determinado en (a) se lo dividirá por 1,00371 (uno más la tasa de interés técnico).
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <span className="font-mono font-bold text-emerald-700 shrink-0">c-</span>
+              <p className="m-0">
+                El cociente determinado en (b) —que nunca podrá ser inferior a 1— menos la unidad será la tasa de rendimiento promedio mensual de las inversiones netas de la tasa técnica.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <span className="font-mono font-bold text-emerald-700 shrink-0">d-</span>
+              <p className="m-0">
+                De esta tasa se participará el 50 % a los Titulares, lo que constituirá el coeficiente de participación.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <span className="font-mono font-bold text-emerald-700 shrink-0">e-</span>
+              <p className="m-0">
+                El coeficiente de participación determinado en (d) se aplicará a las Reservas Matemáticas que dieron lugar a la rentabilidad, determinando de ese modo la participación en el resultado de las operaciones financieras de cada Titular.
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <span className="font-mono font-bold text-emerald-700 shrink-0">f-</span>
+              <p className="m-0">
+                La participación determinada en (e) se adicionará mensualmente a la Reserva Matemática del Titular, pero se contabilizará en forma separada a efectos de su mejor individualización. La participación en los resultados financieros determinada mediante el procedimiento indicado en el presente artículo, será invertida conjuntamente con la Reserva Matemática de cada Titular y participará de los rendimientos mensuales de las inversiones en los meses sucesivos. Al formar parte de la Reserva Matemática esta participación se cobrará: 1) en el momento en que el Titular solicite el Rescate, según el artículo octavo; ó 2) cuando salga favorecido por sorteo en la proporción correspondiente a la Reserva Matemática alcanzada ó 3) al final del vencimiento del plazo del contrato, según el artículo cuarto.
+              </p>
+            </div>
+          </div>
+        </div>
+      </LegalModal>
     </footer>
   );
 }
