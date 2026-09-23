@@ -1,11 +1,34 @@
 import { type FormEvent, type ReactNode, useEffect, useMemo, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ArrowLeft, ArrowRight, BadgeCheck, Check, CircleHelp, Download, FileText, Gift, LockKeyhole, Mail, MessageCircle, ShieldCheck, Sparkles, Star, Trophy, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  ArrowLeft,
+  ArrowRight,
+  BadgeCheck,
+  Check,
+  CircleHelp,
+  Download,
+  FileText,
+  Gift,
+  LockKeyhole,
+  Mail,
+  MessageCircle,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Trophy,
+  X,
+} from 'lucide-react';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import { Route, Switch, useLocation, Router as WouterRouter } from 'wouter';
+
+import Architectural3DCanvas from '@/components/canvas/Architectural3DCanvas';
+import TiltCard from '@/components/ui/TiltCard';
+import TextMaskReveal from '@/components/ui/TextMaskReveal';
+import ArchitecturalButton from '@/components/ui/ArchitecturalButton';
 
 const queryClient = new QueryClient();
 
@@ -20,9 +43,31 @@ type Plan = {
 };
 
 const plans: Plan[] = [
-  { id: 'inicio', title: 'Ideal para empezar', capital: '$7.500.000', first: '$43.800', regular: '$25.875', eyebrow: 'Para dar el primer paso' },
-  { id: 'elegido', title: 'El más elegido', capital: '$10.000.000', first: '$58.400', regular: '$34.500', eyebrow: 'El equilibrio que más eligen', featured: true },
-  { id: 'mayor', title: 'Mayor capital', capital: '$20.000.000', first: '$116.800', regular: '$69.000', eyebrow: 'Para ir por más' },
+  {
+    id: 'inicio',
+    title: 'Ideal para empezar',
+    capital: '$7.500.000',
+    first: '$43.800',
+    regular: '$25.875',
+    eyebrow: 'Capital inicial y ahorro',
+  },
+  {
+    id: 'elegido',
+    title: 'El más elegido',
+    capital: '$10.000.000',
+    first: '$58.400',
+    regular: '$34.500',
+    eyebrow: 'Equilibrio · Vehículo 0KM',
+    featured: true,
+  },
+  {
+    id: 'mayor',
+    title: 'Mayor capital',
+    capital: '$20.000.000',
+    first: '$116.800',
+    regular: '$69.000',
+    eyebrow: 'Vivienda y proyectos de escala',
+  },
 ];
 
 const socialProof = [
@@ -34,25 +79,70 @@ const socialProof = [
 
 function LogoLockup() {
   return (
-    <div className="flex items-center gap-3" data-testid="brand-lockup">
-      <span className="display text-[1.55rem] font-extrabold tracking-[-.07em] text-[#f3f4ee]">fondus</span>
-      <span className="h-7 w-px bg-white/25" />
-      <span className="display text-[1.25rem] font-extrabold tracking-[-.06em] text-[#ff6a12]">Naranja<span className="text-[#f3f4ee]">X</span></span>
+    <div className="flex items-center gap-3 select-none" data-testid="brand-lockup">
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2.5">
+          <span className="display text-[1.65rem] font-black tracking-[-0.07em] text-[#f4f4ee]">
+            fondus
+          </span>
+          <span className="h-6 w-px bg-white/20" />
+          <span className="display text-[1.35rem] font-black tracking-[-0.06em] text-[#ff6a12]">
+            Naranja<span className="text-[#f4f4ee]">X</span>
+          </span>
+        </div>
+        <span className="text-[9px] font-mono tracking-[0.25em] text-white/40 uppercase -mt-0.5">
+          SISTEMA DE CAPITALIZACIÓN
+        </span>
+      </div>
     </div>
   );
 }
 
 function StepHeader({ step, onBack }: { step: number; onBack: () => void }) {
   return (
-    <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-5 sm:px-8 lg:px-10">
+    <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between gap-4 border-b border-white/10 px-6 py-6 sm:px-10 lg:px-12">
       <div className="shrink-0">
         <LogoLockup />
       </div>
-      <div className="hidden items-center gap-2 sm:flex" aria-label={`Paso ${step} de 5`} data-testid="step-progress">
-        {[1, 2, 3, 4, 5].map((item) => <span key={item} className={`h-1.5 w-8 rounded-full transition-colors ${item <= step ? 'bg-[#ff5a00]' : 'bg-white/20'}`} />)}
-        <span className="ml-2 text-xs font-semibold tracking-[.14em] text-white/55">0{step} / 05</span>
+      <div
+        className="hidden items-center gap-3 sm:flex"
+        aria-label={`Paso ${step} de 5`}
+        data-testid="step-progress"
+      >
+        <div className="flex items-center gap-1.5">
+          {[1, 2, 3, 4, 5].map((item) => (
+            <span
+              key={item}
+              className={`h-1.5 w-7 transition-all duration-300 ${
+                item <= step ? 'bg-[#ff5a00]' : 'bg-white/15'
+              }`}
+            />
+          ))}
+        </div>
+        <span className="ml-2 font-mono text-xs font-bold tracking-[0.2em] text-white/50">
+          0{step} / 05
+        </span>
       </div>
-      {step > 1 ? <button type="button" onClick={onBack} className="flex shrink-0 items-center gap-2 text-sm font-semibold text-white/65 transition-colors hover:text-white" data-testid="button-back"><ArrowLeft size={16} /> Volver</button> : <span className="max-w-[9.5rem] text-right text-[10px] font-semibold leading-[1.15] tracking-[.08em] text-white/55 sm:max-w-none sm:text-xs sm:tracking-[.1em]">UNA DECISIÓN, UN NUEVO COMIENZO</span>}
+      {step > 1 ? (
+        <button
+          type="button"
+          onClick={onBack}
+          className="group flex shrink-0 items-center gap-2.5 border border-white/15 bg-white/5 px-4 py-2 text-xs font-mono font-bold tracking-[0.12em] uppercase text-white/70 transition-colors hover:border-[#ff5a00] hover:text-white"
+          data-testid="button-back"
+        >
+          <ArrowLeft size={14} className="transition-transform group-hover:-translate-x-1" />
+          VOLVER
+        </button>
+      ) : (
+        <div className="text-right">
+          <span className="block font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-[#ff7b35]">
+            FASE INICIAL
+          </span>
+          <span className="hidden font-mono text-[11px] tracking-[0.14em] text-white/45 sm:inline-block">
+            ARQUITECTURA DE CAPITAL
+          </span>
+        </div>
+      )}
     </header>
   );
 }
@@ -60,6 +150,7 @@ function StepHeader({ step, onBack }: { step: number; onBack: () => void }) {
 function SocialProof() {
   const [notice, setNotice] = useState<string | null>(null);
   const [side, setSide] = useState<'left' | 'right'>('left');
+
   useEffect(() => {
     let index = 0;
     const show = () => {
@@ -67,163 +158,969 @@ function SocialProof() {
       index += 1;
       setSide(index % 2 ? 'left' : 'right');
       setNotice(`${item[0]} de ${item[1]} se acaba de adherir al plan de ${item[2]}`);
-       window.setTimeout(() => setNotice(null), 2400);
+      window.setTimeout(() => setNotice(null), 3200);
     };
-     const interval = window.setInterval(show, 3000);
-    const initial = window.setTimeout(show, 4800);
-    return () => { window.clearInterval(interval); window.clearTimeout(initial); };
+    const interval = window.setInterval(show, 4500);
+    const initial = window.setTimeout(show, 2500);
+    return () => {
+      window.clearInterval(interval);
+      window.clearTimeout(initial);
+    };
   }, []);
-  if (!notice) return null;
-  return <div className={`fixed bottom-4 z-30 w-[calc(100%-2rem)] max-w-[310px] animate-[fadeUp_.55s_ease-out] ${side === 'left' ? 'left-4' : 'right-4'}`} data-testid="social-proof">
-    <div className="glass flex items-start gap-3 rounded-2xl p-3.5 shadow-2xl">
-      <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#ff5a00]/15 text-[#ff8751]"><BadgeCheck size={17} /></span>
-      <p className="m-0 text-xs leading-5 text-white/85">{notice}</p>
-      <button type="button" className="ml-auto text-white/45 hover:text-white" onClick={() => setNotice(null)} aria-label="Cerrar notificación" data-testid="button-close-social"><X size={14} /></button>
-    </div>
-  </div>;
+
+  return (
+    <AnimatePresence>
+      {notice && (
+        <motion.div
+          key={notice}
+          initial={{ opacity: 0, rotateX: 85, y: 35, scale: 0.94 }}
+          animate={{ opacity: 1, rotateX: 0, y: 0, scale: 1 }}
+          exit={{ opacity: 0, rotateX: -85, y: 25, scale: 0.94 }}
+          transition={{ type: 'spring', stiffness: 120, damping: 16 }}
+          style={{ perspective: 1000 }}
+          className={`fixed bottom-6 z-40 w-[calc(100%-2.5rem)] max-w-[340px] ${
+            side === 'left' ? 'left-5 sm:left-8' : 'right-5 sm:right-8'
+          }`}
+          data-testid="social-proof"
+        >
+          <div className="relative overflow-hidden border border-white/20 bg-[#091122]/90 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-2xl">
+            {/* Architectural corner markings */}
+            <span className="absolute top-0 left-0 h-1.5 w-1.5 border-t-2 border-l-2 border-[#ff5a00]" />
+            <span className="absolute top-0 right-0 h-1.5 w-1.5 border-t-2 border-r-2 border-[#ff5a00]" />
+            <span className="absolute bottom-0 left-0 h-1.5 w-1.5 border-b-2 border-l-2 border-[#ff5a00]" />
+            <span className="absolute bottom-0 right-0 h-1.5 w-1.5 border-b-2 border-r-2 border-[#ff5a00]" />
+
+            <div className="flex items-start gap-3.5">
+              <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center border border-[#ff5a00]/40 bg-[#ff5a00]/15 text-[#ff8751]">
+                <BadgeCheck size={18} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="m-0 font-mono text-[9px] uppercase tracking-[0.2em] text-[#a6d2b9]">
+                  // ADHESIÓN EN TIEMPO REAL
+                </p>
+                <p className="m-0 mt-1 text-xs font-medium leading-5 text-white/90">{notice}</p>
+              </div>
+              <button
+                type="button"
+                className="text-white/40 transition-colors hover:text-white"
+                onClick={() => setNotice(null)}
+                aria-label="Cerrar notificación"
+                data-testid="button-close-social"
+              >
+                <X size={14} />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
 }
 
 function Hero({ onStart }: { onStart: () => void }) {
-  return <div className="min-h-[100dvh]">
-    <StepHeader step={1} onBack={() => undefined} />
-    <main className="mx-auto grid max-w-6xl gap-12 px-5 pb-20 pt-8 sm:px-8 md:pt-16 lg:grid-cols-[1.08fr_.92fr] lg:items-center lg:gap-20 lg:px-10 lg:pb-24">
-      <div className="fade-up">
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#83bea3]/35 bg-[#83bea3]/10 px-3.5 py-2 text-xs font-bold text-[#a6d2b9]" data-testid="badge-rating"><Star size={14} fill="currentColor" /> Google rating 4,9 <span className="flex gap-0.5 text-[#ffb537]" aria-label="5 estrellas">{[1, 2, 3, 4, 5].map((item) => <Star key={item} size={12} fill="currentColor" />)}</span></div>
-        <p className="mb-4 text-sm font-bold uppercase tracking-[.18em] text-[#ff7b35]">Una alianza para mirar hacia adelante</p>
-        <h1 className="display max-w-2xl text-5xl font-extrabold leading-[.98] tracking-[-.06em] text-[#f4f4ee] sm:text-7xl">Con <span className="text-[#ff6a12]">FONDUS</span><br />y Naranja X<br /><span className="text-[#a6d2b9]">vas a poder.</span></h1>
-        <p className="mt-7 max-w-md text-lg leading-8 text-white/65">En dos minutos te explicamos todo. Elegí tu plan, conocé tus beneficios y empezá a construir eso que te importa.</p>
-        <button type="button" onClick={onStart} className="cta-pulse mt-9 flex w-full items-center justify-center gap-3 rounded-full bg-[#ff5a00] px-7 py-4 text-sm font-extrabold tracking-[.1em] text-[#1a2030] shadow-[0_12px_35px_rgba(255,90,0,.27)] transition-transform hover:scale-[1.02] sm:w-auto" data-testid="button-start">INICIAR SIMULACIÓN <ArrowRight size={18} /></button>
-        <div className="mt-7 flex items-center gap-5 text-xs text-white/48"><span className="flex items-center gap-2"><LockKeyhole size={14} className="text-[#a6d2b9]" /> 100% online</span><span className="flex items-center gap-2"><ShieldCheck size={14} className="text-[#a6d2b9]" /> Sin compromiso</span></div>
+  return (
+    <div className="relative min-h-[100dvh] overflow-hidden blueprint-grid">
+      {/* 3D Interactive Canvas in Background */}
+      <Architectural3DCanvas />
+
+      <StepHeader step={1} onBack={() => undefined} />
+
+      {/* Blueprint Subgrid overlay */}
+      <div className="absolute inset-0 blueprint-subgrid pointer-events-none opacity-40" />
+
+      {/* Technical Blueprint Border Guides */}
+      <div className="pointer-events-none absolute left-6 top-28 hidden font-mono text-[9px] tracking-[0.2em] text-white/20 lg:block select-none">
+        AXIS: 31.4201° S / 64.1888° W
       </div>
-      <div className="relative fade-up fade-up-delay-2">
-        <div className="absolute -inset-10 rounded-full bg-[#ff5a00]/10 blur-3xl" />
-        <div className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-[#eaf0ed] shadow-2xl">
-          <img src="/assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg" alt="Promoción Fondus y Naranja X por el sorteo de una moto 0KM" className="block aspect-[9/13] w-full object-cover object-top sm:aspect-[9/11] lg:aspect-[9/12]" data-testid="img-hero-campaign" />
-          <div className="absolute inset-x-4 bottom-4 flex items-center justify-between rounded-2xl bg-[#132340]/90 px-4 py-3 backdrop-blur-md">
-            <div><p className="m-0 text-[10px] font-bold uppercase tracking-[.18em] text-[#a6d2b9]">Beneficio exclusivo</p><p className="m-0 mt-1 text-sm font-semibold text-white">Cuota de suscripción bonificada</p></div>
-            <Gift size={25} className="text-[#ff6a12]" />
+      <div className="pointer-events-none absolute right-6 top-28 hidden font-mono text-[9px] tracking-[0.2em] text-white/20 lg:block select-none">
+        SYS.FONDUS.V4 // ARCH-MINIMAL
+      </div>
+
+      <main className="relative z-10 mx-auto grid max-w-7xl gap-16 px-6 py-20 sm:px-10 md:py-28 lg:grid-cols-[1.12fr_0.88fr] lg:items-center lg:gap-24 lg:px-12">
+        <div>
+          {/* Rating Badge */}
+          <div
+            className="mb-8 inline-flex items-center gap-2.5 border border-[#83bea3]/30 bg-[#83bea3]/10 px-3.5 py-1.5 text-xs font-mono font-bold tracking-[0.1em] text-[#a6d2b9]"
+            data-testid="badge-rating"
+          >
+            <Star size={13} fill="currentColor" />
+            <span>GOOGLE RATING 4.9</span>
+            <span className="flex gap-0.5 text-[#ffb537]" aria-label="5 estrellas">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <Star key={item} size={11} fill="currentColor" />
+              ))}
+            </span>
+          </div>
+
+          <p className="mb-4 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
+            // UNA ALIANZA PARA MIRAR HACIA ADELANTE
+          </p>
+
+          {/* Masked Headline Reveal */}
+          <TextMaskReveal
+            className="display text-5xl sm:text-7xl lg:text-8xl font-black tracking-[-0.05em] text-[#f4f4ee]"
+            lines={[
+              {
+                words: [
+                  { text: 'Con' },
+                  { text: 'FONDUS', className: 'text-[#ff6a12]' },
+                ],
+              },
+              {
+                words: [
+                  { text: 'y' },
+                  { text: 'Naranja' },
+                  { text: 'X', className: 'text-[#f4f4ee]' },
+                ],
+              },
+              {
+                words: [
+                  { text: 'vas', className: 'text-[#a6d2b9]' },
+                  { text: 'a', className: 'text-[#a6d2b9]' },
+                  { text: 'poder.', className: 'text-[#a6d2b9]' },
+                ],
+              },
+            ]}
+          />
+
+          <p className="mt-8 max-w-lg text-base sm:text-lg font-light leading-relaxed text-white/65">
+            Elegí tu plan de capitalización en pesos, conocé tus beneficios y comenzá a construir tu
+            objetivo patrimonial con respaldo institucional.
+          </p>
+
+          <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <ArchitecturalButton onClick={onStart} data-testid="button-start">
+              INICIAR SIMULACIÓN
+            </ArchitecturalButton>
+          </div>
+
+          <div className="mt-10 flex flex-wrap items-center gap-6 border-t border-white/10 pt-6 text-xs font-mono text-white/45">
+            <span className="flex items-center gap-2">
+              <LockKeyhole size={14} className="text-[#a6d2b9]" /> 100% ONLINE
+            </span>
+            <span className="flex items-center gap-2">
+              <ShieldCheck size={14} className="text-[#a6d2b9]" /> SIN COMPROMISO
+            </span>
+            <span className="flex items-center gap-2">
+              <Sparkles size={14} className="text-[#ff7b35]" /> ADJUDICACIÓN MENSUAL
+            </span>
           </div>
         </div>
-        <div className="absolute -bottom-5 -left-3 hidden rounded-2xl border border-white/15 bg-[#243653] px-4 py-3 shadow-xl sm:block"><p className="m-0 text-[10px] uppercase tracking-[.15em] text-white/55">Participás por</p><p className="m-0 text-lg font-extrabold text-[#ff8141]">una moto 0KM</p></div>
-      </div>
-    </main>
-    <div className="mx-auto flex max-w-6xl items-center justify-between border-t border-white/10 px-5 py-5 text-xs text-white/40 sm:px-8 lg:px-10"><span>Fondus · El poder de tus ahorros</span><span>Argentina</span></div>
-  </div>;
-}
 
-function PlanSelector({ onSelect, onBack }: { onSelect: (plan: Plan) => void; onBack: () => void }) {
-  return <div className="min-h-[100dvh]">
-    <StepHeader step={2} onBack={onBack} />
-    <main className="mx-auto max-w-6xl px-5 pb-20 pt-8 sm:px-8 lg:px-10 lg:pt-14">
-      <div className="max-w-2xl fade-up"><p className="mb-3 text-sm font-bold uppercase tracking-[.16em] text-[#ff7b35]">Paso 02 · Elegí tu camino</p><h1 className="display text-4xl font-extrabold tracking-[-.05em] text-white sm:text-6xl">Un plan para cada<br /><span className="text-[#a6d2b9]">proyecto.</span></h1><p className="mt-5 text-base leading-7 text-white/60">Tres alternativas, la misma posibilidad: capitalizar tus ahorros en pesos y participar desde la primera cuota.</p></div>
-      <div className="mt-10 grid gap-4 lg:grid-cols-3">
-        {plans.map((plan, index) => <button type="button" key={plan.id} onClick={() => onSelect(plan)} className={`group relative flex flex-col rounded-[1.6rem] p-5 text-left transition-all duration-300 hover:-translate-y-1 ${plan.featured ? 'orange-shadow border-2 border-[#ff5a00] bg-[#ff5a00]' : 'glass border border-white/12 hover:border-[#ff5a00]/55'}`} data-testid={`card-plan-${plan.id}`}>
-          {plan.featured && <span className="absolute -top-3 right-5 rounded-full bg-[#ffcf77] px-3 py-1 text-[10px] font-extrabold uppercase tracking-[.16em] text-[#48200d]">Más elegido</span>}
-          <div className="flex items-center justify-between"><span className={`text-xs font-bold uppercase tracking-[.14em] ${plan.featured ? 'text-[#48200d]/65' : 'text-[#a6d2b9]'}`}>0{index + 1}</span><span className={`rounded-full p-2 ${plan.featured ? 'bg-[#1e2c44]/10 text-[#1e2c44]' : 'bg-white/8 text-[#ff7b35]'}`}><ArrowRight size={15} /></span></div>
-          <p className={`mt-6 text-sm font-semibold ${plan.featured ? 'text-[#48200d]/70' : 'text-white/55'}`}>{plan.eyebrow}</p>
-          <h2 className={`display mt-1 text-xl font-extrabold ${plan.featured ? 'text-[#1d2635]' : 'text-white'}`}>{plan.title}</h2>
-          <p className={`mt-7 text-[2.15rem] font-extrabold tracking-[-.06em] ${plan.featured ? 'text-[#1d2635]' : 'text-[#ff8141]'}`}>{plan.capital}</p>
-          <div className={`mt-5 border-t pt-4 ${plan.featured ? 'border-[#48200d]/20' : 'border-white/12'}`}><p className={`text-xs ${plan.featured ? 'text-[#48200d]/65' : 'text-white/55'}`}>Cuotas 1 a 4</p><p className={`text-lg font-bold ${plan.featured ? 'text-[#1d2635]' : 'text-white'}`}>{plan.first}</p><p className={`mt-3 text-xs ${plan.featured ? 'text-[#48200d]/65' : 'text-white/55'}`}>Desde cuota 5</p><p className={`text-lg font-bold ${plan.featured ? 'text-[#1d2635]' : 'text-white'}`}>{plan.regular}</p></div>
-          <div className={`mt-6 space-y-3 border-t pt-5 text-xs leading-5 ${plan.featured ? 'border-[#48200d]/20 text-[#48200d]/80' : 'border-white/12 text-white/70'}`}><Benefit text="Sorteos mensuales desde cuota 1; si ganás, no pagás más" featured={Boolean(plan.featured)} /><Benefit text="Disponibilidad de fondos desde cuota 18" featured={Boolean(plan.featured)} /><Benefit text="Telemedicina 24/7" featured={Boolean(plan.featured)} /><Benefit text="Seguro de vida" featured={Boolean(plan.featured)} /></div>
-          <span className={`mt-7 flex items-center justify-center gap-2 rounded-full py-3 text-xs font-extrabold tracking-[.08em] ${plan.featured ? 'bg-[#1d2a40] text-white' : 'bg-white/10 text-white group-hover:bg-[#ff5a00] group-hover:text-[#1d2a40]'}`}>ELEGIR ESTE PLAN <ArrowRight size={14} /></span>
-        </button>)}
-      </div>
-      <p className="mt-8 flex items-center gap-2 text-xs text-white/40"><CircleHelp size={14} /> Tocá una tarjeta para continuar. Vas a poder revisar todo antes de adherirte.</p>
-    </main>
-  </div>;
-}
+        {/* Hero Visual Card with Architectural Frame */}
+        <div className="relative">
+          {/* Subtle Ambient Glow */}
+          <div className="absolute -inset-6 bg-[#ff5a00]/10 blur-3xl rounded-none pointer-events-none" />
 
-function Benefit({ text, featured }: { text: string; featured: boolean }) {
-  return <span className="flex items-start gap-2"><Check size={15} className={`mt-0.5 shrink-0 ${featured ? 'text-[#1d2a40]' : 'text-[#ff7b35]'}`} strokeWidth={3} /><span>{text}</span></span>;
-}
+          <div className="relative border border-white/20 bg-[#091224]/80 p-3 shadow-2xl backdrop-blur-md">
+            {/* Technical corner indicators */}
+            <span className="absolute -top-1 -left-1 font-mono text-[10px] text-[#ff7b35] select-none">+</span>
+            <span className="absolute -top-1 -right-1 font-mono text-[10px] text-[#ff7b35] select-none">+</span>
+            <span className="absolute -bottom-1 -left-1 font-mono text-[10px] text-[#ff7b35] select-none">+</span>
+            <span className="absolute -bottom-1 -right-1 font-mono text-[10px] text-[#ff7b35] select-none">+</span>
 
-function Advisor({ plan, onChoose, onBack }: { plan: Plan; onChoose: (choice: string) => void; onBack: () => void }) {
-  return <div className="min-h-[100dvh]">
-    <StepHeader step={3} onBack={onBack} />
-    <main className="mx-auto grid max-w-6xl gap-10 px-5 pb-20 pt-5 sm:px-8 lg:grid-cols-[.8fr_1.2fr] lg:items-center lg:px-10 lg:pt-14">
-      <div className="fade-up"><div className="mb-6 flex h-16 w-16 items-center justify-center rounded-[1.25rem] border border-[#a6d2b9]/35 bg-[#a6d2b9]/12 text-[#a6d2b9]"><MessageCircle size={30} /></div><p className="mb-3 text-sm font-bold uppercase tracking-[.16em] text-[#ff7b35]">Paso 03 · Te acompaño</p><h1 className="display text-4xl font-extrabold tracking-[-.05em] text-white sm:text-6xl">Hablemos de<br /><span className="text-[#a6d2b9]">tu número.</span></h1><p className="mt-5 max-w-sm text-base leading-7 text-white/60">Sofia, tu asesora digital, tiene algo importante para contarte antes del sorteo.</p></div>
-      <div className="glass soft-shadow overflow-hidden rounded-[1.7rem] fade-up fade-up-delay-2">
-        <div className="flex items-center gap-3 border-b border-white/10 px-5 py-4"><div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ff5a00] font-extrabold text-[#192238]">S</div><div><p className="m-0 text-sm font-bold text-white">Sofia</p><p className="m-0 text-xs text-[#a6d2b9]">Asesora digital · En línea</p></div><span className="ml-auto h-2 w-2 rounded-full bg-[#83bea3]" /></div>
-        <div className="space-y-4 p-5 sm:p-7">
-          <ChatBubble text="Hola soy Sofia, tu asesora digital ¡Felicitaciones por el sistema que acabás de seleccionar!" />
-          <ChatBubble text="Tu plan es en cuotas fijas y en pesos, las primeras 4 tienen un valor mayor pero desde la 5ta baja, hasta que salgas adjudicado o decidas continuar. ¡Si salís adjudicado NO VAS A PAGAR MÁS!" />
-          <div className="ml-auto max-w-[88%] rounded-2xl rounded-br-sm bg-[#ff5a00] px-4 py-3 text-sm font-semibold leading-6 text-[#192238]">Tu plan: {plan.capital} · {plan.regular} desde cuota 5</div>
-          <ChatBubble text="Antes de continuar decime:" />
-          <div className="grid gap-3 pt-2 sm:grid-cols-2"><button type="button" onClick={() => onChoose('seleccionado')} className="flex items-center justify-between rounded-xl border border-[#ff5a00] bg-[#ff5a00]/12 px-4 py-3 text-left text-sm font-bold text-[#ff9b6a] transition-colors hover:bg-[#ff5a00] hover:text-[#192238]" data-testid="button-select-number">Me gustaría seleccionar mi número <ArrowRight size={16} /></button><button type="button" onClick={() => onChoose('aleatorio')} className="flex items-center justify-between rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-left text-sm font-bold text-white/80 transition-colors hover:border-[#a6d2b9] hover:bg-[#a6d2b9]/10" data-testid="button-random-number">Que me toque aleatoriamente <Sparkles size={16} /></button></div>
+            <div className="relative overflow-hidden border border-white/10 bg-[#eaf0ed]">
+              <img
+                src={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
+                alt="Promoción Fondus y Naranja X por el sorteo de una moto 0KM"
+                className="block aspect-[9/13] w-full object-cover object-top sm:aspect-[9/11] lg:aspect-[9/12] filter contrast-105"
+                data-testid="img-hero-campaign"
+              />
+
+              {/* Frosted Banner Inside Card */}
+              <div className="absolute inset-x-3 bottom-3 flex items-center justify-between border border-white/15 bg-[#091224]/90 px-4 py-3.5 backdrop-blur-md">
+                <div>
+                  <p className="m-0 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#a6d2b9]">
+                    // BENEFICIO EXCLUSIVO
+                  </p>
+                  <p className="m-0 mt-1 text-sm font-bold text-white">
+                    Cuota de suscripción bonificada
+                  </p>
+                </div>
+                <Gift size={24} className="text-[#ff6a12]" />
+              </div>
+            </div>
+
+            {/* Floating Technical Badge */}
+            <div className="absolute -bottom-5 -left-4 hidden border border-white/20 bg-[#121c2e] px-4 py-3 shadow-2xl sm:block">
+              <p className="m-0 font-mono text-[10px] uppercase tracking-[0.16em] text-white/50">
+                PARTICIPÁS POR
+              </p>
+              <p className="m-0 font-mono text-base font-black tracking-tight text-[#ff8141]">
+                UNA MOTO 0KM
+              </p>
+            </div>
+          </div>
         </div>
+      </main>
+
+      <div className="relative z-10 mx-auto flex max-w-7xl items-center justify-between border-t border-white/10 px-6 py-5 font-mono text-xs text-white/35 sm:px-10 lg:px-12">
+        <span>FONDUS · EL PODER DE TUS AHORROS</span>
+        <span>ARGENTINA // REG. IGJ 289/11</span>
       </div>
-    </main>
-  </div>;
+    </div>
+  );
 }
 
-function ChatBubble({ text }: { text: string }) { return <div className="max-w-[88%] rounded-2xl rounded-tl-sm border border-white/10 bg-white/7 px-4 py-3 text-sm leading-6 text-white/80">{text}</div>; }
+function PlanSelector({
+  onSelect,
+  onBack,
+}: {
+  onSelect: (plan: Plan) => void;
+  onBack: () => void;
+}) {
+  return (
+    <div className="relative min-h-[100dvh] blueprint-grid">
+      <StepHeader step={2} onBack={onBack} />
 
-function LuckyNumber({ number, onContinue, onBack }: { number: string; onContinue: () => void; onBack: () => void }) {
-  return <div className="min-h-[100dvh]">
-    <StepHeader step={4} onBack={onBack} />
-    <main className="mx-auto flex max-w-3xl flex-col items-center px-5 pb-20 pt-14 text-center sm:px-8 sm:pt-20">
-      <div className="relative fade-up"><div className="absolute inset-[-2rem] rounded-full bg-[#ff5a00]/15 blur-3xl" /><div className="spin-orbit relative flex h-20 w-20 items-center justify-center rounded-full border border-[#a6d2b9]/50 bg-[#a6d2b9]/10 text-[#a6d2b9]"><Trophy size={35} /><Sparkles className="absolute -right-2 -top-2 text-[#ffb537]" size={18} /></div></div>
-      <p className="mt-10 text-sm font-bold uppercase tracking-[.16em] text-[#ff7b35] fade-up fade-up-delay-1">Paso 04 · Tu número de la suerte</p>
-      <h1 className="display mt-3 text-4xl font-extrabold tracking-[-.06em] text-white fade-up fade-up-delay-1 sm:text-6xl">Ya sos parte del<br /><span className="text-[#a6d2b9]">próximo sorteo.</span></h1>
-      <div className="mt-10 rounded-[2rem] border border-[#ff5a00]/45 bg-[#ff5a00]/10 px-10 py-8 orange-shadow fade-up fade-up-delay-2"><p className="m-0 text-xs font-bold uppercase tracking-[.2em] text-[#ffab80]">Tu número asignado</p><p className="display mt-2 text-7xl font-extrabold tracking-[.1em] text-[#ff7132] sm:text-8xl" data-testid="text-lucky-number">{number}</p><div className="mt-4 flex items-center justify-center gap-2 text-xs text-white/55"><Check size={14} className="text-[#a6d2b9]" /> Guardalo, lo vas a necesitar</div></div>
-      <div className="mt-7 max-w-lg rounded-2xl border border-[#a6d2b9]/25 bg-[#a6d2b9]/10 p-5 text-left fade-up fade-up-delay-3"><div className="flex gap-3"><Gift className="mt-0.5 shrink-0 text-[#ffb537]" size={20} /><p className="m-0 text-sm leading-6 text-white/80"><strong className="text-[#f4f4ee]">¡FELICITACIONES!</strong> Si continuás con el proceso de adhesión y adherís tu Naranja X, tenés la suscripción <strong className="text-[#a6d2b9]">100% bonificada.</strong></p></div></div>
-      <button type="button" onClick={onContinue} className="mt-9 flex items-center gap-3 rounded-full bg-[#ff5a00] px-8 py-4 text-sm font-extrabold tracking-[.08em] text-[#1a2030] transition-transform hover:scale-[1.02]" data-testid="button-continue-lucky">CONTINUAR <ArrowRight size={18} /></button>
-    </main>
-  </div>;
+      <main className="mx-auto max-w-7xl px-6 pb-24 pt-12 sm:px-10 lg:px-12 lg:pt-16">
+        <div className="max-w-3xl">
+          <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
+            // PASO 02 · ESTRUCTURA DEL PLAN
+          </p>
+          <h1 className="display text-4xl sm:text-6xl font-black tracking-[-0.05em] text-white">
+            Un plan para cada <br />
+            <span className="text-[#a6d2b9]">proyecto patrimonial.</span>
+          </h1>
+          <p className="mt-5 text-base sm:text-lg font-light leading-relaxed text-white/60">
+            Tres alternativas con la misma solidez: capitalizar tus ahorros en cuotas en pesos y
+            participar por adjudicación desde la primera cuota.
+          </p>
+        </div>
+
+        {/* Plans Grid with Framer Motion Spring Scroll Reveal */}
+        <div className="mt-14 grid gap-6 lg:grid-cols-3">
+          {plans.map((plan, index) => (
+            <motion.div
+              key={plan.id}
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                type: 'spring',
+                stiffness: 100,
+                damping: 20,
+                delay: index * 0.12,
+              }}
+              className="h-full"
+            >
+              <TiltCard
+                featured={Boolean(plan.featured)}
+                onClick={() => onSelect(plan)}
+                className={`flex flex-col p-7 text-left border ${
+                  plan.featured
+                    ? 'border-[#ff5a00] bg-[#121d33] shadow-[0_0_50px_rgba(255,90,0,0.18)]'
+                    : 'border-white/12 bg-[#0a1224]/80 hover:border-[#ff5a00]/60'
+                }`}
+                data-testid={`card-plan-${plan.id}`}
+              >
+                {/* Header of Card */}
+                <div>
+                  <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                    <span className="font-mono text-xs font-bold tracking-[0.2em] text-[#a6d2b9]">
+                      // SPEC.0{index + 1}
+                    </span>
+                    {plan.featured && (
+                      <span className="border border-[#ff5a00] bg-[#ff5a00]/20 px-2.5 py-0.5 font-mono text-[10px] font-black uppercase tracking-[0.16em] text-[#ff8751]">
+                        RECOMENDADO
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="mt-5 font-mono text-xs uppercase tracking-[0.12em] text-white/50">
+                    {plan.eyebrow}
+                  </p>
+                  <h2 className="display mt-1 text-2xl font-black text-white">{plan.title}</h2>
+
+                  <div className="mt-6 border-b border-white/10 pb-6">
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-white/40">
+                      CAPITAL A ADJUDICAR
+                    </span>
+                    <p className="display mt-1 text-4xl sm:text-5xl font-black tracking-[-0.06em] text-[#ff8141]">
+                      {plan.capital}
+                    </p>
+                  </div>
+
+                  {/* Quota breakdown */}
+                  <div className="mt-5 grid grid-cols-2 gap-4 border-b border-white/10 pb-6">
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/45">
+                        Cuotas 1 a 4
+                      </p>
+                      <p className="display mt-1 text-xl font-bold text-white">{plan.first}</p>
+                    </div>
+                    <div>
+                      <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-white/45">
+                        Desde cuota 5
+                      </p>
+                      <p className="display mt-1 text-xl font-bold text-[#a6d2b9]">{plan.regular}</p>
+                    </div>
+                  </div>
+
+                  {/* Benefits */}
+                  <div className="mt-6 space-y-3.5 text-xs text-white/75 font-normal">
+                    <Benefit text="Sorteos mensuales desde cuota 1; si ganás, no pagás más" />
+                    <Benefit text="Disponibilidad de fondos desde cuota 18" />
+                    <Benefit text="Telemedicina 24/7 sin cargo" />
+                    <Benefit text="Seguro de vida integral incluido" />
+                  </div>
+                </div>
+
+                {/* Card Action Button */}
+                <div className="mt-8 pt-4">
+                  <div
+                    className={`group/btn relative overflow-hidden flex items-center justify-center gap-2 py-3.5 px-4 text-xs font-mono font-black tracking-[0.15em] uppercase border transition-colors ${
+                      plan.featured
+                        ? 'border-[#ff5a00] bg-[#ff5a00] text-[#0b1329]'
+                        : 'border-white/20 bg-white/5 text-white group-hover:border-[#ff5a00] group-hover:bg-[#ff5a00] group-hover:text-[#0b1329]'
+                    }`}
+                  >
+                    <span>SELECCIONAR PLAN</span>
+                    <ArrowRight size={14} />
+                  </div>
+                </div>
+              </TiltCard>
+            </motion.div>
+          ))}
+        </div>
+
+        <p className="mt-12 flex items-center gap-2 font-mono text-xs text-white/40">
+          <CircleHelp size={14} className="text-[#a6d2b9]" />
+          Seleccioná cualquier tarjeta para avanzar. Podrás revisar y confirmar todos los términos
+          antes de la suscripción.
+        </p>
+      </main>
+    </div>
+  );
 }
 
-function Adhesion({ plan, number, onBack, onFinish }: { plan: Plan; number: string; onBack: () => void; onFinish: () => void }) {
+function Benefit({ text }: { text: string }) {
+  return (
+    <span className="flex items-start gap-2.5">
+      <Check size={14} className="mt-0.5 shrink-0 text-[#a6d2b9]" strokeWidth={2.5} />
+      <span className="leading-snug">{text}</span>
+    </span>
+  );
+}
+
+function Advisor({
+  plan,
+  onChoose,
+  onBack,
+}: {
+  plan: Plan;
+  onChoose: (choice: string) => void;
+  onBack: () => void;
+}) {
+  return (
+    <div className="relative min-h-[100dvh] blueprint-grid">
+      <StepHeader step={3} onBack={onBack} />
+
+      <main className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-10 sm:px-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:px-12 lg:pt-16">
+        <div>
+          <div className="mb-6 flex h-14 w-14 items-center justify-center border border-[#a6d2b9]/40 bg-[#a6d2b9]/10 text-[#a6d2b9]">
+            <MessageCircle size={26} />
+          </div>
+          <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
+            // PASO 03 · ASESORÍA DIGITAL
+          </p>
+          <h1 className="display text-4xl sm:text-6xl font-black tracking-[-0.05em] text-white">
+            Hablemos de <br />
+            <span className="text-[#a6d2b9]">tu número.</span>
+          </h1>
+          <p className="mt-5 max-w-md text-base sm:text-lg font-light leading-relaxed text-white/60">
+            Sofia, tu asesora experta, te guía sobre la modalidad de asignación antes del sorteo
+            oficial.
+          </p>
+        </div>
+
+        <div className="relative border border-white/15 bg-[#0a1224]/90 p-6 shadow-2xl backdrop-blur-xl sm:p-8">
+          {/* Corner brackets */}
+          <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#ff5a00]" />
+          <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#ff5a00]" />
+          <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#ff5a00]" />
+          <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#ff5a00]" />
+
+          <div className="flex items-center gap-3.5 border-b border-white/10 pb-5">
+            <div className="flex h-10 w-10 items-center justify-center bg-[#ff5a00] font-mono font-black text-[#0a1224]">
+              S
+            </div>
+            <div>
+              <p className="m-0 text-sm font-bold text-white">Sofia</p>
+              <p className="m-0 font-mono text-[11px] text-[#a6d2b9]">// ASESORA DIGITAL · ONLINE</p>
+            </div>
+            <span className="ml-auto flex items-center gap-2 font-mono text-[11px] text-white/40">
+              <span className="h-2 w-2 rounded-full bg-[#83bea3] animate-pulse" /> ACTIVA
+            </span>
+          </div>
+
+          <div className="mt-6 space-y-4">
+            <ChatBubble text="Hola, soy Sofia. ¡Felicitaciones por dar este paso hacia tu capitalización con Fondus y Naranja X!" />
+            <ChatBubble text="Tu plan opera en cuotas fijas y en pesos. Las primeras 4 cuotas cubren los gastos administrativos iniciales y desde la 5ta baja al valor regular. ¡Si salís adjudicado por sorteo, no pagás ninguna cuota más!" />
+
+            <div className="ml-auto max-w-[90%] border border-[#ff5a00]/50 bg-[#ff5a00]/15 p-4 text-sm font-semibold text-white">
+              <p className="m-0 font-mono text-[10px] uppercase tracking-wider text-[#ff8751]">
+                PLAN SELECCIONADO
+              </p>
+              <p className="mt-1 text-base font-bold text-white">
+                {plan.capital} · {plan.regular} desde cuota 5
+              </p>
+            </div>
+
+            <ChatBubble text="Para participar del sorteo mensual, ¿cómo preferís determinar tu número de adhesión?" />
+
+            <div className="grid gap-3 pt-3 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => onChoose('seleccionado')}
+                className="group relative flex items-center justify-between border border-[#ff5a00]/60 bg-[#ff5a00]/10 p-4 text-left font-mono text-xs font-bold tracking-wider text-[#ff9b6a] transition-all hover:bg-[#ff5a00] hover:text-[#0a1224]"
+                data-testid="button-select-number"
+              >
+                <span>SELECCIONAR MI NÚMERO</span>
+                <ArrowRight size={15} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onChoose('aleatorio')}
+                className="group relative flex items-center justify-between border border-white/15 bg-white/5 p-4 text-left font-mono text-xs font-bold tracking-wider text-white/80 transition-all hover:border-[#a6d2b9] hover:bg-[#a6d2b9]/15 hover:text-white"
+                data-testid="button-random-number"
+              >
+                <span>ASIGNACIÓN ALEATORIA</span>
+                <Sparkles size={15} className="text-[#a6d2b9]" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function ChatBubble({ text }: { text: string }) {
+  return (
+    <div className="max-w-[90%] border border-white/10 bg-white/5 p-4 text-sm leading-relaxed text-white/85">
+      {text}
+    </div>
+  );
+}
+
+function LuckyNumber({
+  number,
+  onContinue,
+  onBack,
+}: {
+  number: string;
+  onContinue: () => void;
+  onBack: () => void;
+}) {
+  return (
+    <div className="relative min-h-[100dvh] blueprint-grid">
+      <StepHeader step={4} onBack={onBack} />
+
+      <main className="mx-auto flex max-w-4xl flex-col items-center px-6 pb-24 pt-16 text-center sm:px-10">
+        <div className="flex h-16 w-16 items-center justify-center border border-[#a6d2b9]/40 bg-[#a6d2b9]/10 text-[#a6d2b9]">
+          <Trophy size={30} />
+        </div>
+
+        <p className="mt-8 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
+          // PASO 04 · NÚMERO DE SORTEO ASIGNADO
+        </p>
+
+        <h1 className="display mt-3 text-4xl sm:text-6xl font-black tracking-[-0.05em] text-white">
+          Ya sos parte del <br />
+          <span className="text-[#a6d2b9]">próximo sorteo.</span>
+        </h1>
+
+        {/* Gamification Box wrapped in Framer Motion spring scroll reveal */}
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+          className="relative mt-12 w-full max-w-md border border-[#ff5a00]/60 bg-[#0c162a]/95 p-8 shadow-[0_0_60px_rgba(255,90,0,0.2)]"
+        >
+          {/* Technical corner markers */}
+          <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#ff5a00]" />
+          <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#ff5a00]" />
+          <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#ff5a00]" />
+          <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#ff5a00]" />
+
+          <p className="m-0 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ffab80]">
+            NÚMERO ASIGNADO EN SISTEMA
+          </p>
+
+          <p
+            className="display mt-3 font-mono text-8xl sm:text-9xl font-black tracking-tight text-[#ff7132]"
+            data-testid="text-lucky-number"
+          >
+            {number}
+          </p>
+
+          <div className="mt-4 flex items-center justify-center gap-2 font-mono text-xs text-white/50 border-t border-white/10 pt-4">
+            <Check size={14} className="text-[#a6d2b9]" /> REGISTRADO PARA EL SORTEO MENSUAL
+          </div>
+        </motion.div>
+
+        {/* Exclusive Benefit Callout */}
+        <div className="mt-8 max-w-xl border border-[#a6d2b9]/30 bg-[#a6d2b9]/10 p-5 text-left">
+          <div className="flex gap-3.5">
+            <Gift className="mt-0.5 shrink-0 text-[#ffb537]" size={22} />
+            <p className="m-0 text-sm leading-relaxed text-white/80">
+              <strong className="text-white font-bold">¡BENEFICIO EXCLUSIVO!</strong> Al
+              continuar y vincular tu cuenta con <strong className="text-[#ff6a12]">Naranja X</strong>,
+              tu cuota de suscripción queda <strong className="text-[#a6d2b9]">100% bonificada</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-10">
+          <ArchitecturalButton onClick={onContinue} data-testid="button-continue-lucky">
+            CONTINUAR AL REGISTRO
+          </ArchitecturalButton>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function Adhesion({
+  plan,
+  number,
+  onBack,
+  onFinish,
+}: {
+  plan: Plan;
+  number: string;
+  onBack: () => void;
+  onFinish: () => void;
+}) {
   const [understands, setUnderstands] = useState(false);
   const [terms, setTerms] = useState(false);
   const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: '', dni: '', whatsapp: '' });
-  const valid = Boolean(understands && terms && form.name.trim() && form.dni.trim() && form.whatsapp.trim());
-  const submit = (event: FormEvent) => { event.preventDefault(); if (valid) { setSent(true); onFinish(); } };
-  return <div className="min-h-[100dvh]">
-    <StepHeader step={5} onBack={onBack} />
-    <main className="mx-auto grid max-w-6xl gap-8 px-5 pb-16 pt-7 sm:px-8 lg:grid-cols-[.86fr_1.14fr] lg:gap-16 lg:px-10 lg:pt-14">
-      <div className="fade-up"><p className="mb-3 text-sm font-bold uppercase tracking-[.16em] text-[#ff7b35]">Paso 05 · Último vistazo</p><h1 className="display text-4xl font-extrabold tracking-[-.05em] text-white sm:text-6xl">Repasemos<br /><span className="text-[#a6d2b9]">juntos.</span></h1><p className="mt-5 max-w-md text-base leading-7 text-white/60">Tu decisión queda en tus manos. Leé la información y, cuando estés listo, completá tus datos.</p>
-        <div className="mt-8 rounded-[1.5rem] border border-white/12 bg-white/5 p-5"><div className="flex items-center justify-between"><p className="m-0 text-xs font-bold uppercase tracking-[.14em] text-white/50">Tu plan</p><span className="rounded-full bg-[#a6d2b9]/15 px-3 py-1 text-xs font-bold text-[#a6d2b9]">Número {number}</span></div><p className="display mt-4 text-2xl font-extrabold text-white">{plan.capital}</p><div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-4"><div><p className="m-0 text-xs text-white/45">Cuotas 1 a 4</p><p className="mt-1 text-lg font-bold text-[#ff8141]">{plan.first}</p></div><div><p className="m-0 text-xs text-white/45">Desde cuota 5</p><p className="mt-1 text-lg font-bold text-[#ff8141]">{plan.regular}</p></div></div><p className="mt-5 text-sm leading-6 text-white/65">Vas a participar el último sábado de cada mes con el número asignado. Si salís adjudicado, no pagás más. A partir del mes 18, tenés disponibilidad de retiro.</p></div>
-      </div>
-      <form onSubmit={submit} className="glass rounded-[1.7rem] p-5 soft-shadow fade-up fade-up-delay-2 sm:p-7" data-testid="form-adhesion"><div className="flex items-center gap-3 border-b border-white/10 pb-5"><div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#ff5a00]/15 text-[#ff8141]"><FileText size={20} /></div><div><h2 className="m-0 text-lg font-extrabold text-white">Completá tus datos</h2><p className="m-0 mt-1 text-xs text-white/50">Sin compromiso. Solo para simular la adhesión.</p></div></div>
-        <div className={`mt-6 space-y-4 transition-opacity ${understands ? 'opacity-100' : 'opacity-45'}`}><label className="block"><span className="mb-2 block text-xs font-bold uppercase tracking-[.12em] text-white/55">Nombre completo</span><input required disabled={!understands} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full rounded-xl border border-white/12 bg-[#101c32] px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#ff5a00]" placeholder="Por ejemplo, María González" data-testid="input-name" /></label><div className="grid gap-4 sm:grid-cols-2"><label className="block"><span className="mb-2 block text-xs font-bold uppercase tracking-[.12em] text-white/55">DNI</span><input required disabled={!understands} value={form.dni} onChange={(e) => setForm({ ...form, dni: e.target.value })} className="w-full rounded-xl border border-white/12 bg-[#101c32] px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#ff5a00]" placeholder="Tu DNI" data-testid="input-dni" /></label><label className="block"><span className="mb-2 block text-xs font-bold uppercase tracking-[.12em] text-white/55">WhatsApp</span><input required disabled={!understands} value={form.whatsapp} onChange={(e) => setForm({ ...form, whatsapp: e.target.value })} className="w-full rounded-xl border border-white/12 bg-[#101c32] px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#ff5a00]" placeholder="11 5555 5555" data-testid="input-whatsapp" /></label></div></div>
-        {!understands && <p className="mt-4 flex items-center gap-2 text-xs text-[#ffb18e]"><LockKeyhole size={14} /> Primero confirmá que entendés el sistema para habilitar el formulario.</p>}
-        <div className="mt-7 space-y-3 border-t border-white/10 pt-5"><label className="flex cursor-pointer items-start gap-3 text-sm leading-5 text-white/75"><input type="checkbox" checked={understands} onChange={(e) => setUnderstands(e.target.checked)} className="mt-0.5 h-4 w-4 accent-[#ff5a00]" data-testid="checkbox-understands" /><span>Entiendo que me estoy suscribiendo a un sistema de capitalización y ahorro.</span></label><label className="flex cursor-pointer items-start gap-3 text-sm leading-5 text-white/75"><input type="checkbox" checked={terms} onChange={(e) => setTerms(e.target.checked)} className="mt-0.5 h-4 w-4 accent-[#ff5a00]" data-testid="checkbox-terms" /><span>Acepto bases y condiciones.</span></label></div>
-        <button type="submit" disabled={!valid || sent} className="mt-7 flex w-full items-center justify-center gap-3 rounded-full bg-[#ff5a00] py-4 text-sm font-extrabold tracking-[.06em] text-[#192238] transition-opacity disabled:cursor-not-allowed disabled:opacity-35" data-testid="button-adhere">{sent ? 'SOLICITUD RECIBIDA' : 'ADHERIRME CON NARANJA X'} <ArrowRight size={18} /></button><p className="mt-4 flex justify-center gap-2 text-center text-[11px] leading-4 text-white/35"><ShieldCheck size={14} /> Tus datos se usan únicamente para esta simulación.</p>
-      </form>
-    </main>
-  </div>;
+
+  const valid = Boolean(
+    understands && terms && form.name.trim() && form.dni.trim() && form.whatsapp.trim(),
+  );
+
+  const submit = (event: FormEvent) => {
+    event.preventDefault();
+    if (valid) {
+      setSent(true);
+      onFinish();
+    }
+  };
+
+  return (
+    <div className="relative min-h-[100dvh] blueprint-grid">
+      <StepHeader step={5} onBack={onBack} />
+
+      <main className="mx-auto grid max-w-7xl gap-12 px-6 pb-24 pt-10 sm:px-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-16 lg:px-12 lg:pt-16">
+        <div>
+          <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.25em] text-[#ff7b35]">
+            // PASO 05 · REVISIÓN Y REGISTRO
+          </p>
+          <h1 className="display text-4xl sm:text-6xl font-black tracking-[-0.05em] text-white">
+            Repasemos <br />
+            <span className="text-[#a6d2b9]">los detalles.</span>
+          </h1>
+          <p className="mt-5 max-w-md text-base sm:text-lg font-light leading-relaxed text-white/60">
+            Revisá el resumen de tu plan de capitalización y completá tus datos de contacto para
+            simular la adhesión.
+          </p>
+
+          <div className="mt-8 border border-white/15 bg-[#0a1224]/85 p-6 backdrop-blur-md">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <p className="m-0 font-mono text-xs uppercase tracking-[0.2em] text-white/50">
+                PLAN SELECCIONADO
+              </p>
+              <span className="border border-[#a6d2b9]/40 bg-[#a6d2b9]/15 px-3 py-1 font-mono text-xs font-bold text-[#a6d2b9]">
+                NÚMERO {number}
+              </span>
+            </div>
+
+            <p className="display mt-5 text-4xl font-black text-white">{plan.capital}</p>
+
+            <div className="mt-5 grid grid-cols-2 gap-4 border-t border-white/10 pt-4">
+              <div>
+                <p className="m-0 font-mono text-xs text-white/45">Cuotas 1 a 4</p>
+                <p className="display mt-1 text-xl font-bold text-[#ff8141]">{plan.first}</p>
+              </div>
+              <div>
+                <p className="m-0 font-mono text-xs text-white/45">Desde cuota 5</p>
+                <p className="display mt-1 text-xl font-bold text-[#ff8141]">{plan.regular}</p>
+              </div>
+            </div>
+
+            <p className="mt-5 text-xs sm:text-sm leading-relaxed text-white/65">
+              Participás el último sábado de cada mes con el número asignado ({number}). Si salís
+              adjudicado, no abonás ninguna cuota más. A partir del mes 18, disponés del rescate del
+              capital acumulado.
+            </p>
+          </div>
+        </div>
+
+        {/* Form Container */}
+        <form
+          onSubmit={submit}
+          className="relative border border-white/15 bg-[#0a1224]/90 p-6 shadow-2xl backdrop-blur-xl sm:p-8"
+          data-testid="form-adhesion"
+        >
+          {/* Corner brackets */}
+          <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#ff5a00]" />
+          <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#ff5a00]" />
+          <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#ff5a00]" />
+          <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#ff5a00]" />
+
+          <div className="flex items-center gap-3.5 border-b border-white/10 pb-5">
+            <div className="flex h-10 w-10 items-center justify-center border border-[#ff5a00]/40 bg-[#ff5a00]/15 text-[#ff8141]">
+              <FileText size={20} />
+            </div>
+            <div>
+              <h2 className="m-0 text-lg font-bold text-white">Completá tus datos</h2>
+              <p className="m-0 mt-0.5 font-mono text-xs text-white/45">
+                // SIMULACIÓN SEGURA Y SIN COMPROMISO
+              </p>
+            </div>
+          </div>
+
+          <div
+            className={`mt-6 space-y-4 transition-opacity ${
+              understands ? 'opacity-100' : 'opacity-40'
+            }`}
+          >
+            <label className="block">
+              <span className="mb-2 block font-mono text-xs uppercase tracking-[0.14em] text-white/55">
+                Nombre completo
+              </span>
+              <input
+                required
+                disabled={!understands}
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="w-full border border-white/15 bg-[#0c1628] px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#ff5a00]"
+                placeholder="Por ejemplo, María González"
+                data-testid="input-name"
+              />
+            </label>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label className="block">
+                <span className="mb-2 block font-mono text-xs uppercase tracking-[0.14em] text-white/55">
+                  DNI
+                </span>
+                <input
+                  required
+                  disabled={!understands}
+                  value={form.dni}
+                  onChange={(e) => setForm({ ...form, dni: e.target.value })}
+                  className="w-full border border-white/15 bg-[#0c1628] px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#ff5a00]"
+                  placeholder="Tu número de documento"
+                  data-testid="input-dni"
+                />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block font-mono text-xs uppercase tracking-[0.14em] text-white/55">
+                  WhatsApp
+                </span>
+                <input
+                  required
+                  disabled={!understands}
+                  value={form.whatsapp}
+                  onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
+                  className="w-full border border-white/15 bg-[#0c1628] px-4 py-3.5 text-sm text-white outline-none transition-colors placeholder:text-white/25 focus:border-[#ff5a00]"
+                  placeholder="11 5555 5555"
+                  data-testid="input-whatsapp"
+                />
+              </label>
+            </div>
+          </div>
+
+          {!understands && (
+            <p className="mt-4 flex items-center gap-2 font-mono text-xs text-[#ffb18e]">
+              <LockKeyhole size={14} /> Marcá la casilla inferior para confirmar y habilitar el
+              formulario.
+            </p>
+          )}
+
+          <div className="mt-6 space-y-3 border-t border-white/10 pt-5">
+            <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-white/80">
+              <input
+                type="checkbox"
+                checked={understands}
+                onChange={(e) => setUnderstands(e.target.checked)}
+                className="mt-1 h-4 w-4 accent-[#ff5a00]"
+                data-testid="checkbox-understands"
+              />
+              <span>Entiendo que me estoy suscribiendo a un sistema de capitalización y ahorro.</span>
+            </label>
+
+            <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-white/80">
+              <input
+                type="checkbox"
+                checked={terms}
+                onChange={(e) => setTerms(e.target.checked)}
+                className="mt-1 h-4 w-4 accent-[#ff5a00]"
+                data-testid="checkbox-terms"
+              />
+              <span>Acepto las bases y condiciones contractuales.</span>
+            </label>
+          </div>
+
+          <div className="mt-8">
+            <ArchitecturalButton
+              type="submit"
+              disabled={!valid || sent}
+              className="w-full py-4 text-sm"
+              data-testid="button-adhere"
+            >
+              {sent ? 'SOLICITUD RECIBIDA' : 'ADHERIRME CON NARANJA X'}
+            </ArchitecturalButton>
+          </div>
+
+          <p className="mt-4 flex justify-center gap-2 font-mono text-center text-[11px] text-white/40">
+            <ShieldCheck size={14} /> Tus datos están cifrados y se utilizan únicamente para la
+            simulación.
+          </p>
+        </form>
+      </main>
+    </div>
+  );
 }
 
 function LegalFooter({ onRegret }: { onRegret: () => void }) {
-  const resources = ['TÍTULO DE CAPITALIZACIÓN', 'TABLA DE RESCATE Y ENDOSO', 'SORTEO', 'PARTICIPACIÓN Y RENDIMIENTOS'];
-  return <footer className="border-t border-white/10 bg-[#101b30] px-5 py-10 sm:px-8 lg:px-10"><div className="mx-auto max-w-6xl"><div className="grid gap-8 lg:grid-cols-[1fr_1.45fr]"><div><LogoLockup /><p className="mt-5 max-w-xs text-sm leading-6 text-white/45">El poder de tus ahorros. Una propuesta de Fondus junto a Naranja X.</p><button type="button" onClick={onRegret} className="mt-5 flex items-center gap-2 rounded-full border border-[#ff5a00]/60 px-4 py-2.5 text-xs font-bold text-[#ff9b6a] transition-colors hover:bg-[#ff5a00] hover:text-[#192238]" data-testid="button-regret"><Mail size={15} /> Botón de arrepentimiento · Tenés 10 días</button></div><div><p className="m-0 text-xs font-bold uppercase tracking-[.16em] text-white/55">Información legal</p><div className="mt-4 grid gap-2 sm:grid-cols-2">{resources.map((resource) => <button type="button" key={resource} onClick={() => window.alert(`${resource}: el documento se abriría en una nueva ventana.`)} className="flex items-center gap-2 text-left text-xs font-semibold text-white/65 transition-colors hover:text-[#ff9b6a]" data-testid={`button-legal-${resource.toLowerCase().replaceAll(' ', '-')}`}><Download size={13} className="text-[#a6d2b9]" /> {resource}</button>)}</div></div></div><div className="mt-9 flex flex-col gap-3 border-t border-white/10 pt-5 text-[11px] leading-5 text-white/38 sm:flex-row sm:justify-between"><span>Planes autorizados por IGJ N Res. 289/11</span><span className="font-bold text-[#ff9b6a]">NO CONTAMOS CON COBRADORES A DOMICILIO</span><span>© Fondus · Naranja X</span></div></div></footer>;
+  const resources = [
+    'TÍTULO DE CAPITALIZACIÓN',
+    'TABLA DE RESCATE Y ENDOSO',
+    'SORTEO',
+    'PARTICIPACIÓN Y RENDIMIENTOS',
+  ];
+
+  return (
+    <footer className="border-t border-white/10 bg-[#070c18] px-6 py-12 sm:px-10 lg:px-12">
+      <div className="mx-auto max-w-7xl">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+          <div>
+            <LogoLockup />
+            <p className="mt-5 max-w-sm text-xs sm:text-sm leading-relaxed text-white/50">
+              El poder de tus ahorros. Una alianza institucional entre Fondus y Naranja X para
+              impulsar tus metas con transparencia y solidez.
+            </p>
+            <button
+              type="button"
+              onClick={onRegret}
+              className="mt-6 flex items-center gap-2 border border-[#ff5a00]/50 bg-[#ff5a00]/10 px-4 py-2.5 font-mono text-xs font-bold text-[#ff9b6a] transition-colors hover:bg-[#ff5a00] hover:text-[#0a1224]"
+              data-testid="button-regret"
+            >
+              <Mail size={14} /> BOTÓN DE ARREPENTIMIENTO · 10 DÍAS
+            </button>
+          </div>
+
+          <div>
+            <p className="m-0 font-mono text-xs font-bold uppercase tracking-[0.2em] text-white/60">
+              // INFORMACIÓN Y BASES LEGALES
+            </p>
+            <div className="mt-5 grid gap-2.5 sm:grid-cols-2">
+              {resources.map((resource) => (
+                <button
+                  type="button"
+                  key={resource}
+                  onClick={() =>
+                    window.alert(`${resource}: el documento se abriría en una nueva ventana.`)
+                  }
+                  className="flex items-center gap-2.5 border border-white/5 bg-white/5 p-3 text-left font-mono text-xs text-white/70 transition-colors hover:border-[#ff5a00]/40 hover:text-[#ff9b6a]"
+                  data-testid={`button-legal-${resource.toLowerCase().replaceAll(' ', '-')}`}
+                >
+                  <Download size={13} className="text-[#a6d2b9]" />
+                  <span>{resource}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 font-mono text-[11px] text-white/40 sm:flex-row sm:justify-between">
+          <span>PLANES AUTORIZADOS POR IGJ N° RES. 289/11</span>
+          <span className="font-bold text-[#ff9b6a]">NO CONTAMOS CON COBRADORES A DOMICILIO</span>
+          <span>© FONDUS · NARANJA X · TODOS LOS DERECHOS RESERVADOS</span>
+        </div>
+      </div>
+    </footer>
+  );
 }
 
 function RegretModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);
-  return <div className="fixed inset-0 z-50 flex items-end justify-center bg-[#07101d]/75 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" data-testid="modal-regret"><div className="w-full max-w-md rounded-[1.7rem] border border-white/15 bg-[#1b2b46] p-6 shadow-2xl sm:p-8"><div className="flex items-start justify-between"><div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ff5a00]/15 text-[#ff8141]"><Mail size={22} /></div><button type="button" onClick={onClose} className="text-white/50 hover:text-white" aria-label="Cerrar modal" data-testid="button-close-regret"><X /></button></div>{sent ? <div className="py-6"><h2 className="display text-2xl font-extrabold text-white">Solicitud enviada.</h2><p className="mt-3 text-sm leading-6 text-white/65">Te contactaremos para gestionar tu arrepentimiento dentro de los próximos días hábiles.</p><button type="button" onClick={onClose} className="mt-6 rounded-full bg-[#ff5a00] px-5 py-3 text-sm font-bold text-[#192238]" data-testid="button-close-sent">Cerrar</button></div> : <><p className="mt-5 text-xs font-bold uppercase tracking-[.15em] text-[#ff8141]">Derecho de arrepentimiento</p><h2 className="display mt-2 text-2xl font-extrabold text-white">¿Querés dejarnos tu solicitud?</h2><p className="mt-3 text-sm leading-6 text-white/65">Tenés 10 días para arrepentirte. Dejanos tu correo y simulamos el envío de la solicitud.</p><input type="email" placeholder="tu@email.com" className="mt-5 w-full rounded-xl border border-white/12 bg-[#101c32] px-4 py-3 text-sm text-white outline-none focus:border-[#ff5a00]" data-testid="input-regret-email" /><button type="button" onClick={() => setSent(true)} className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-[#ff5a00] py-3.5 text-sm font-extrabold text-[#192238]" data-testid="button-send-regret">ENVIAR SOLICITUD <ArrowRight size={16} /></button></>}</div></div>;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#050914]/85 p-4 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      data-testid="modal-regret"
+    >
+      <div className="relative w-full max-w-md border border-white/20 bg-[#0c1628] p-6 shadow-2xl sm:p-8">
+        <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#ff5a00]" />
+        <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#ff5a00]" />
+        <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#ff5a00]" />
+        <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#ff5a00]" />
+
+        <div className="flex items-start justify-between">
+          <div className="flex h-11 w-11 items-center justify-center border border-[#ff5a00]/40 bg-[#ff5a00]/15 text-[#ff8141]">
+            <Mail size={20} />
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-white/50 transition-colors hover:text-white"
+            aria-label="Cerrar modal"
+            data-testid="button-close-regret"
+          >
+            <X size={18} />
+          </button>
+        </div>
+
+        {sent ? (
+          <div className="py-6">
+            <h2 className="display text-2xl font-bold text-white">Solicitud enviada.</h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/65">
+              Te contactaremos para gestionar tu solicitud de arrepentimiento dentro de los próximos
+              días hábiles.
+            </p>
+            <button
+              type="button"
+              onClick={onClose}
+              className="mt-6 border border-[#ff5a00] bg-[#ff5a00] px-6 py-3 font-mono text-xs font-black uppercase text-[#0a1224]"
+              data-testid="button-close-sent"
+            >
+              CERRAR
+            </button>
+          </div>
+        ) : (
+          <>
+            <p className="mt-5 font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-[#ff8141]">
+              DERECHO DE ARREPENTIMIENTO
+            </p>
+            <h2 className="display mt-2 text-2xl font-bold text-white">
+              ¿Querés registrar tu solicitud?
+            </h2>
+            <p className="mt-3 text-sm leading-relaxed text-white/65">
+              Disponés de 10 días para revocar tu adhesión. Dejanos tu correo para registrar la
+              gestión formal.
+            </p>
+            <input
+              type="email"
+              placeholder="tu@email.com"
+              className="mt-5 w-full border border-white/15 bg-[#070c18] px-4 py-3 text-sm text-white outline-none focus:border-[#ff5a00]"
+              data-testid="input-regret-email"
+            />
+            <button
+              type="button"
+              onClick={() => setSent(true)}
+              className="mt-5 flex w-full items-center justify-center gap-2 border border-[#ff5a00] bg-[#ff5a00] py-3.5 font-mono text-xs font-black uppercase text-[#0a1224] transition-transform hover:scale-[1.01]"
+              data-testid="button-send-regret"
+            >
+              <span>ENVIAR SOLICITUD</span>
+              <ArrowRight size={15} />
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }
 
 function SuccessModal({ onClose }: { onClose: () => void }) {
-  return <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#07101d]/80 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" data-testid="modal-success"><div className="w-full max-w-md rounded-[1.7rem] border border-[#a6d2b9]/30 bg-[#1b2b46] p-7 text-center shadow-2xl"><div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#a6d2b9]/15 text-[#a6d2b9]"><Check size={30} /></div><h2 className="display mt-5 text-3xl font-extrabold text-white">¡Estamos en contacto!</h2><p className="mt-3 text-sm leading-6 text-white/65">Recibimos tus datos. Un asesor de Naranja X se comunicará con vos para continuar la adhesión.</p><button type="button" onClick={onClose} className="mt-7 rounded-full bg-[#ff5a00] px-7 py-3.5 text-sm font-extrabold text-[#192238]" data-testid="button-success-close">LISTO</button></div></div>;
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#050914]/85 p-4 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      data-testid="modal-success"
+    >
+      <div className="relative w-full max-w-md border border-[#a6d2b9]/40 bg-[#0c1628] p-8 text-center shadow-2xl">
+        <span className="absolute top-0 left-0 h-2 w-2 border-t-2 border-l-2 border-[#a6d2b9]" />
+        <span className="absolute top-0 right-0 h-2 w-2 border-t-2 border-r-2 border-[#a6d2b9]" />
+        <span className="absolute bottom-0 left-0 h-2 w-2 border-b-2 border-l-2 border-[#a6d2b9]" />
+        <span className="absolute bottom-0 right-0 h-2 w-2 border-b-2 border-r-2 border-[#a6d2b9]" />
+
+        <div className="mx-auto flex h-14 w-14 items-center justify-center border border-[#a6d2b9]/40 bg-[#a6d2b9]/15 text-[#a6d2b9]">
+          <Check size={28} />
+        </div>
+
+        <h2 className="display mt-5 text-3xl font-black text-white">¡Estamos en contacto!</h2>
+        <p className="mt-3 text-sm leading-relaxed text-white/65">
+          Recibimos tus datos. Un asesor oficial de Naranja X se comunicará con vos para finalizar
+          la adhesión a tu plan de capitalización.
+        </p>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="mt-7 border border-[#ff5a00] bg-[#ff5a00] px-8 py-3.5 font-mono text-xs font-black uppercase text-[#0a1224]"
+          data-testid="button-success-close"
+        >
+          FINALIZAR
+        </button>
+      </div>
+    </div>
+  );
 }
 
 function Home() {
   const [step, setStep] = useState(1);
   const [plan, setPlan] = useState<Plan | null>(null);
-  const [number, setNumber] = useState(''); 
+  const [number, setNumber] = useState('');
   const [regret, setRegret] = useState(false);
   const [success, setSuccess] = useState(false);
+
   const luckyNumber = useMemo(() => String(100 + Math.floor(Math.random() * 899)), []);
   const goBack = () => setStep((current) => Math.max(1, current - 1));
-  const choosePlan = (selected: Plan) => { setPlan(selected); setStep(3); };
-  const chooseNumber = () => { setNumber(luckyNumber); setStep(4); };
-  return <div className="app-shell grain"><div className="relative z-10">{step === 1 && <Hero onStart={() => setStep(2)} />}{step === 2 && <PlanSelector onSelect={choosePlan} onBack={goBack} />}{step === 3 && plan && <Advisor plan={plan} onChoose={chooseNumber} onBack={goBack} />}{step === 4 && <LuckyNumber number={number} onContinue={() => setStep(5)} onBack={goBack} />}{step === 5 && plan && <Adhesion plan={plan} number={number} onBack={goBack} onFinish={() => setSuccess(true)} />}<LegalFooter onRegret={() => setRegret(true)} /></div><SocialProof />{regret && <RegretModal onClose={() => setRegret(false)} />}{success && <SuccessModal onClose={() => setSuccess(false)} />}</div>;
+  const choosePlan = (selected: Plan) => {
+    setPlan(selected);
+    setStep(3);
+  };
+  const chooseNumber = () => {
+    setNumber(luckyNumber);
+    setStep(4);
+  };
+
+  return (
+    <div className="app-shell grain">
+      <div className="relative z-10">
+        {step === 1 && <Hero onStart={() => setStep(2)} />}
+        {step === 2 && <PlanSelector onSelect={choosePlan} onBack={goBack} />}
+        {step === 3 && plan && <Advisor plan={plan} onChoose={chooseNumber} onBack={goBack} />}
+        {step === 4 && (
+          <LuckyNumber number={number} onContinue={() => setStep(5)} onBack={goBack} />
+        )}
+        {step === 5 && plan && (
+          <Adhesion
+            plan={plan}
+            number={number}
+            onBack={goBack}
+            onFinish={() => setSuccess(true)}
+          />
+        )}
+        <LegalFooter onRegret={() => setRegret(true)} />
+      </div>
+
+      <SocialProof />
+      {regret && <RegretModal onClose={() => setRegret(false)} />}
+      {success && <SuccessModal onClose={() => setSuccess(false)} />}
+    </div>
+  );
 }
 
 function Router() {
-  return <RoutedErrorBoundary><Switch><Route path="/" component={Home} /><Route component={NotFound} /></Switch></RoutedErrorBoundary>;
+  return (
+    <RoutedErrorBoundary>
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route component={NotFound} />
+      </Switch>
+    </RoutedErrorBoundary>
+  );
 }
 
 function RoutedErrorBoundary({ children }: { children: ReactNode }) {
@@ -232,7 +1129,16 @@ function RoutedErrorBoundary({ children }: { children: ReactNode }) {
 }
 
 function App() {
-  return <QueryClientProvider client={queryClient}><TooltipProvider><WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}><Router /></WouterRouter><Toaster /></TooltipProvider></QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+          <Router />
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
 }
 
 export default App;
