@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --font-sans: var(--app-font-sans);
+  --font-display: var(--app-font-display);
+}
+
+:root {
+  --background: 217 49% 14%;
+  --foreground: 36 33% 96%;
+  --card: 218 43% 18%;
+  --card-foreground: 36 33% 96%;
+  --border: 216 27% 30%;
+  --input: 216 27% 30%;
+  --ring: 18 100% 58%;
+  --primary: 18 100% 58%;
+  --primary-foreground: 218 48% 13%;
+  --secondary: 153 34% 65%;
+  --secondary-foreground: 218 48% 13%;
+  --muted: 216 30% 24%;
+  --muted-foreground: 216 15% 73%;
+  --accent: 153 34% 65%;
+  --accent-foreground: 218 48% 13%;
+  --destructive: 0 73% 59%;
+  --app-font-sans: 'DM Sans', sans-serif;
+  --app-font-display: 'Manrope', sans-serif;
+  --radius: 1.1rem;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--app-font-sans);
+  min-width: 320px;
+}
+button, input { font: inherit; }
+button { cursor: pointer; }
+
+.app-shell {
+  min-height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 78% -12%, rgba(255, 90, 0, .17), transparent 34rem),
+    radial-gradient(circle at -10% 50%, rgba(131, 190, 163, .09), transparent 30rem),
+    hsl(var(--background));
+}
+.display { font-family: var(--app-font-display); }
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .055;
+  z-index: 40;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.45'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+.fade-up { animation: fadeUp .7s cubic-bezier(.22,.8,.25,1) both; }
+.fade-up-delay-1 { animation-delay: .08s; }
+.fade-up-delay-2 { animation-delay: .16s; }
+.fade-up-delay-3 { animation-delay: .24s; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulseSoft { 0%,100% { transform: scale(1); } 50% { transform: scale(1.025); } }
+@keyframes orbit { from { transform: rotate(0deg) translateX(4px) rotate(0deg); } to { transform: rotate(360deg) translateX(4px) rotate(-360deg); } }
+.cta-pulse { animation: pulseSoft 2.8s ease-in-out infinite; }
+.spin-orbit { animation: orbit 8s linear infinite; }
+.progress-line { transition: width .55s cubic-bezier(.22,.8,.25,1); }
+.glass {
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(18px);
+}
+.orange-shadow { box-shadow: 0 20px 55px rgba(255, 90, 0, .16); }
+.soft-shadow { box-shadow: 0 16px 42px rgba(3, 13, 29, .24); }
+.legal-link { color: hsl(var(--muted-foreground)); text-decoration: underline; text-underline-offset: 3px; }
+.legal-link:hover { color: hsl(var(--foreground)); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

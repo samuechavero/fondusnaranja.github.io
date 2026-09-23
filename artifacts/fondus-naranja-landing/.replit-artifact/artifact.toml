@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Fondus x Naranja X"
+description = "Interactive single-page landing experience for Fondus and Naranja X, with a simulated five-step savings plan funnel, promotional campaign flow, local form state, social proof notifications, and legal resources."
+version = "1.0.0"
+id = "artifacts/fondus-naranja-landing"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21108
+
+[services.development]
+run = "pnpm --filter @workspace/fondus-naranja-landing run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/fondus-naranja-landing", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/fondus-naranja-landing/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21108"
+BASE_PATH = "/"
