@@ -28,6 +28,7 @@ import Architectural3DCanvas from '@/components/canvas/Architectural3DCanvas';
 import TiltCard from '@/components/ui/TiltCard';
 import ArchitecturalButton from '@/components/ui/ArchitecturalButton';
 import LegalModal from '@/components/ui/LegalModal';
+import PromoNaranjaX from '@/pages/PromoNaranjaX';
 
 const queryClient = new QueryClient();
 
@@ -1118,7 +1119,13 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-function Home() {
+function Home({
+  isPromo = false,
+  onBackToPromo,
+}: {
+  isPromo?: boolean;
+  onBackToPromo?: () => void;
+}) {
   const [selectedPlan, setSelectedPlan] = useState<Plan>(plans[1]); // default 'elegido'
   const [regret, setRegret] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -1137,6 +1144,26 @@ function Home() {
 
   return (
     <div className="app-shell grain">
+      {isPromo && (
+        <div className="sticky top-0 z-50 flex items-center justify-between bg-[#ff5a00] px-4 py-2.5 text-xs font-bold text-white shadow-md">
+          <div className="mx-auto flex items-center gap-2">
+            <Gift size={16} />
+            <span>
+              ¡Beneficio Naranja X aplicado! Tu cuota de suscripción inicial está 100% bonificada ($0).
+            </span>
+          </div>
+          {onBackToPromo && (
+            <button
+              type="button"
+              onClick={onBackToPromo}
+              className="ml-3 shrink-0 font-semibold underline hover:opacity-80"
+            >
+              ← Volver a la promo
+            </button>
+          )}
+        </div>
+      )}
+
       <NavigationBar onScrollTo={scrollTo} />
 
       <main className="relative z-10">
@@ -1158,11 +1185,65 @@ function Home() {
   );
 }
 
+function MainView() {
+  const [search, setSearch] = useState(() => window.location.search);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setSearch(window.location.search);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const searchParams = new URLSearchParams(search);
+  const isPromoNaranja = searchParams.get('promo') === 'naranja';
+
+  const goToFunnel = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('promo', 'naranja');
+    window.history.pushState({}, '', url.toString());
+    setSearch(url.search);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const backToPromo = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.delete('promo');
+    window.history.pushState({}, '', url.toString());
+    setSearch(url.search);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (!isPromoNaranja) {
+    return <PromoNaranjaX onStartFunnel={goToFunnel} />;
+  }
+
+  return <Home isPromo={true} onBackToPromo={backToPromo} />;
+}
+
 function Router() {
   return (
     <RoutedErrorBoundary>
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={MainView} />
+        <Route path="/promo">
+          <PromoNaranjaX
+            onStartFunnel={() => {
+              const url = new URL(window.location.href);
+              url.searchParams.set('promo', 'naranja');
+              window.location.href = url.toString();
+            }}
+          />
+        </Route>
+        <Route path="/simulador">
+          <Home
+            isPromo={true}
+            onBackToPromo={() => {
+              window.location.href = `${import.meta.env.BASE_URL}`;
+            }}
+          />
+        </Route>
         <Route component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
