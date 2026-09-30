@@ -284,35 +284,37 @@ function HeroSection({ onStart }: { onStart: () => void }) {
           <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-gradient-to-tr from-[#ff5a00]/20 to-emerald-500/10 blur-2xl" />
 
           <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#111c33] to-[#0c1424] p-3.5 shadow-2xl backdrop-blur-xl">
-            <div className="relative overflow-hidden rounded-2xl bg-slate-900">
+            {/* Foto completa sin recortar ni tapar */}
+            <div className="relative overflow-hidden rounded-2xl bg-slate-950 flex justify-center items-center">
               <img
                 src={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
                 alt="Promoción Fondus y Naranja X por el sorteo de una moto 0KM"
-                className="block aspect-[9/12] w-full object-cover object-top filter contrast-105"
+                className="w-full h-auto max-h-[580px] object-contain rounded-2xl filter contrast-105"
                 data-testid="img-hero-campaign"
               />
+            </div>
 
-              <div className="absolute inset-x-3 bottom-3 rounded-xl border border-white/20 bg-[#0c1628]/95 p-4 shadow-xl backdrop-blur-md">
-                <div className="flex items-center justify-between gap-3">
-                  <div>
-                    <span className="inline-flex items-center gap-1 rounded-full bg-[#ff5a00]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#ff9b6a]">
-                      <Gift size={12} /> Beneficio Exclusivo
-                    </span>
-                    <p className="m-0 mt-1 text-sm font-bold text-white">
-                      Cuota de suscripción bonificada
-                    </p>
-                    <p className="m-0 text-xs text-slate-300">
-                      Válido vinculando tu cuenta Naranja X
-                    </p>
-                  </div>
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff5a00] to-[#ff7a29] text-white shadow-lg shadow-orange-500/30">
-                    <Gift size={24} />
-                  </div>
+            {/* Banner de Beneficio Exclusivo colocado debajo de la foto para que NO la tape */}
+            <div className="mt-3.5 rounded-2xl border border-white/20 bg-[#0c1628]/95 p-4 shadow-xl backdrop-blur-md">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#ff5a00]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#ff9b6a]">
+                    <Gift size={12} /> Beneficio Exclusivo
+                  </span>
+                  <p className="m-0 mt-1 text-sm font-bold text-white">
+                    Cuota de suscripción bonificada
+                  </p>
+                  <p className="m-0 text-xs text-slate-300">
+                    Válido vinculando tu cuenta Naranja X
+                  </p>
+                </div>
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff5a00] to-[#ff7a29] text-white shadow-lg shadow-orange-500/30">
+                  <Gift size={24} />
                 </div>
               </div>
             </div>
 
-            <div className="mt-3.5 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+            <div className="mt-3 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3">
               <div>
                 <span className="text-[11px] font-semibold text-white/60">SORTEO ESPECIAL</span>
                 <p className="m-0 text-sm font-extrabold text-[#ff8141]">UNA MOTO 0KM</p>
