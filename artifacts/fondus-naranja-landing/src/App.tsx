@@ -29,6 +29,7 @@ import TiltCard from '@/components/ui/TiltCard';
 import ArchitecturalButton from '@/components/ui/ArchitecturalButton';
 import LegalModal from '@/components/ui/LegalModal';
 import PromoNaranjaX from '@/pages/PromoNaranjaX';
+import PaymentForm, { type PaymentData } from '@/components/PaymentForm';
 
 const queryClient = new QueryClient();
 
@@ -80,27 +81,37 @@ const socialProof = [
 function LogoLockup() {
   return (
     <div className="flex items-center gap-3 select-none" data-testid="brand-lockup">
-      <div className="flex flex-col">
-        <div className="flex items-center gap-2.5">
-          <span className="text-2xl font-black tracking-tight text-white font-sans">
-            fondus
-          </span>
-          <span className="h-5 w-px bg-white/20" />
-          <span className="text-xl font-black tracking-tight text-[#ff6a12] font-sans">
-            Naranja<span className="text-white">X</span>
-          </span>
-        </div>
-        <span className="text-[10px] font-semibold tracking-wider text-white/50 uppercase -mt-0.5">
-          SISTEMA DE CAPITALIZACIÓN Y AHORRO
+      <div className="flex items-center gap-2">
+        <svg
+          className="w-7 h-7 text-[#1d497f] drop-shadow-sm"
+          viewBox="0 0 100 100"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="9"
+          strokeLinecap="round"
+        >
+          <line x1="50" y1="12" x2="50" y2="88" />
+          <line x1="12" y1="50" x2="88" y2="50" />
+          <line x1="23" y1="23" x2="77" y2="77" />
+          <line x1="23" y1="77" x2="77" y2="23" />
+        </svg>
+        <span className="text-2xl font-black tracking-tight text-[#1d497f] font-sans lowercase">
+          fondus
         </span>
       </div>
+
+      <span className="h-5 w-px bg-slate-300" />
+
+      <span className="text-xl font-black tracking-tight text-orange-500 font-sans">
+        Naranja<span className="text-orange-500">X</span>
+      </span>
     </div>
   );
 }
 
 function NavigationBar({ onScrollTo }: { onScrollTo: (id: string) => void }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#080e1e]/90 px-6 py-4 backdrop-blur-md sm:px-10 lg:px-12">
+    <header className="sticky top-0 z-40 border-b border-slate-200/20 bg-white/95 px-6 py-3.5 backdrop-blur-md sm:px-10 lg:px-12 shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
         <LogoLockup />
 
@@ -108,21 +119,21 @@ function NavigationBar({ onScrollTo }: { onScrollTo: (id: string) => void }) {
           <button
             type="button"
             onClick={() => onScrollTo('planes')}
-            className="text-xs font-semibold text-slate-300 transition-colors hover:text-white"
+            className="text-xs font-semibold text-slate-700 transition-colors hover:text-[#1d497f]"
           >
             Planes
           </button>
           <button
             type="button"
             onClick={() => onScrollTo('como-funciona')}
-            className="text-xs font-semibold text-slate-300 transition-colors hover:text-white"
+            className="text-xs font-semibold text-slate-700 transition-colors hover:text-[#1d497f]"
           >
             Cómo Funciona
           </button>
           <button
             type="button"
             onClick={() => onScrollTo('legal')}
-            className="text-xs font-semibold text-slate-300 transition-colors hover:text-white"
+            className="text-xs font-semibold text-slate-700 transition-colors hover:text-[#1d497f]"
           >
             Marco Legal
           </button>
@@ -132,7 +143,7 @@ function NavigationBar({ onScrollTo }: { onScrollTo: (id: string) => void }) {
           <button
             type="button"
             onClick={() => onScrollTo('adhesion')}
-            className="rounded-full bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] px-5 py-2 text-xs font-bold text-white shadow-md shadow-orange-500/25 transition-all hover:scale-[1.03] active:scale-[0.98]"
+            className="rounded-full bg-gradient-to-r from-orange-500 to-[#ff7a29] px-5 py-2 text-xs font-bold text-white shadow-md shadow-orange-500/25 transition-all hover:scale-[1.03] active:scale-[0.98]"
           >
             Simular mi Plan
           </button>
@@ -219,107 +230,80 @@ function HeroSection({ onStart }: { onStart: () => void }) {
         <div>
           {/* Trust Rating Badge */}
           <div
-            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold text-emerald-300 backdrop-blur-md"
+            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#93c46d]/40 bg-[#93c46d]/15 px-4 py-1.5 text-xs font-bold text-[#93c46d] backdrop-blur-md"
             data-testid="badge-rating"
           >
             <Star size={14} className="fill-amber-400 text-amber-400" />
             <span>Google Rating 4.9</span>
             <span className="text-white/40">·</span>
-            <span className="font-normal text-white/80">Más de 15.000 clientes satisfechos</span>
+            <span className="font-normal text-white/90">Más de 15.000 clientes satisfechos</span>
           </div>
 
-          <h1 className="text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-7xl">
-            Con <span className="text-[#ff6a12]">FONDUS</span> y{' '}
-            <span className="whitespace-nowrap">
-              Naranja <span className="text-[#ff6a12]">X</span>
-            </span>{' '}
-            <br />
-            <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200 bg-clip-text text-transparent">
-              vas a poder.
-            </span>
+          <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+            con <span className="text-[#1d497f] bg-white px-2.5 py-0.5 rounded-xl inline-block mr-1">FONDUS</span> y <span className="text-orange-500">naranja X</span> vas a poder
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
-            Ahorrá en pesos con cuotas accesibles y participá todos los meses por la adjudicación
-            total de tu capital.{' '}
-            <strong className="text-white font-semibold">
-              Si tu número sale sorteado en Lotería, ¡no pagás más cuotas y recibís todo el dinero!
-            </strong>
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-200 sm:text-lg">
+            Ahorrá con cuotas accesibles y participá todos los meses por la adjudicación. Si tu número sale sorteado, ¡NO PAGÁS MÁS y recibís el total de tu plan!
           </p>
 
           <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-            <ArchitecturalButton
+            <button
               onClick={onStart}
+              type="button"
               data-testid="button-start"
-              className="w-full text-base px-9 py-4 shadow-xl shadow-orange-500/25 sm:w-auto"
+              className="w-full sm:w-auto rounded-xl bg-[#93c46d] hover:bg-[#82b25c] text-white font-extrabold text-base px-9 py-4 shadow-xl shadow-green-600/25 active:scale-[0.98] transition-all cursor-pointer uppercase tracking-wider"
             >
               VER PLANES Y SIMULAR
-            </ArchitecturalButton>
-          </div>
-
-          <div className="mt-10 flex flex-wrap items-center gap-4 border-t border-white/10 pt-6 text-xs font-medium text-slate-300 sm:gap-6">
-            <span className="flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
-                <LockKeyhole size={12} />
-              </span>
-              100% Online y seguro
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
-                <ShieldCheck size={12} />
-              </span>
-              Sin compromiso ni costos ocultos
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#ff5a00]/20 text-[#ff7b35]">
-                <Sparkles size={12} />
-              </span>
-              Adjudicación mensual por Quiniela
-            </span>
+            </button>
           </div>
         </div>
 
-        {/* Hero Visual Card */}
+        {/* Hero Visual Card con <video> */}
         <div className="relative">
-          <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-gradient-to-tr from-[#ff5a00]/20 to-emerald-500/10 blur-2xl" />
+          <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-gradient-to-tr from-[#93c46d]/20 to-orange-500/10 blur-2xl" />
 
           <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#111c33] to-[#0c1424] p-3.5 shadow-2xl backdrop-blur-xl">
-            {/* Foto completa sin recortar ni tapar */}
+            {/* Tag <video> configurada con autoPlay muted loop playsInline ocupando el espacio principal */}
             <div className="relative overflow-hidden rounded-2xl bg-slate-950 flex justify-center items-center">
-              <img
-                src={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
-                alt="Promoción Fondus y Naranja X por el sorteo de una moto 0KM"
-                className="w-full h-auto max-h-[580px] object-contain rounded-2xl filter contrast-105"
-                data-testid="img-hero-campaign"
-              />
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
+                className="w-full h-auto max-h-[580px] object-cover rounded-2xl"
+                data-testid="video-hero"
+              >
+                <source src={`${import.meta.env.BASE_URL}assets/hero-video.mp4`} type="video/mp4" />
+                Tu navegador no soporta el tag de video.
+              </video>
             </div>
 
-            {/* Banner de Beneficio Exclusivo colocado debajo de la foto para que NO la tape */}
+            {/* Banner de Beneficio Exclusivo: se eliminó "(válido vinculando..)" */}
             <div className="mt-3.5 rounded-2xl border border-white/20 bg-[#0c1628]/95 p-4 shadow-xl backdrop-blur-md">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#ff5a00]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#ff9b6a]">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#93c46d]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#93c46d]">
                     <Gift size={12} /> Beneficio Exclusivo
                   </span>
                   <p className="m-0 mt-1 text-sm font-bold text-white">
                     Cuota de suscripción bonificada
                   </p>
-                  <p className="m-0 text-xs text-slate-300">
-                    Válido vinculando tu cuenta Naranja X
-                  </p>
                 </div>
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff5a00] to-[#ff7a29] text-white shadow-lg shadow-orange-500/30">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#93c46d] text-white shadow-lg shadow-green-600/30">
                   <Gift size={24} />
                 </div>
               </div>
             </div>
 
+            {/* Sorteo Especial */}
             <div className="mt-3 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3">
               <div>
                 <span className="text-[11px] font-semibold text-white/60">SORTEO ESPECIAL</span>
                 <p className="m-0 text-sm font-extrabold text-[#ff8141]">UNA MOTO 0KM</p>
               </div>
-              <span className="rounded-full border border-emerald-500/25 bg-emerald-500/15 px-3 py-1 text-xs font-bold text-emerald-400">
+              <span className="rounded-full border border-[#93c46d]/30 bg-[#93c46d]/15 px-3 py-1 text-xs font-bold text-[#93c46d]">
                 Participás gratis
               </span>
             </div>
@@ -351,8 +335,7 @@ function PlansSection({
             </span>
           </h2>
           <p className="mt-4 text-base leading-relaxed text-slate-300 sm:text-lg">
-            Elegí el capital que necesitás. Tus ahorros se capitalizan mes a mes en cuotas en pesos
-            y participás por la adjudicación total desde la primera cuota.
+            Elegí el plan que mejor se adapte a vos. Tus ahorros se capitalizan mes a mes generando intereses a tu favor y participás por la adjudicación desde la primera cuota.
           </p>
         </div>
 
@@ -541,21 +524,27 @@ function AdhesionSection({
   onPlanChange: (plan: Plan) => void;
   onSuccess: () => void;
 }) {
+  const [step, setStep] = useState<'contact' | 'payment'>('contact');
   const [understands, setUnderstands] = useState(false);
   const [terms, setTerms] = useState(false);
-  const [sent, setSent] = useState(false);
   const [form, setForm] = useState({ name: '', dni: '', whatsapp: '' });
 
-  const valid = Boolean(
+  const validContact = Boolean(
     understands && terms && form.name.trim() && form.dni.trim() && form.whatsapp.trim(),
   );
 
-  const submit = (event: FormEvent) => {
+  const handleContactSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (valid) {
-      setSent(true);
-      onSuccess();
+    if (validContact) {
+      setStep('payment');
+      const el = document.getElementById('adhesion');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handlePaymentSubmit = (data: PaymentData) => {
+    console.log('Pago procesado con éxito:', data);
+    onSuccess();
   };
 
   return (
@@ -563,18 +552,30 @@ function AdhesionSection({
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:gap-16 lg:items-start">
           <div>
-            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-[#ff5a00]/30 bg-[#ff5a00]/15 px-3.5 py-1 text-xs font-bold text-[#ff9b6a]">
-              Simulación de Adhesión
+            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-orange-500/30 bg-orange-500/15 px-3.5 py-1 text-xs font-bold text-orange-400">
+              {step === 'contact' ? 'Paso 1 de 2: Simulación de Adhesión' : 'Paso 2 de 2: Adhesión y Pago'}
             </span>
             <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
-              Completá tu solicitud <br />
-              <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-                en menos de 1 minuto.
-              </span>
+              {step === 'contact' ? (
+                <>
+                  Completá tu solicitud <br />
+                  <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
+                    en menos de 1 minuto.
+                  </span>
+                </>
+              ) : (
+                <>
+                  Confirmá tu adhesión <br />
+                  <span className="bg-gradient-to-r from-[#93c46d] to-teal-300 bg-clip-text text-transparent">
+                    con débito automático.
+                  </span>
+                </>
+              )}
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-300">
-              Ingresá tus datos para que un asesor oficial de Fondus y Naranja X te envíe tu
-              simulación detallada y número de sorteo sin ningún compromiso.
+              {step === 'contact'
+                ? 'Ingresá tus datos para que un asesor oficial de Fondus y Naranja X te envíe tu simulación detallada y número de sorteo sin ningún compromiso.'
+                : 'Activá tu plan mediante débito automático en tu tarjeta con tu primera cuota de suscripción 100% bonificada.'}
             </p>
 
             {/* Plan selector pills */}
@@ -592,12 +593,12 @@ function AdhesionSection({
                       onClick={() => onPlanChange(p)}
                       className={`rounded-xl border p-2.5 text-center transition-all ${
                         active
-                          ? 'border-[#ff5a00] bg-[#ff5a00]/20 text-white font-bold'
+                          ? 'border-orange-500 bg-orange-500/20 text-white font-bold ring-1 ring-orange-500'
                           : 'border-white/10 bg-white/5 text-slate-400 hover:text-white'
                       }`}
                     >
                       <p className="m-0 text-xs truncate">{p.title}</p>
-                      <p className="m-0 text-[11px] font-bold text-[#ff8141]">{p.capital}</p>
+                      <p className="m-0 text-[11px] font-bold text-orange-400">{p.capital}</p>
                     </button>
                   );
                 })}
@@ -618,7 +619,7 @@ function AdhesionSection({
 
               <div className="mt-4">
                 <span className="text-xs font-medium text-slate-400">Capital a adjudicar</span>
-                <p className="text-3xl font-extrabold text-[#ff8141]">{selectedPlan.capital}</p>
+                <p className="text-3xl font-extrabold text-orange-400">{selectedPlan.capital}</p>
               </div>
 
               <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
@@ -641,110 +642,123 @@ function AdhesionSection({
             </div>
           </div>
 
-          {/* Form */}
-          <form
-            onSubmit={submit}
-            className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#141f36] to-[#0c1424] p-6 shadow-2xl backdrop-blur-xl sm:p-8"
-            data-testid="form-adhesion"
-          >
-            <div className="flex items-center gap-3.5 border-b border-white/10 pb-5">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#ff5a00]/40 bg-[#ff5a00]/20 text-[#ff8141]">
-                <FileText size={22} />
+          {/* Formulario Dinámico: Paso 1 (Datos de contacto) o Paso 2 (PaymentForm) */}
+          {step === 'contact' ? (
+            <form
+              onSubmit={handleContactSubmit}
+              className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#141f36] to-[#0c1424] p-6 shadow-2xl backdrop-blur-xl sm:p-8"
+              data-testid="form-adhesion"
+            >
+              <div className="flex items-center gap-3.5 border-b border-white/10 pb-5">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-orange-500/40 bg-orange-500/20 text-orange-400">
+                  <FileText size={22} />
+                </div>
+                <div>
+                  <h3 className="m-0 text-lg font-bold text-white">Tus datos de contacto</h3>
+                  <p className="m-0 text-xs text-slate-300">
+                    Paso 1 de 2: Registrá tus datos personales
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="m-0 text-lg font-bold text-white">Tus datos de contacto</h3>
-                <p className="m-0 text-xs text-slate-300">
-                  Simulación sin compromiso ni costos iniciales
-                </p>
-              </div>
-            </div>
 
-            <div className="mt-6 space-y-4">
-              <label className="block">
-                <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                  Nombre y Apellido
-                </span>
-                <input
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#ff5a00] focus:ring-2 focus:ring-[#ff5a00]/30"
-                  placeholder="Por ejemplo, Juan Pérez"
-                  data-testid="input-name"
-                />
-              </label>
-
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="mt-6 space-y-4">
                 <label className="block">
                   <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                    DNI
+                    Nombre y Apellido
                   </span>
                   <input
                     required
-                    value={form.dni}
-                    onChange={(e) => setForm({ ...form, dni: e.target.value })}
-                    className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#ff5a00] focus:ring-2 focus:ring-[#ff5a00]/30"
-                    placeholder="Sin puntos ni espacios"
-                    data-testid="input-dni"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#1d497f] focus:ring-2 focus:ring-[#1d497f]/40"
+                    placeholder="Por ejemplo, Juan Pérez"
+                    data-testid="input-name"
                   />
                 </label>
 
-                <label className="block">
-                  <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                    WhatsApp
-                  </span>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                      DNI
+                    </span>
+                    <input
+                      required
+                      value={form.dni}
+                      onChange={(e) => setForm({ ...form, dni: e.target.value })}
+                      className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#1d497f] focus:ring-2 focus:ring-[#1d497f]/40"
+                      placeholder="Sin puntos ni espacios"
+                      data-testid="input-dni"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                      WhatsApp
+                    </span>
+                    <input
+                      required
+                      value={form.whatsapp}
+                      onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
+                      className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#1d497f] focus:ring-2 focus:ring-[#1d497f]/40"
+                      placeholder="Ej: 11 5555 5555"
+                      data-testid="input-whatsapp"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div className="mt-6 space-y-3 border-t border-white/10 pt-5">
+                <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-200 sm:text-sm">
                   <input
-                    required
-                    value={form.whatsapp}
-                    onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-                    className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#ff5a00] focus:ring-2 focus:ring-[#ff5a00]/30"
-                    placeholder="Ej: 11 5555 5555"
-                    data-testid="input-whatsapp"
+                    type="checkbox"
+                    checked={understands}
+                    onChange={(e) => setUnderstands(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#93c46d]"
+                    data-testid="checkbox-understands"
                   />
+                  <span>Entiendo que me estoy suscribiendo a un sistema de capitalización y ahorro oficial (Res. IGJ 000289/11).</span>
+                </label>
+
+                <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-200 sm:text-sm">
+                  <input
+                    type="checkbox"
+                    checked={terms}
+                    onChange={(e) => setTerms(e.target.checked)}
+                    className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#93c46d]"
+                    data-testid="checkbox-terms"
+                  />
+                  <span>Acepto las bases y condiciones contractuales de Fondus y Naranja X.</span>
                 </label>
               </div>
-            </div>
 
-            <div className="mt-6 space-y-3 border-t border-white/10 pt-5">
-              <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-200 sm:text-sm">
-                <input
-                  type="checkbox"
-                  checked={understands}
-                  onChange={(e) => setUnderstands(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#ff5a00]"
-                  data-testid="checkbox-understands"
-                />
-                <span>Entiendo que me estoy suscribiendo a un sistema de capitalización y ahorro.</span>
-              </label>
+              <div className="mt-8">
+                <button
+                  type="submit"
+                  disabled={!validContact}
+                  className="w-full rounded-xl bg-[#93c46d] hover:bg-[#82b25c] disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold py-4 px-6 shadow-xl shadow-green-600/25 active:scale-[0.98] transition-all text-base uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
+                  data-testid="button-adhere"
+                >
+                  <span>CONTINUAR A MEDIO DE PAGO</span>
+                  <ArrowRight size={18} />
+                </button>
+              </div>
 
-              <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-200 sm:text-sm">
-                <input
-                  type="checkbox"
-                  checked={terms}
-                  onChange={(e) => setTerms(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#ff5a00]"
-                  data-testid="checkbox-terms"
-                />
-                <span>Acepto las bases y condiciones contractuales de Fondus y Naranja X.</span>
-              </label>
-            </div>
-
-            <div className="mt-8">
-              <ArchitecturalButton
-                type="submit"
-                disabled={!valid || sent}
-                className="w-full py-4 text-base shadow-xl shadow-orange-500/25"
-                data-testid="button-adhere"
-              >
-                {sent ? 'SOLICITUD ENVIADA' : 'ADHERIRME CON NARANJA X'}
-              </ArchitecturalButton>
-            </div>
-
-            <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-white/50">
-              <ShieldCheck size={14} className="text-emerald-400" />
-              <span>Tus datos están protegidos y se utilizan únicamente para la simulación.</span>
-            </p>
-          </form>
+              <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-white/50">
+                <ShieldCheck size={14} className="text-emerald-400" />
+                <span>Tus datos están protegidos y se utilizan únicamente para la gestión de adhesión.</span>
+              </p>
+            </form>
+          ) : (
+            <PaymentForm
+              planTitle={selectedPlan.title}
+              planCapital={selectedPlan.capital}
+              planRegular={selectedPlan.regular}
+              initialDni={form.dni}
+              initialName={form.name}
+              onBack={() => setStep('contact')}
+              onSubmitPayment={handlePaymentSubmit}
+            />
+          )}
         </div>
       </div>
     </section>
@@ -760,7 +774,9 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
           <div>
-            <LogoLockup />
+            <div className="inline-block bg-white px-3.5 py-1.5 rounded-2xl shadow-sm">
+              <LogoLockup />
+            </div>
             <p className="mt-4 max-w-sm text-xs leading-relaxed text-slate-400 sm:text-sm">
               El poder de tus ahorros. Una alianza institucional entre Fondus y Naranja X para
               impulsar tus metas con total transparencia y respaldo.
@@ -1091,31 +1107,86 @@ function RegretModal({ onClose }: { onClose: () => void }) {
 }
 
 function SuccessModal({ onClose }: { onClose: () => void }) {
+  const handleRestart = () => {
+    window.location.reload();
+  };
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#050914]/85 p-4 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-[#050914]/90 p-4 backdrop-blur-md overflow-y-auto"
       role="dialog"
       aria-modal="true"
       data-testid="modal-success"
     >
-      <div className="relative w-full max-w-md rounded-3xl border border-emerald-500/40 bg-gradient-to-b from-[#142338] to-[#0c1424] p-8 text-center shadow-2xl">
+      <div className="relative w-full max-w-lg my-8 rounded-3xl border border-emerald-500/40 bg-gradient-to-b from-[#142338] to-[#0c1424] p-6 sm:p-8 text-center shadow-2xl text-white">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-500/20 text-emerald-400">
           <Check size={32} />
         </div>
 
-        <h2 className="mt-5 text-2xl font-extrabold text-white sm:text-3xl">¡Estamos en contacto!</h2>
+        <h2 className="mt-5 text-2xl font-extrabold text-white sm:text-3xl">
+          ¡Adhesión Registrada con Éxito!
+        </h2>
         <p className="mt-3 text-sm leading-relaxed text-slate-300">
-          Recibimos tus datos correctamente. Un asesor oficial de Fondus y Naranja X se comunicará con vos por WhatsApp para enviarte tu comprobante y número de sorteo oficial.
+          Recibimos tus datos y la vinculación de tu medio de pago correctamente. Tu cuota de suscripción inicial se encuentra bonificada por la alianza con Naranja X. Te contactaremos por WhatsApp con tu póliza digital y número de sorteo oficial de LOTBA S.E.
         </p>
 
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-7 w-full rounded-xl bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] py-3.5 text-sm font-bold uppercase text-white shadow-lg shadow-orange-500/25 transition-transform hover:scale-[1.01]"
-          data-testid="button-success-close"
-        >
-          Finalizar
-        </button>
+        {/* Video en pantalla final */}
+        <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
+            className="w-full h-44 object-cover opacity-90"
+            data-testid="video-success"
+          >
+            <source src={`${import.meta.env.BASE_URL}assets/hero-video.mp4`} type="video/mp4" />
+          </video>
+        </div>
+
+        <div className="mt-6 flex flex-col items-center">
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-full rounded-xl bg-gradient-to-r from-orange-500 to-[#ff7a29] py-3.5 text-sm font-bold uppercase text-white shadow-lg shadow-orange-500/25 transition-transform hover:scale-[1.01]"
+            data-testid="button-success-close"
+          >
+            Finalizar
+          </button>
+
+          {/* Botón requerido: Toca acá para ir al inicio */}
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-8 text-[#1d497f] underline font-medium cursor-pointer"
+            data-testid="button-reload-home"
+          >
+            Toca acá para ir al inicio
+          </button>
+
+          {/* Logo Fondus Agencia Digital en el footer envuelto en botón interactivo para reiniciar */}
+          <div className="mt-8 border-t border-white/10 pt-5 w-full flex flex-col items-center">
+            <button
+              type="button"
+              onClick={handleRestart}
+              className="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors cursor-pointer group"
+              data-testid="button-logo-reload"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-lg font-black tracking-tight text-white group-hover:text-[#93c46d] transition-colors">
+                  fondus
+                </span>
+                <span className="text-xs text-slate-400 font-medium">|</span>
+                <span className="text-xs uppercase tracking-widest text-[#93c46d] font-bold">
+                  Agencia Digital
+                </span>
+              </div>
+              <span className="text-[10px] text-slate-400 group-hover:underline">
+                Reiniciar experiencia
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
