@@ -143,7 +143,7 @@ function NavigationBar({ onScrollTo }: { onScrollTo: (id: string) => void }) {
           <button
             type="button"
             onClick={() => onScrollTo('adhesion')}
-            className="rounded-full bg-gradient-to-r from-orange-500 to-[#ff7a29] px-5 py-2 text-xs font-bold text-white shadow-md shadow-orange-500/25 transition-all hover:scale-[1.03] active:scale-[0.98]"
+            className="rounded-full bg-[#FF5900] hover:bg-[#e54f00] px-5 py-2 text-xs font-bold text-white shadow-md shadow-orange-500/30 transition-all hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
           >
             Simular mi Plan
           </button>
@@ -188,22 +188,22 @@ function SocialProof() {
           }`}
           data-testid="social-proof"
         >
-          <div className="relative overflow-hidden rounded-2xl border border-white/15 bg-[#0e172a]/95 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+          <div className="relative overflow-hidden rounded-2xl border border-slate-100 bg-white/95 p-4 shadow-[0_20px_50px_rgba(0,0,0,0.2)] backdrop-blur-xl">
             <div className="flex items-start gap-3.5">
-              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff5a00] to-[#ff7a29] text-white shadow-md shadow-orange-500/30">
+              <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#FF5900] text-white shadow-md shadow-orange-500/30">
                 <BadgeCheck size={20} />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="m-0 text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+                <p className="m-0 text-[11px] font-bold uppercase tracking-wider text-emerald-700">
                   Adhesión reciente
                 </p>
-                <p className="m-0 mt-1 text-xs font-medium leading-relaxed text-white/95">
+                <p className="m-0 mt-1 text-xs font-semibold leading-relaxed text-slate-800">
                   {notice}
                 </p>
               </div>
               <button
                 type="button"
-                className="p-1 text-white/40 transition-colors hover:text-white"
+                className="p-1 text-slate-400 transition-colors hover:text-slate-700 cursor-pointer"
                 onClick={() => setNotice(null)}
                 aria-label="Cerrar notificación"
                 data-testid="button-close-social"
@@ -220,30 +220,26 @@ function SocialProof() {
 
 function HeroSection({ onStart }: { onStart: () => void }) {
   return (
-    <section className="relative overflow-hidden pt-8 pb-16 sm:pt-14 sm:pb-24">
-      {/* 3D Interactive Canvas in Background */}
-      <div className="pointer-events-none absolute inset-0 opacity-50">
-        <Architectural3DCanvas />
-      </div>
-
-      <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-6 sm:px-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-16 lg:px-12">
-        <div>
+    <section className="relative overflow-hidden pt-6 pb-12 sm:pt-10 sm:pb-16">
+      <div className="relative z-10 mx-auto grid max-w-7xl gap-8 px-6 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-10 lg:px-12">
+        {/* Tarjeta Blanca Contenedora Izquierda */}
+        <div className="bg-white rounded-2xl shadow-xl p-7 sm:p-9 border border-white/60">
           {/* Trust Rating Badge */}
           <div
-            className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#93c46d]/40 bg-[#93c46d]/15 px-4 py-1.5 text-xs font-bold text-[#93c46d] backdrop-blur-md"
+            className="mb-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-xs font-bold text-[#1d497f] shadow-sm"
             data-testid="badge-rating"
           >
             <Star size={14} className="fill-amber-400 text-amber-400" />
             <span>Google Rating 4.9</span>
-            <span className="text-white/40">·</span>
-            <span className="font-normal text-white/90">Más de 15.000 clientes satisfechos</span>
+            <span className="text-slate-300">·</span>
+            <span className="font-normal text-slate-600">Más de 15.000 clientes satisfechos</span>
           </div>
 
-          <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
-            con <span className="text-[#1d497f] bg-white px-2.5 py-0.5 rounded-xl inline-block mr-1">FONDUS</span> y <span className="text-orange-500">naranja X</span> vas a poder
+          <h1 className="text-4xl font-extrabold leading-tight text-[#1d497f] sm:text-5xl lg:text-6xl tracking-tight">
+            con <span className="text-[#1d497f]">FONDUS</span> y <span className="text-[#FF5900]">naranja X</span> vas a poder
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-200 sm:text-lg">
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-700 font-normal sm:text-lg">
             Ahorrá con cuotas accesibles y participá todos los meses por la adjudicación. Si tu número sale sorteado, ¡NO PAGÁS MÁS y recibís el total de tu plan!
           </p>
 
@@ -252,7 +248,7 @@ function HeroSection({ onStart }: { onStart: () => void }) {
               onClick={onStart}
               type="button"
               data-testid="button-start"
-              className="w-full sm:w-auto rounded-xl bg-[#93c46d] hover:bg-[#82b25c] text-white font-extrabold text-base px-9 py-4 shadow-xl shadow-green-600/25 active:scale-[0.98] transition-all cursor-pointer uppercase tracking-wider"
+              className="w-full sm:w-auto rounded-xl bg-[#FF5900] hover:bg-[#e54f00] text-white font-extrabold text-base px-9 py-4 shadow-xl shadow-orange-500/25 active:scale-[0.98] transition-all cursor-pointer uppercase tracking-wider"
             >
               VER PLANES Y SIMULAR
             </button>
@@ -260,53 +256,48 @@ function HeroSection({ onStart }: { onStart: () => void }) {
         </div>
 
         {/* Hero Visual Card con <video> */}
-        <div className="relative">
-          <div className="pointer-events-none absolute -inset-4 rounded-3xl bg-gradient-to-tr from-[#93c46d]/20 to-orange-500/10 blur-2xl" />
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 border border-white/60">
+          <div className="relative overflow-hidden rounded-xl bg-slate-900 flex justify-center items-center">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
+              className="w-full h-auto max-h-[500px] object-cover rounded-xl"
+              data-testid="video-hero"
+            >
+              <source src={`${import.meta.env.BASE_URL}assets/hero-video.mp4`} type="video/mp4" />
+              Tu navegador no soporta el tag de video.
+            </video>
+          </div>
 
-          <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#111c33] to-[#0c1424] p-3.5 shadow-2xl backdrop-blur-xl">
-            {/* Tag <video> configurada con autoPlay muted loop playsInline ocupando el espacio principal */}
-            <div className="relative overflow-hidden rounded-2xl bg-slate-950 flex justify-center items-center">
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                poster={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
-                className="w-full h-auto max-h-[580px] object-cover rounded-2xl"
-                data-testid="video-hero"
-              >
-                <source src={`${import.meta.env.BASE_URL}assets/hero-video.mp4`} type="video/mp4" />
-                Tu navegador no soporta el tag de video.
-              </video>
-            </div>
-
-            {/* Banner de Beneficio Exclusivo: se eliminó "(válido vinculando..)" */}
-            <div className="mt-3.5 rounded-2xl border border-white/20 bg-[#0c1628]/95 p-4 shadow-xl backdrop-blur-md">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#93c46d]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#93c46d]">
-                    <Gift size={12} /> Beneficio Exclusivo
-                  </span>
-                  <p className="m-0 mt-1 text-sm font-bold text-white">
-                    Cuota de suscripción bonificada
-                  </p>
-                </div>
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#93c46d] text-white shadow-lg shadow-green-600/30">
-                  <Gift size={24} />
-                </div>
-              </div>
-            </div>
-
-            {/* Sorteo Especial */}
-            <div className="mt-3 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+          {/* Banner de Beneficio Exclusivo */}
+          <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50 p-4 shadow-sm">
+            <div className="flex items-center justify-between gap-3">
               <div>
-                <span className="text-[11px] font-semibold text-white/60">SORTEO ESPECIAL</span>
-                <p className="m-0 text-sm font-extrabold text-[#ff8141]">UNA MOTO 0KM</p>
+                <span className="inline-flex items-center gap-1 rounded-full bg-orange-100 px-2.5 py-0.5 text-[11px] font-bold text-[#FF5900]">
+                  <Gift size={12} /> Beneficio Exclusivo
+                </span>
+                <p className="m-0 mt-1 text-sm font-bold text-[#1d497f]">
+                  Cuota de suscripción bonificada
+                </p>
               </div>
-              <span className="rounded-full border border-[#93c46d]/30 bg-[#93c46d]/15 px-3 py-1 text-xs font-bold text-[#93c46d]">
-                Participás gratis
-              </span>
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#FF5900] text-white shadow-md shadow-orange-500/30">
+                <Gift size={24} />
+              </div>
             </div>
+          </div>
+
+          {/* Sorteo Especial */}
+          <div className="mt-3 flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 px-4 py-3">
+            <div>
+              <span className="text-[11px] font-semibold text-slate-500">SORTEO ESPECIAL</span>
+              <p className="m-0 text-sm font-extrabold text-[#1d497f]">UNA MOTO 0KM</p>
+            </div>
+            <span className="rounded-full border border-emerald-500/20 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
+              Participás gratis
+            </span>
           </div>
         </div>
       </div>
@@ -322,24 +313,21 @@ function PlansSection({
   onSelectPlan: (plan: Plan) => void;
 }) {
   return (
-    <section id="planes" className="relative scroll-mt-20 px-6 py-16 sm:px-10 sm:py-24 lg:px-12">
+    <section id="planes" className="relative scroll-mt-20 px-6 py-12 sm:px-10 sm:py-16 lg:px-12">
       <div className="mx-auto max-w-7xl">
-        <div className="max-w-3xl text-left">
-          <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-[#ff5a00]/30 bg-[#ff5a00]/15 px-3.5 py-1 text-xs font-bold text-[#ff9b6a]">
+        <div className="max-w-3xl text-left bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-white/60 mb-8">
+          <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold text-[#FF5900]">
             Planes de Capitalización
           </span>
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Un plan pensado para <br />
-            <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-              hacer realidad tu proyecto.
-            </span>
+          <h2 className="text-3xl font-extrabold tracking-tight text-[#1d497f] sm:text-5xl">
+            Un plan pensado para hacer realidad tu proyecto.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-slate-300 sm:text-lg">
+          <p className="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
             Elegí el plan que mejor se adapte a vos. Tus ahorros se capitalizan mes a mes generando intereses a tu favor y participás por la adjudicación desde la primera cuota.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-8 lg:grid-cols-3">
+        <div className="grid gap-8 lg:grid-cols-3">
           {plans.map((plan, index) => {
             const isChosen = selectedPlan.id === plan.id;
 
@@ -352,66 +340,65 @@ function PlansSection({
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="h-full"
               >
-                <TiltCard
-                  featured={Boolean(plan.featured)}
+                <div
                   onClick={() => onSelectPlan(plan)}
-                  className={`flex flex-col rounded-3xl border p-6 text-left transition-all duration-300 sm:p-7 ${
+                  className={`flex flex-col justify-between h-full rounded-2xl border p-6 text-left transition-all duration-300 sm:p-7 bg-white shadow-xl cursor-pointer ${
                     isChosen
-                      ? 'border-[#ff5a00] bg-gradient-to-b from-[#182642] to-[#0f172a] shadow-[0_15px_45px_-10px_rgba(255,90,0,0.4)] ring-2 ring-[#ff5a00]'
+                      ? 'border-[#FF5900] ring-2 ring-[#FF5900] shadow-[0_15px_35px_-10px_rgba(255,89,0,0.35)]'
                       : plan.featured
-                      ? 'border-[#ff5a00]/80 bg-gradient-to-b from-[#142036] to-[#0f172a] shadow-[0_15px_45px_-10px_rgba(255,90,0,0.25)]'
-                      : 'border-white/15 bg-gradient-to-b from-[#10192e] to-[#0a1122] shadow-xl hover:border-emerald-500/50'
+                      ? 'border-orange-300 shadow-xl'
+                      : 'border-slate-100 hover:border-[#1d497f]/40'
                   }`}
                   data-testid={`card-plan-${plan.id}`}
                 >
                   <div>
-                    <div className="flex items-center justify-between border-b border-white/10 pb-4">
-                      <span className="text-xs font-bold text-emerald-400">
+                    <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                      <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
                         Opción 0{index + 1}
                       </span>
                       {plan.featured ? (
-                        <span className="rounded-full bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] px-3 py-1 text-xs font-black uppercase tracking-wide text-white shadow-md shadow-orange-500/30">
+                        <span className="rounded-full bg-[#FF5900] px-3 py-1 text-xs font-black uppercase tracking-wide text-white shadow-sm">
                           ⭐ Más Elegido
                         </span>
                       ) : (
-                        <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/70">
+                        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
                           Ahorro Mensual
                         </span>
                       )}
                     </div>
 
-                    <p className="mt-4 text-xs font-semibold text-slate-400">
+                    <p className="mt-4 text-xs font-semibold text-slate-500">
                       {plan.eyebrow}
                     </p>
-                    <h3 className="mt-1 text-2xl font-black text-white">{plan.title}</h3>
+                    <h3 className="mt-1 text-2xl font-black text-[#1d497f]">{plan.title}</h3>
 
-                    <div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-4">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
                         Capital a adjudicar
                       </span>
-                      <p className="mt-1 text-3xl font-black tracking-tight text-[#ff8141] sm:text-4xl">
+                      <p className="mt-1 text-3xl font-black tracking-tight text-[#FF5900] sm:text-4xl">
                         {plan.capital}
                       </p>
                     </div>
 
-                    <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4">
                       <div>
-                        <p className="text-[11px] font-medium text-slate-400">Cuotas 1 a 4</p>
-                        <p className="mt-1 text-lg font-bold text-white sm:text-xl">{plan.first}</p>
-                        <p className="text-[10px] text-white/40">Gastos adm. iniciales</p>
+                        <p className="text-[11px] font-medium text-slate-500">Cuotas 1 a 4</p>
+                        <p className="mt-1 text-lg font-bold text-[#1d497f] sm:text-xl">{plan.first}</p>
+                        <p className="text-[10px] text-slate-400">Gastos adm. iniciales</p>
                       </div>
                       <div>
-                        <p className="text-[11px] font-bold text-emerald-400">Desde cuota 5</p>
-                        <p className="mt-1 text-lg font-bold text-emerald-400 sm:text-xl">
+                        <p className="text-[11px] font-bold text-emerald-700">Desde cuota 5</p>
+                        <p className="mt-1 text-lg font-bold text-emerald-700 sm:text-xl">
                           {plan.regular}
                         </p>
-                        <p className="text-[10px] font-semibold text-emerald-400/70">
+                        <p className="text-[10px] font-semibold text-emerald-600">
                           ¡Baja de valor!
                         </p>
                       </div>
                     </div>
 
-                    <div className="mt-6 space-y-3 text-xs text-slate-200 sm:text-sm">
+                    <div className="mt-6 space-y-3 text-xs text-slate-700 sm:text-sm">
                       <Benefit text="Sorteos mensuales desde cuota 1 (si ganás, no pagás más)" />
                       <Benefit text="Disponibilidad y rescate de fondos desde cuota 18" />
                       <Benefit text="Telemedicina 24/7 sin cargo para vos y tu familia" />
@@ -422,19 +409,19 @@ function PlansSection({
                   <div className="mt-8 pt-2">
                     <button
                       type="button"
-                      className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 px-4 text-sm font-bold transition-all duration-200 ${
+                      className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 px-4 text-sm font-bold transition-all duration-200 cursor-pointer ${
                         isChosen
-                          ? 'bg-[#ff5a00] text-white shadow-lg shadow-orange-500/35'
+                          ? 'bg-[#FF5900] text-white shadow-lg shadow-orange-500/35'
                           : plan.featured
-                          ? 'bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] text-white shadow-lg shadow-orange-500/25'
-                          : 'border border-white/15 bg-white/10 text-white hover:bg-white/20'
+                          ? 'bg-[#FF5900] text-white shadow-lg shadow-orange-500/25 hover:bg-[#e54f00]'
+                          : 'border border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200'
                       }`}
                     >
                       <span>{isChosen ? 'Plan seleccionado ✓' : 'Elegir este plan'}</span>
                       <ArrowRight size={16} />
                     </button>
                   </div>
-                </TiltCard>
+                </div>
               </motion.div>
             );
           })}
@@ -447,10 +434,10 @@ function PlansSection({
 function Benefit({ text }: { text: string }) {
   return (
     <div className="flex items-start gap-2.5">
-      <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400">
+      <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-orange-100 text-[#FF5900]">
         <Check size={11} strokeWidth={3} />
       </div>
-      <span className="leading-snug">{text}</span>
+      <span className="leading-snug text-slate-700 font-medium">{text}</span>
     </div>
   );
 }
@@ -461,33 +448,33 @@ function HowItWorksSection() {
       num: '01',
       title: 'Elegí tu Plan y Cuota',
       desc: 'Seleccioná el monto de capital que querés alcanzar. Pagás cuotas fijas y accesibles en pesos.',
-      icon: <Sparkles className="text-[#ff8141]" size={24} />,
+      icon: <Sparkles className="text-[#FF5900]" size={24} />,
     },
     {
       num: '02',
       title: 'Sorteo Mensual por Quiniela',
       desc: 'Participás el último sábado de cada mes a través de Quiniela de la Ciudad (LOTBA S.E.).',
-      icon: <Trophy className="text-amber-400" size={24} />,
+      icon: <Trophy className="text-[#FF5900]" size={24} />,
     },
     {
       num: '03',
       title: 'Adjudicación o Rescate',
       desc: 'Si salís adjudicado, no pagás ninguna cuota más y cobrás el total. Si no, acumulás tu capital y podés rescatarlo desde el mes 18.',
-      icon: <ShieldCheck className="text-emerald-400" size={24} />,
+      icon: <ShieldCheck className="text-emerald-600" size={24} />,
     },
   ];
 
   return (
-    <section id="como-funciona" className="relative scroll-mt-20 border-y border-white/10 bg-[#091122]/70 px-6 py-16 sm:px-10 sm:py-24 lg:px-12 backdrop-blur-sm">
-      <div className="mx-auto max-w-7xl">
+    <section id="como-funciona" className="relative scroll-mt-20 px-6 py-12 sm:px-10 sm:py-16 lg:px-12">
+      <div className="mx-auto max-w-7xl bg-white rounded-2xl shadow-xl p-8 sm:p-12 border border-white/60">
         <div className="text-center max-w-2xl mx-auto">
-          <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-bold text-emerald-300">
+          <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-3.5 py-1 text-xs font-bold text-emerald-800">
             Simple, transparente y seguro
           </span>
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
+          <h2 className="text-3xl font-extrabold tracking-tight text-[#1d497f] sm:text-5xl">
             ¿Cómo funciona el sistema?
           </h2>
-          <p className="mt-4 text-base text-slate-300">
+          <p className="mt-4 text-base text-slate-600">
             Un modelo de capitalización respaldado por la Inspección General de Justicia (IGJ) para
             que cumplas tus objetivos con tranquilidad.
           </p>
@@ -497,16 +484,16 @@ function HowItWorksSection() {
           {steps.map((st) => (
             <div
               key={st.num}
-              className="relative rounded-3xl border border-white/10 bg-gradient-to-b from-[#121c32] to-[#0c1424] p-8 shadow-xl"
+              className="relative rounded-2xl border border-slate-100 bg-slate-50 p-7 shadow-sm"
             >
               <div className="flex items-center justify-between mb-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white border border-slate-100 shadow-sm">
                   {st.icon}
                 </div>
-                <span className="font-mono text-2xl font-black text-white/20">{st.num}</span>
+                <span className="font-mono text-2xl font-black text-slate-300">{st.num}</span>
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">{st.title}</h3>
-              <p className="text-sm leading-relaxed text-slate-300">{st.desc}</p>
+              <h3 className="text-xl font-bold text-[#1d497f] mb-2">{st.title}</h3>
+              <p className="text-sm leading-relaxed text-slate-600">{st.desc}</p>
             </div>
           ))}
         </div>
@@ -548,39 +535,30 @@ function AdhesionSection({
   };
 
   return (
-    <section id="adhesion" className="relative scroll-mt-20 px-6 py-16 sm:px-10 sm:py-24 lg:px-12">
+    <section id="adhesion" className="relative scroll-mt-20 px-6 py-12 sm:px-10 sm:py-16 lg:px-12">
       <div className="mx-auto max-w-7xl">
-        <div className="grid gap-12 lg:grid-cols-[0.88fr_1.12fr] lg:gap-16 lg:items-start">
-          <div>
-            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-orange-500/30 bg-orange-500/15 px-3.5 py-1 text-xs font-bold text-orange-400">
+        <div className="grid gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14 lg:items-start">
+          {/* Tarjeta Blanca Izquierda con Resumen del Plan */}
+          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-white/60">
+            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold text-[#FF5900]">
               {step === 'contact' ? 'Paso 1 de 2: Simulación de Adhesión' : 'Paso 2 de 2: Adhesión y Pago'}
             </span>
-            <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
+            <h2 className="text-3xl font-extrabold tracking-tight text-[#1d497f] sm:text-4xl">
               {step === 'contact' ? (
-                <>
-                  Completá tu solicitud <br />
-                  <span className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent">
-                    en menos de 1 minuto.
-                  </span>
-                </>
+                <>Completá tu solicitud en menos de 1 minuto</>
               ) : (
-                <>
-                  Confirmá tu adhesión <br />
-                  <span className="bg-gradient-to-r from-[#93c46d] to-teal-300 bg-clip-text text-transparent">
-                    con débito automático.
-                  </span>
-                </>
+                <>Confirmá tu adhesión con débito automático</>
               )}
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-slate-300">
+            <p className="mt-3 text-sm leading-relaxed text-slate-600">
               {step === 'contact'
                 ? 'Ingresá tus datos para que un asesor oficial de Fondus y Naranja X te envíe tu simulación detallada y número de sorteo sin ningún compromiso.'
-                : 'Activá tu plan mediante débito automático en tu tarjeta con tu primera cuota de suscripción 100% bonificada.'}
+                : 'Activá tu plan mediante débito automático en tu Tarjeta Naranja con tu primera cuota de suscripción 100% bonificada.'}
             </p>
 
-            {/* Plan selector pills */}
+            {/* Selector de Planes */}
             <div className="mt-6">
-              <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
                 Seleccioná o cambiá tu plan:
               </span>
               <div className="grid grid-cols-3 gap-2">
@@ -591,14 +569,14 @@ function AdhesionSection({
                       key={p.id}
                       type="button"
                       onClick={() => onPlanChange(p)}
-                      className={`rounded-xl border p-2.5 text-center transition-all ${
+                      className={`rounded-xl border p-2.5 text-center transition-all cursor-pointer ${
                         active
-                          ? 'border-orange-500 bg-orange-500/20 text-white font-bold ring-1 ring-orange-500'
-                          : 'border-white/10 bg-white/5 text-slate-400 hover:text-white'
+                          ? 'border-[#FF5900] bg-orange-50 text-[#FF5900] font-bold ring-2 ring-[#FF5900]'
+                          : 'border-slate-200 bg-slate-50 text-slate-600 hover:text-[#1d497f]'
                       }`}
                     >
                       <p className="m-0 text-xs truncate">{p.title}</p>
-                      <p className="m-0 text-[11px] font-bold text-orange-400">{p.capital}</p>
+                      <p className="m-0 text-[11px] font-bold text-[#FF5900]">{p.capital}</p>
                     </button>
                   );
                 })}
@@ -606,37 +584,37 @@ function AdhesionSection({
             </div>
 
             {/* Plan Summary Box */}
-            <div className="mt-6 rounded-3xl border border-white/15 bg-gradient-to-b from-[#121c32] to-[#0c1424] p-6 shadow-xl">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+            <div className="mt-6 rounded-2xl border border-slate-100 bg-slate-50 p-5">
+              <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
                 <div>
-                  <span className="text-xs font-bold uppercase text-slate-400">Plan elegido</span>
-                  <p className="m-0 text-lg font-bold text-white">{selectedPlan.title}</p>
+                  <span className="text-[11px] font-bold uppercase text-slate-500">Plan elegido</span>
+                  <p className="m-0 text-base font-bold text-[#1d497f]">{selectedPlan.title}</p>
                 </div>
-                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3.5 py-1 text-xs font-bold text-emerald-400">
+                <span className="rounded-full border border-emerald-500/20 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
                   Cuota inicial bonificada
                 </span>
               </div>
 
               <div className="mt-4">
-                <span className="text-xs font-medium text-slate-400">Capital a adjudicar</span>
-                <p className="text-3xl font-extrabold text-orange-400">{selectedPlan.capital}</p>
+                <span className="text-xs font-medium text-slate-500">Capital a adjudicar</span>
+                <p className="text-2xl font-extrabold text-[#FF5900]">{selectedPlan.capital}</p>
               </div>
 
-              <div className="mt-4 grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div className="mt-3 grid grid-cols-2 gap-3 rounded-xl border border-slate-200/80 bg-white p-3.5">
                 <div>
-                  <p className="m-0 text-xs text-slate-400">Cuotas 1 a 4</p>
-                  <p className="mt-1 text-lg font-bold text-white">{selectedPlan.first}</p>
+                  <p className="m-0 text-xs text-slate-500">Cuotas 1 a 4</p>
+                  <p className="mt-0.5 text-base font-bold text-[#1d497f]">{selectedPlan.first}</p>
                 </div>
                 <div>
-                  <p className="m-0 text-xs font-semibold text-emerald-400">Desde cuota 5</p>
-                  <p className="mt-1 text-lg font-bold text-emerald-400">{selectedPlan.regular}</p>
+                  <p className="m-0 text-xs font-semibold text-emerald-700">Desde cuota 5</p>
+                  <p className="mt-0.5 text-base font-bold text-emerald-700">{selectedPlan.regular}</p>
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center gap-2 rounded-xl bg-amber-500/10 p-3 text-xs text-amber-300 border border-amber-500/20">
-                <Gift size={16} className="shrink-0 text-amber-400" />
-                <span>
-                  <strong>Beneficio Naranja X:</strong> tu primera cuota de suscripción está 100% bonificada.
+              <div className="mt-4 flex items-center gap-2 rounded-xl bg-orange-50 p-3 text-xs text-[#FF5900] border border-orange-200">
+                <Gift size={16} className="shrink-0 text-[#FF5900]" />
+                <span className="text-slate-700">
+                  <strong className="text-[#FF5900]">Beneficio Naranja X:</strong> tu primera cuota de suscripción está 100% bonificada ($0).
                 </span>
               </div>
             </div>
@@ -646,16 +624,16 @@ function AdhesionSection({
           {step === 'contact' ? (
             <form
               onSubmit={handleContactSubmit}
-              className="relative overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-[#141f36] to-[#0c1424] p-6 shadow-2xl backdrop-blur-xl sm:p-8"
+              className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-white/60 text-slate-800"
               data-testid="form-adhesion"
             >
-              <div className="flex items-center gap-3.5 border-b border-white/10 pb-5">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-orange-500/40 bg-orange-500/20 text-orange-400">
+              <div className="flex items-center gap-3.5 border-b border-slate-100 pb-5">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-orange-200 bg-orange-50 text-[#FF5900]">
                   <FileText size={22} />
                 </div>
                 <div>
-                  <h3 className="m-0 text-lg font-bold text-white">Tus datos de contacto</h3>
-                  <p className="m-0 text-xs text-slate-300">
+                  <h3 className="m-0 text-lg font-bold text-[#1d497f]">Tus datos de contacto</h3>
+                  <p className="m-0 text-xs text-slate-500">
                     Paso 1 de 2: Registrá tus datos personales
                   </p>
                 </div>
@@ -663,14 +641,14 @@ function AdhesionSection({
 
               <div className="mt-6 space-y-4">
                 <label className="block">
-                  <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                  <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
                     Nombre y Apellido
                   </span>
                   <input
                     required
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#1d497f] focus:ring-2 focus:ring-[#1d497f]/40"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/30"
                     placeholder="Por ejemplo, Juan Pérez"
                     data-testid="input-name"
                   />
@@ -678,28 +656,28 @@ function AdhesionSection({
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="block">
-                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
                       DNI
                     </span>
                     <input
                       required
                       value={form.dni}
                       onChange={(e) => setForm({ ...form, dni: e.target.value })}
-                      className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#1d497f] focus:ring-2 focus:ring-[#1d497f]/40"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/30"
                       placeholder="Sin puntos ni espacios"
                       data-testid="input-dni"
                     />
                   </label>
 
                   <label className="block">
-                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
                       WhatsApp
                     </span>
                     <input
                       required
                       value={form.whatsapp}
                       onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-                      className="w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3.5 text-sm text-white outline-none transition-all placeholder:text-white/30 focus:border-[#1d497f] focus:ring-2 focus:ring-[#1d497f]/40"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/30"
                       placeholder="Ej: 11 5555 5555"
                       data-testid="input-whatsapp"
                     />
@@ -707,24 +685,24 @@ function AdhesionSection({
                 </div>
               </div>
 
-              <div className="mt-6 space-y-3 border-t border-white/10 pt-5">
-                <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-200 sm:text-sm">
+              <div className="mt-6 space-y-3 border-t border-slate-100 pt-5">
+                <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-700 sm:text-sm">
                   <input
                     type="checkbox"
                     checked={understands}
                     onChange={(e) => setUnderstands(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#93c46d]"
+                    className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#FF5900]"
                     data-testid="checkbox-understands"
                   />
                   <span>Entiendo que me estoy suscribiendo a un sistema de capitalización y ahorro oficial (Res. IGJ 000289/11).</span>
                 </label>
 
-                <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-200 sm:text-sm">
+                <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-700 sm:text-sm">
                   <input
                     type="checkbox"
                     checked={terms}
                     onChange={(e) => setTerms(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#93c46d]"
+                    className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#FF5900]"
                     data-testid="checkbox-terms"
                   />
                   <span>Acepto las bases y condiciones contractuales de Fondus y Naranja X.</span>
@@ -735,7 +713,7 @@ function AdhesionSection({
                 <button
                   type="submit"
                   disabled={!validContact}
-                  className="w-full rounded-xl bg-[#93c46d] hover:bg-[#82b25c] disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold py-4 px-6 shadow-xl shadow-green-600/25 active:scale-[0.98] transition-all text-base uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full rounded-xl bg-[#FF5900] hover:bg-[#e54f00] disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold py-4 px-6 shadow-xl shadow-orange-500/25 active:scale-[0.98] transition-all text-base uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
                   data-testid="button-adhere"
                 >
                   <span>CONTINUAR A MEDIO DE PAGO</span>
@@ -743,8 +721,8 @@ function AdhesionSection({
                 </button>
               </div>
 
-              <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-white/50">
-                <ShieldCheck size={14} className="text-emerald-400" />
+              <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-slate-500">
+                <ShieldCheck size={14} className="text-[#FF5900]" />
                 <span>Tus datos están protegidos y se utilizan únicamente para la gestión de adhesión.</span>
               </p>
             </form>
@@ -770,21 +748,21 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
   const [modalRendimientos, setModalRendimientos] = useState(false);
 
   return (
-    <footer id="legal" className="border-t border-white/10 bg-[#070d1a] px-6 py-12 sm:px-10 lg:px-12">
+    <footer id="legal" className="border-t border-slate-200 bg-white px-6 py-12 sm:px-10 lg:px-12 text-slate-700">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr]">
           <div>
             <div className="inline-block bg-white px-3.5 py-1.5 rounded-2xl shadow-sm">
               <LogoLockup />
             </div>
-            <p className="mt-4 max-w-sm text-xs leading-relaxed text-slate-400 sm:text-sm">
+            <p className="mt-4 max-w-sm text-xs leading-relaxed text-slate-500 sm:text-sm">
               El poder de tus ahorros. Una alianza institucional entre Fondus y Naranja X para
               impulsar tus metas con total transparencia y respaldo.
             </p>
             <button
               type="button"
               onClick={onRegret}
-              className="mt-6 flex items-center gap-2 rounded-xl border border-[#ff5a00]/40 bg-[#ff5a00]/10 px-4 py-2.5 text-xs font-bold text-[#ff9b6a] transition-all hover:bg-[#ff5a00] hover:text-white"
+              className="mt-6 flex items-center gap-2 rounded-xl border border-[#FF5900]/40 bg-[#FF5900]/10 px-4 py-2.5 text-xs font-bold text-[#FF5900] transition-all hover:bg-[#FF5900] hover:text-white cursor-pointer"
               data-testid="button-regret"
             >
               <Mail size={14} /> Botón de Arrepentimiento (10 días)
@@ -793,8 +771,8 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
 
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="h-2 w-2 rounded-full bg-[#ff5a00]" />
-              <p className="m-0 text-xs font-bold uppercase tracking-wider text-slate-200">
+              <span className="h-2 w-2 rounded-full bg-[#FF5900]" />
+              <p className="m-0 text-xs font-bold uppercase tracking-wider text-[#1d497f]">
                 Condiciones Generales y Descargas
               </p>
             </div>
@@ -806,18 +784,18 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
                 download="condiciones.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left shadow-md transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#121f3a]"
+                className="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left shadow-sm transition-all duration-200 hover:border-[#FF5900]/50 hover:bg-orange-50/30"
                 data-testid="button-legal-condiciones-generales"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white group-hover:text-[#ff9b6a]">
+                  <span className="text-xs font-bold text-[#1d497f] group-hover:text-[#FF5900]">
                     Condiciones Generales
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 group-hover:bg-[#FF5900]/20 group-hover:text-[#FF5900]">
                     <Download size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[11px] leading-tight text-slate-400">
+                <span className="mt-2 text-[11px] leading-tight text-slate-500">
                   Objeto del contrato, cálculo de cuotas y normativas de la IGJ (PDF)
                 </span>
               </a>
@@ -828,18 +806,18 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
                 download="titulo.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left shadow-md transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#121f3a]"
+                className="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left shadow-sm transition-all duration-200 hover:border-[#FF5900]/50 hover:bg-orange-50/30"
                 data-testid="button-legal-título-de-capitalización"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white group-hover:text-[#ff9b6a]">
+                  <span className="text-xs font-bold text-[#1d497f] group-hover:text-[#FF5900]">
                     Título de Capitalización
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 group-hover:bg-[#FF5900]/20 group-hover:text-[#FF5900]">
                     <Download size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[11px] leading-tight text-slate-400">
+                <span className="mt-2 text-[11px] leading-tight text-slate-500">
                   Modelo del título, vigencia y capital nominal (PDF)
                 </span>
               </a>
@@ -850,18 +828,18 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
                 download="rescate.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left shadow-md transition-all duration-200 hover:border-[#ff5a00]/50 hover:bg-[#121f3a]"
+                className="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left shadow-sm transition-all duration-200 hover:border-[#FF5900]/50 hover:bg-orange-50/30"
                 data-testid="button-legal-tabla-de-rescate-y-endoso"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white group-hover:text-[#ff9b6a]">
+                  <span className="text-xs font-bold text-[#1d497f] group-hover:text-[#FF5900]">
                     Tabla de Rescate
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:bg-[#ff5a00]/20 group-hover:text-[#ff8141]">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 group-hover:bg-[#FF5900]/20 group-hover:text-[#FF5900]">
                     <Download size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[11px] leading-tight text-slate-400">
+                <span className="mt-2 text-[11px] leading-tight text-slate-500">
                   Valores de rescate para planes de 300 meses (PDF)
                 </span>
               </a>
@@ -870,18 +848,18 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
               <button
                 type="button"
                 onClick={() => setModalSorteo(true)}
-                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left shadow-md transition-all duration-200 hover:border-emerald-500/50 hover:bg-[#121f3a]"
+                className="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left shadow-sm transition-all duration-200 hover:border-[#FF5900]/50 hover:bg-orange-50/30 cursor-pointer"
                 data-testid="button-legal-sorteo"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white group-hover:text-emerald-400">
+                  <span className="text-xs font-bold text-[#1d497f] group-hover:text-[#FF5900]">
                     Sorteo Oficial
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/10 text-white/70 group-hover:bg-emerald-500/20 group-hover:text-emerald-400">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-[#1d497f] group-hover:bg-[#FF5900]/20 group-hover:text-[#FF5900]">
                     <Info size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[11px] leading-tight text-slate-400">
+                <span className="mt-2 text-[11px] leading-tight text-slate-500">
                   Mecanismo y fechas de adjudicación mensual por Quiniela LOTBA S.E.
                 </span>
               </button>
@@ -890,18 +868,18 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
               <button
                 type="button"
                 onClick={() => setModalRendimientos(true)}
-                className="group flex flex-col justify-between rounded-2xl border border-white/10 bg-[#0d1629] p-4 text-left shadow-md transition-all duration-200 hover:border-emerald-500/50 hover:bg-[#121f3a]"
+                className="group flex flex-col justify-between rounded-2xl border border-slate-200 bg-slate-50 p-4 text-left shadow-sm transition-all duration-200 hover:border-[#FF5900]/50 hover:bg-orange-50/30 cursor-pointer"
                 data-testid="button-legal-participación-y-rendimientos"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-white group-hover:text-emerald-400">
+                  <span className="text-xs font-bold text-[#1d497f] group-hover:text-[#FF5900]">
                     Rendimientos
                   </span>
-                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/10 text-white/70 group-hover:bg-emerald-500/20 group-hover:text-emerald-400">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-blue-100 text-[#1d497f] group-hover:bg-[#FF5900]/20 group-hover:text-[#FF5900]">
                     <Info size={13} />
                   </span>
                 </div>
-                <span className="mt-2 text-[11px] leading-tight text-slate-400">
+                <span className="mt-2 text-[11px] leading-tight text-slate-500">
                   Participación en los resultados de Reservas Matemáticas
                 </span>
               </button>
@@ -909,9 +887,9 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:justify-between">
+        <div className="mt-10 flex flex-col gap-3 border-t border-slate-200 pt-6 text-xs text-slate-500 sm:flex-row sm:justify-between">
           <span>Planes autorizados por IGJ N° Res. 289/11</span>
-          <span className="font-bold text-[#ff9b6a]">No contamos con cobradores a domicilio</span>
+          <span className="font-bold text-[#FF5900]">No contamos con cobradores a domicilio</span>
           <span>© Fondus · Naranja X · Todos los derechos reservados</span>
         </div>
       </div>
@@ -1037,20 +1015,20 @@ function RegretModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#050914]/85 p-4 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       data-testid="modal-regret"
     >
-      <div className="relative w-full max-w-md rounded-3xl border border-white/15 bg-gradient-to-b from-[#141f36] to-[#0c1424] p-6 shadow-2xl sm:p-8">
+      <div className="relative w-full max-w-md rounded-2xl border border-slate-100 bg-white p-6 shadow-2xl sm:p-8">
         <div className="flex items-start justify-between">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#ff5a00]/40 bg-[#ff5a00]/20 text-[#ff8141]">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[#FF5900]/30 bg-orange-50 text-[#FF5900]">
             <Mail size={20} />
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 text-white/50 transition-colors hover:text-white"
+            className="p-1 text-slate-400 transition-colors hover:text-slate-700 cursor-pointer"
             aria-label="Cerrar modal"
             data-testid="button-close-regret"
           >
@@ -1060,14 +1038,14 @@ function RegretModal({ onClose }: { onClose: () => void }) {
 
         {sent ? (
           <div className="py-6 text-center">
-            <h2 className="text-2xl font-bold text-white">Solicitud enviada</h2>
-            <p className="mt-3 text-sm leading-relaxed text-slate-300">
+            <h2 className="text-2xl font-bold text-[#1d497f]">Solicitud enviada</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-600">
               Te contactaremos a la brevedad para gestionar tu solicitud de arrepentimiento dentro de los plazos legales.
             </p>
             <button
               type="button"
               onClick={onClose}
-              className="mt-6 rounded-xl bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] px-6 py-3 text-xs font-bold uppercase text-white shadow-lg"
+              className="mt-6 rounded-xl bg-[#FF5900] hover:bg-[#e54f00] px-6 py-3 text-xs font-bold uppercase text-white shadow-lg shadow-orange-500/25 cursor-pointer"
               data-testid="button-close-sent"
             >
               Cerrar
@@ -1075,25 +1053,25 @@ function RegretModal({ onClose }: { onClose: () => void }) {
           </div>
         ) : (
           <>
-            <span className="mt-5 inline-block text-xs font-bold uppercase tracking-wider text-[#ff8141]">
+            <span className="mt-5 inline-block text-xs font-bold uppercase tracking-wider text-[#FF5900]">
               Derecho de Arrepentimiento
             </span>
-            <h2 className="mt-1 text-2xl font-bold text-white">
+            <h2 className="mt-1 text-2xl font-bold text-[#1d497f]">
               ¿Querés registrar tu solicitud?
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-slate-300">
+            <p className="mt-3 text-sm leading-relaxed text-slate-600">
               Disponés de 10 días para revocar tu adhesión sin ningún costo. Ingresá tu correo electrónico para asentar la gestión:
             </p>
             <input
               type="email"
               placeholder="tu@email.com"
-              className="mt-5 w-full rounded-xl border border-white/15 bg-[#091122] px-4 py-3 text-sm text-white outline-none focus:border-[#ff5a00]"
+              className="mt-5 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none focus:border-[#FF5900] focus:bg-white"
               data-testid="input-regret-email"
             />
             <button
               type="button"
               onClick={() => setSent(true)}
-              className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff5a00] to-[#ff7a29] py-3.5 text-sm font-bold uppercase text-white shadow-lg shadow-orange-500/25 transition-transform hover:scale-[1.01]"
+              className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#FF5900] hover:bg-[#e54f00] py-3.5 text-sm font-bold uppercase text-white shadow-lg shadow-orange-500/25 transition-transform hover:scale-[1.01] cursor-pointer"
               data-testid="button-send-regret"
             >
               <span>Enviar Solicitud</span>
@@ -1113,32 +1091,32 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#050914]/90 p-4 backdrop-blur-md overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm overflow-y-auto"
       role="dialog"
       aria-modal="true"
       data-testid="modal-success"
     >
-      <div className="relative w-full max-w-lg my-8 rounded-3xl border border-emerald-500/40 bg-gradient-to-b from-[#142338] to-[#0c1424] p-6 sm:p-8 text-center shadow-2xl text-white">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-500/20 text-emerald-400">
+      <div className="relative w-full max-w-lg my-8 rounded-2xl border border-slate-100 bg-white p-6 sm:p-8 text-center shadow-2xl text-slate-800">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-50 text-emerald-600">
           <Check size={32} />
         </div>
 
-        <h2 className="mt-5 text-2xl font-extrabold text-white sm:text-3xl">
+        <h2 className="mt-5 text-2xl font-extrabold text-[#1d497f] sm:text-3xl">
           ¡Adhesión Registrada con Éxito!
         </h2>
-        <p className="mt-3 text-sm leading-relaxed text-slate-300">
+        <p className="mt-3 text-sm leading-relaxed text-slate-600">
           Recibimos tus datos y la vinculación de tu medio de pago correctamente. Tu cuota de suscripción inicial se encuentra bonificada por la alianza con Naranja X. Te contactaremos por WhatsApp con tu póliza digital y número de sorteo oficial de LOTBA S.E.
         </p>
 
         {/* Video en pantalla final */}
-        <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-black/40">
+        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-black/5">
           <video
             autoPlay
             muted
             loop
             playsInline
             poster={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
-            className="w-full h-44 object-cover opacity-90"
+            className="w-full h-44 object-cover"
             data-testid="video-success"
           >
             <source src={`${import.meta.env.BASE_URL}assets/hero-video.mp4`} type="video/mp4" />
@@ -1149,7 +1127,7 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="w-full rounded-xl bg-gradient-to-r from-orange-500 to-[#ff7a29] py-3.5 text-sm font-bold uppercase text-white shadow-lg shadow-orange-500/25 transition-transform hover:scale-[1.01]"
+            className="w-full rounded-xl bg-[#FF5900] hover:bg-[#e54f00] py-3.5 text-sm font-bold uppercase text-white shadow-lg shadow-orange-500/25 transition-transform hover:scale-[1.01] cursor-pointer"
             data-testid="button-success-close"
           >
             Finalizar
@@ -1165,18 +1143,18 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
           </button>
 
           {/* Logo Fondus Agencia Digital en el footer envuelto en botón interactivo para reiniciar */}
-          <div className="mt-8 border-t border-white/10 pt-5 w-full flex flex-col items-center">
+          <div className="mt-8 border-t border-slate-100 pt-5 w-full flex flex-col items-center">
             <button
               type="button"
               onClick={handleRestart}
-              className="flex flex-col items-center gap-1 text-slate-400 hover:text-white transition-colors cursor-pointer group"
+              className="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer group"
               data-testid="button-logo-reload"
             >
               <div className="flex items-center gap-2">
-                <span className="text-lg font-black tracking-tight text-white group-hover:text-[#93c46d] transition-colors">
+                <span className="text-lg font-black tracking-tight text-[#1d497f]">
                   fondus
                 </span>
-                <span className="text-xs text-slate-400 font-medium">|</span>
+                <span className="text-xs text-slate-300 font-medium">|</span>
                 <span className="text-xs uppercase tracking-widest text-[#93c46d] font-bold">
                   Agencia Digital
                 </span>
@@ -1216,9 +1194,9 @@ function Home({
   };
 
   return (
-    <div className="app-shell grain">
+    <div className="min-h-screen bg-[#93c46d] text-slate-800 antialiased font-sans selection:bg-[#FF5900] selection:text-white">
       {isPromo && (
-        <div className="sticky top-0 z-50 flex items-center justify-between bg-[#ff5a00] px-4 py-2.5 text-xs font-bold text-white shadow-md">
+        <div className="sticky top-0 z-50 flex items-center justify-between bg-[#FF5900] px-4 py-2.5 text-xs font-bold text-white shadow-md">
           <div className="mx-auto flex items-center gap-2">
             <Gift size={16} />
             <span>
