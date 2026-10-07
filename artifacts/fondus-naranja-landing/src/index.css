@@ -50,7 +50,7 @@
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  background: #93c46d;
+  background: #ffffff;
   color: #1e293b;
   font-family: var(--app-font-sans);
   min-width: 320px;

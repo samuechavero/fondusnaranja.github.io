@@ -20,7 +20,7 @@ interface PaymentFormProps {
 }
 
 export default function PaymentForm({
-  planTitle = 'Plan Vehículo 0KM',
+  planTitle = '$10.000.000',
   planCapital = '$10.000.000',
   planRegular = '$34.500',
   initialDni = '',

@@ -35,39 +35,35 @@ const queryClient = new QueryClient();
 
 type Plan = {
   id: string;
-  title: string;
   capital: string;
   first: string;
   regular: string;
-  eyebrow: string;
+  totalCuotas: number;
   featured?: boolean;
 };
 
 const plans: Plan[] = [
   {
-    id: 'inicio',
-    title: 'Plan Inicial',
-    capital: '$7.500.000',
-    first: '$43.800',
-    regular: '$25.875',
-    eyebrow: 'Ideal para empezar tu ahorro',
-  },
-  {
-    id: 'elegido',
-    title: 'Plan Vehículo 0KM',
+    id: '10m',
     capital: '$10.000.000',
-    first: '$58.400',
+    first: '$58.000',
     regular: '$34.500',
-    eyebrow: 'El más elegido por la comunidad',
+    totalCuotas: 300,
     featured: true,
   },
   {
-    id: 'mayor',
-    title: 'Plan Vivienda & Futuro',
+    id: '20m',
     capital: '$20.000.000',
-    first: '$116.800',
+    first: '$116.000',
     regular: '$69.000',
-    eyebrow: 'Mayor capital y grandes proyectos',
+    totalCuotas: 300,
+  },
+  {
+    id: '30m',
+    capital: '$30.000.000',
+    first: '$174.000',
+    regular: '$103.500',
+    totalCuotas: 300,
   },
 ];
 
@@ -255,21 +251,16 @@ function HeroSection({ onStart }: { onStart: () => void }) {
           </div>
         </div>
 
-        {/* Hero Visual Card con <video> */}
-        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 border border-white/60">
-          <div className="relative overflow-hidden rounded-xl bg-slate-900 flex justify-center items-center">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
-              className="w-full h-auto max-h-[500px] object-cover rounded-xl"
-              data-testid="video-hero"
-            >
-              <source src={`${import.meta.env.BASE_URL}assets/hero-video.mp4`} type="video/mp4" />
-              Tu navegador no soporta el tag de video.
-            </video>
+        {/* Hero Visual Card con YouTube Short */}
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 border border-slate-100">
+          <div className="relative overflow-hidden rounded-xl bg-black flex justify-center items-center max-w-[340px] mx-auto shadow-lg aspect-[9/16]">
+            <iframe
+              src="https://www.youtube.com/embed/HOoj83e5WRs"
+              className="w-full h-full aspect-[9/16] rounded-xl"
+              title="Sorteo Oficial Fondus x Naranja X"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
           </div>
 
           {/* Banner de Beneficio Exclusivo */}
@@ -305,132 +296,6 @@ function HeroSection({ onStart }: { onStart: () => void }) {
   );
 }
 
-function PlansSection({
-  selectedPlan,
-  onSelectPlan,
-}: {
-  selectedPlan: Plan;
-  onSelectPlan: (plan: Plan) => void;
-}) {
-  return (
-    <section id="planes" className="relative scroll-mt-20 px-6 py-12 sm:px-10 sm:py-16 lg:px-12">
-      <div className="mx-auto max-w-7xl">
-        <div className="max-w-3xl text-left bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-white/60 mb-8">
-          <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold text-[#FF5900]">
-            Planes de Capitalización
-          </span>
-          <h2 className="text-3xl font-extrabold tracking-tight text-[#1d497f] sm:text-5xl">
-            Un plan pensado para hacer realidad tu proyecto.
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
-            Elegí el plan que mejor se adapte a vos. Tus ahorros se capitalizan mes a mes generando intereses a tu favor y participás por la adjudicación desde la primera cuota.
-          </p>
-        </div>
-
-        <div className="grid gap-8 lg:grid-cols-3">
-          {plans.map((plan, index) => {
-            const isChosen = selectedPlan.id === plan.id;
-
-            return (
-              <motion.div
-                key={plan.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.1 }}
-                className="h-full"
-              >
-                <div
-                  onClick={() => onSelectPlan(plan)}
-                  className={`flex flex-col justify-between h-full rounded-2xl border p-6 text-left transition-all duration-300 sm:p-7 bg-white shadow-xl cursor-pointer ${
-                    isChosen
-                      ? 'border-[#FF5900] ring-2 ring-[#FF5900] shadow-[0_15px_35px_-10px_rgba(255,89,0,0.35)]'
-                      : plan.featured
-                      ? 'border-orange-300 shadow-xl'
-                      : 'border-slate-100 hover:border-[#1d497f]/40'
-                  }`}
-                  data-testid={`card-plan-${plan.id}`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between border-b border-slate-100 pb-4">
-                      <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-                        Opción 0{index + 1}
-                      </span>
-                      {plan.featured ? (
-                        <span className="rounded-full bg-[#FF5900] px-3 py-1 text-xs font-black uppercase tracking-wide text-white shadow-sm">
-                          ⭐ Más Elegido
-                        </span>
-                      ) : (
-                        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
-                          Ahorro Mensual
-                        </span>
-                      )}
-                    </div>
-
-                    <p className="mt-4 text-xs font-semibold text-slate-500">
-                      {plan.eyebrow}
-                    </p>
-                    <h3 className="mt-1 text-2xl font-black text-[#1d497f]">{plan.title}</h3>
-
-                    <div className="mt-5 rounded-2xl border border-slate-100 bg-slate-50 p-4">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                        Capital a adjudicar
-                      </span>
-                      <p className="mt-1 text-3xl font-black tracking-tight text-[#FF5900] sm:text-4xl">
-                        {plan.capital}
-                      </p>
-                    </div>
-
-                    <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4">
-                      <div>
-                        <p className="text-[11px] font-medium text-slate-500">Cuotas 1 a 4</p>
-                        <p className="mt-1 text-lg font-bold text-[#1d497f] sm:text-xl">{plan.first}</p>
-                        <p className="text-[10px] text-slate-400">Gastos adm. iniciales</p>
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-bold text-emerald-700">Desde cuota 5</p>
-                        <p className="mt-1 text-lg font-bold text-emerald-700 sm:text-xl">
-                          {plan.regular}
-                        </p>
-                        <p className="text-[10px] font-semibold text-emerald-600">
-                          ¡Baja de valor!
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-6 space-y-3 text-xs text-slate-700 sm:text-sm">
-                      <Benefit text="Sorteos mensuales desde cuota 1 (si ganás, no pagás más)" />
-                      <Benefit text="Disponibilidad y rescate de fondos desde cuota 18" />
-                      <Benefit text="Telemedicina 24/7 sin cargo para vos y tu familia" />
-                      <Benefit text="Seguro de vida integral bonificado" />
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-2">
-                    <button
-                      type="button"
-                      className={`flex w-full items-center justify-center gap-2 rounded-xl py-3.5 px-4 text-sm font-bold transition-all duration-200 cursor-pointer ${
-                        isChosen
-                          ? 'bg-[#FF5900] text-white shadow-lg shadow-orange-500/35'
-                          : plan.featured
-                          ? 'bg-[#FF5900] text-white shadow-lg shadow-orange-500/25 hover:bg-[#e54f00]'
-                          : 'border border-slate-200 bg-slate-100 text-slate-800 hover:bg-slate-200'
-                      }`}
-                    >
-                      <span>{isChosen ? 'Plan seleccionado ✓' : 'Elegir este plan'}</span>
-                      <ArrowRight size={16} />
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function Benefit({ text }: { text: string }) {
   return (
     <div className="flex items-start gap-2.5">
@@ -452,8 +317,8 @@ function HowItWorksSection() {
     },
     {
       num: '02',
-      title: 'Sorteo Mensual por Quiniela',
-      desc: 'Participás el último sábado de cada mes a través de Quiniela de la Ciudad (LOTBA S.E.).',
+      title: 'Sorteo Mensual por Lotería',
+      desc: 'Participás el último sábado de cada mes a través de Lotería de la Ciudad (LOTBA S.E.).',
       icon: <Trophy className="text-[#FF5900]" size={24} />,
     },
     {
@@ -502,189 +367,541 @@ function HowItWorksSection() {
   );
 }
 
-function AdhesionSection({
-  selectedPlan,
-  onPlanChange,
-  onSuccess,
-}: {
-  selectedPlan: Plan;
-  onPlanChange: (plan: Plan) => void;
-  onSuccess: () => void;
-}) {
-  const [step, setStep] = useState<'contact' | 'payment'>('contact');
+const PROVINCIAS_ARG = [
+  'Buenos Aires',
+  'Ciudad Autónoma de Buenos Aires (CABA)',
+  'Catamarca',
+  'Chaco',
+  'Chubut',
+  'Córdoba',
+  'Corrientes',
+  'Entre Ríos',
+  'Formosa',
+  'Jujuy',
+  'La Pampa',
+  'La Rioja',
+  'Mendoza',
+  'Misiones',
+  'Neuquén',
+  'Río Negro',
+  'Salta',
+  'San Juan',
+  'San Luis',
+  'Santa Cruz',
+  'Santa Fe',
+  'Santiago del Estero',
+  'Tierra del Fuego',
+  'Tucumán',
+];
+
+const ESTADOS_CIVILES = [
+  'Soltero/a',
+  'Casado/a',
+  'Unión Convivencial',
+  'Divorciado/a',
+  'Viudo/a',
+];
+
+interface ContactFormData {
+  nombre: string;
+  apellido: string;
+  dni: string;
+  fechaNacimiento: string;
+  estadoCivil: string;
+  provincia: string;
+  localidad: string;
+  telefono: string;
+  email: string;
+}
+
+function WizardSection({ onSuccess }: { onSuccess: () => void }) {
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [selectedPlan, setSelectedPlan] = useState<Plan>(plans[0]); // default $10.000.000
+  const [contactForm, setContactForm] = useState<ContactFormData>({
+    nombre: '',
+    apellido: '',
+    dni: '',
+    fechaNacimiento: '',
+    estadoCivil: '',
+    provincia: '',
+    localidad: '',
+    telefono: '',
+    email: '',
+  });
+
+  // Paso 3: Checkboxes obligatorios
   const [understands, setUnderstands] = useState(false);
   const [terms, setTerms] = useState(false);
-  const [form, setForm] = useState({ name: '', dni: '', whatsapp: '' });
 
-  const validContact = Boolean(
-    understands && terms && form.name.trim() && form.dni.trim() && form.whatsapp.trim(),
-  );
-
-  const handleContactSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    if (validContact) {
-      setStep('payment');
-      const el = document.getElementById('adhesion');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+  const scrollToWizard = () => {
+    const el = document.getElementById('planes');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
+  const handleSelectPlan = (plan: Plan) => {
+    setSelectedPlan(plan);
+    setStep(2);
+    scrollToWizard();
+  };
+
+  const isStep2Valid = Boolean(
+    contactForm.nombre.trim() &&
+    contactForm.apellido.trim() &&
+    contactForm.dni.trim() &&
+    contactForm.fechaNacimiento &&
+    contactForm.estadoCivil &&
+    contactForm.provincia &&
+    contactForm.localidad.trim() &&
+    contactForm.telefono.trim() &&
+    contactForm.email.trim()
+  );
+
+  const handleStep2Submit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!isStep2Valid) return;
+    setStep(3);
+    scrollToWizard();
+  };
+
+  const handleStep3Submit = () => {
+    if (!understands || !terms) return;
+    setStep(4);
+    scrollToWizard();
+  };
+
   const handlePaymentSubmit = (data: PaymentData) => {
-    console.log('Pago procesado con éxito:', data);
+    console.log('Pago de adhesión procesado:', data);
     onSuccess();
   };
 
   return (
-    <section id="adhesion" className="relative scroll-mt-20 px-6 py-12 sm:px-10 sm:py-16 lg:px-12">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-14 lg:items-start">
-          {/* Tarjeta Blanca Izquierda con Resumen del Plan */}
-          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-white/60">
-            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold text-[#FF5900]">
-              {step === 'contact' ? 'Paso 1 de 2: Simulación de Adhesión' : 'Paso 2 de 2: Adhesión y Pago'}
-            </span>
-            <h2 className="text-3xl font-extrabold tracking-tight text-[#1d497f] sm:text-4xl">
-              {step === 'contact' ? (
-                <>Completá tu solicitud en menos de 1 minuto</>
-              ) : (
-                <>Confirmá tu adhesión con débito automático</>
-              )}
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-slate-600">
-              {step === 'contact'
-                ? 'Ingresá tus datos para que un asesor oficial de Fondus y Naranja X te envíe tu simulación detallada y número de sorteo sin ningún compromiso.'
-                : 'Activá tu plan mediante débito automático en tu Tarjeta Naranja con tu primera cuota de suscripción 100% bonificada.'}
-            </p>
+    <section id="planes" className="relative scroll-mt-20 px-6 py-12 sm:px-10 sm:py-16 lg:px-12 bg-slate-50/50">
+      <div className="mx-auto max-w-6xl">
 
-            {/* Selector de Planes */}
-            <div className="mt-6">
-              <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
-                Seleccioná o cambiá tu plan:
+        {/* Stepper Wizard Indicator (4 Pasos) */}
+        <div className="mb-10 max-w-3xl mx-auto">
+          <div className="flex items-center justify-between relative">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-full bg-slate-200 -z-0" />
+            <div
+              className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#FF5900] -z-0 transition-all duration-300"
+              style={{ width: `${((step - 1) / 3) * 100}%` }}
+            />
+
+            {[
+              { num: 1, label: 'Plan' },
+              { num: 2, label: 'Tus datos' },
+              { num: 3, label: 'Confirmación' },
+              { num: 4, label: 'Pago Naranja X' },
+            ].map((s) => {
+              const isPassed = step > s.num;
+              const isCurrent = step === s.num;
+
+              return (
+                <div key={s.num} className="flex flex-col items-center z-10">
+                  <div
+                    className={`flex h-10 w-10 items-center justify-center rounded-full font-bold text-sm transition-all shadow-sm ${
+                      isPassed
+                        ? 'bg-[#1d497f] text-white'
+                        : isCurrent
+                        ? 'bg-[#FF5900] text-white ring-4 ring-orange-100 scale-110'
+                        : 'bg-white text-slate-400 border-2 border-slate-200'
+                    }`}
+                  >
+                    {isPassed ? <Check size={18} strokeWidth={3} /> : s.num}
+                  </div>
+                  <span
+                    className={`mt-2 text-xs font-semibold whitespace-nowrap hidden sm:block ${
+                      isCurrent ? 'text-[#1d497f]' : isPassed ? 'text-slate-700' : 'text-slate-400'
+                    }`}
+                  >
+                    {s.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ==================================================== */}
+        {/* PASO 1: SELECCIÓN DE PLAN (SOLO TARJETAS DE CAPITAL) */}
+        {/* ==================================================== */}
+        {step === 1 && (
+          <div>
+            <div className="max-w-3xl text-left bg-white rounded-2xl shadow-sm p-6 sm:p-8 border border-slate-200 mb-8">
+              <span className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-orange-200 bg-orange-50 px-3.5 py-1 text-xs font-bold text-[#FF5900]">
+                Paso 1 de 4: Selección de Capital
               </span>
-              <div className="grid grid-cols-3 gap-2">
-                {plans.map((p) => {
-                  const active = p.id === selectedPlan.id;
-                  return (
-                    <button
-                      key={p.id}
-                      type="button"
-                      onClick={() => onPlanChange(p)}
-                      className={`rounded-xl border p-2.5 text-center transition-all cursor-pointer ${
-                        active
-                          ? 'border-[#FF5900] bg-orange-50 text-[#FF5900] font-bold ring-2 ring-[#FF5900]'
-                          : 'border-slate-200 bg-slate-50 text-slate-600 hover:text-[#1d497f]'
-                      }`}
-                    >
-                      <p className="m-0 text-xs truncate">{p.title}</p>
-                      <p className="m-0 text-[11px] font-bold text-[#FF5900]">{p.capital}</p>
-                    </button>
-                  );
-                })}
-              </div>
+              <h2 className="text-3xl font-extrabold tracking-tight text-[#1d497f] sm:text-5xl">
+                Elegí tu Capital a Adjudicar
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-slate-700 sm:text-lg">
+                Tus ahorros se capitalizan mes a mes generando intereses a tu favor y participás por la adjudicación mensual por lotería desde la primera cuota.
+              </p>
             </div>
 
-            {/* Plan Summary Box */}
-            <div className="mt-6 rounded-2xl border border-slate-100 bg-slate-50 p-5">
-              <div className="flex items-center justify-between border-b border-slate-200/80 pb-3">
-                <div>
-                  <span className="text-[11px] font-bold uppercase text-slate-500">Plan elegido</span>
-                  <p className="m-0 text-base font-bold text-[#1d497f]">{selectedPlan.title}</p>
-                </div>
-                <span className="rounded-full border border-emerald-500/20 bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700">
-                  Cuota inicial bonificada
-                </span>
-              </div>
+            <div className="grid gap-8 lg:grid-cols-3">
+              {plans.map((plan, index) => {
+                const isChosen = selectedPlan.id === plan.id;
 
-              <div className="mt-4">
-                <span className="text-xs font-medium text-slate-500">Capital a adjudicar</span>
-                <p className="text-2xl font-extrabold text-[#FF5900]">{selectedPlan.capital}</p>
-              </div>
+                return (
+                  <motion.div
+                    key={plan.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.08 }}
+                    className="h-full"
+                  >
+                    <div
+                      onClick={() => handleSelectPlan(plan)}
+                      className={`flex flex-col justify-between h-full rounded-2xl border p-6 text-left transition-all duration-300 sm:p-7 bg-white shadow-md hover:shadow-xl cursor-pointer group ${
+                        isChosen
+                          ? 'border-[#FF5900] ring-2 ring-[#FF5900] shadow-orange-500/10'
+                          : plan.featured
+                          ? 'border-orange-300'
+                          : 'border-slate-200 hover:border-[#1d497f]/40'
+                      }`}
+                      data-testid={`card-plan-${plan.id}`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-4">
+                          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                            Opción 0{index + 1}
+                          </span>
+                          {plan.featured && (
+                            <span className="rounded-full bg-[#FF5900] px-3 py-1 text-xs font-black uppercase tracking-wide text-white shadow-sm">
+                              ⭐ Más Elegido
+                            </span>
+                          )}
+                        </div>
 
-              <div className="mt-3 grid grid-cols-2 gap-3 rounded-xl border border-slate-200/80 bg-white p-3.5">
-                <div>
-                  <p className="m-0 text-xs text-slate-500">Cuotas 1 a 4</p>
-                  <p className="mt-0.5 text-base font-bold text-[#1d497f]">{selectedPlan.first}</p>
-                </div>
-                <div>
-                  <p className="m-0 text-xs font-semibold text-emerald-700">Desde cuota 5</p>
-                  <p className="mt-0.5 text-base font-bold text-emerald-700">{selectedPlan.regular}</p>
-                </div>
-              </div>
+                        {/* Monto de Capital únicamente (sin etiquetas descriptivas) */}
+                        <div className="mt-6 rounded-2xl border border-slate-100 bg-slate-50/80 p-5 text-center">
+                          <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                            Capital a Adjudicar
+                          </span>
+                          <p className="mt-2 text-3xl sm:text-4xl font-black tracking-tight text-[#FF5900]">
+                            {plan.capital}
+                          </p>
+                        </div>
 
-              <div className="mt-4 flex items-center gap-2 rounded-xl bg-orange-50 p-3 text-xs text-[#FF5900] border border-orange-200">
-                <Gift size={16} className="shrink-0 text-[#FF5900]" />
-                <span className="text-slate-700">
-                  <strong className="text-[#FF5900]">Beneficio Naranja X:</strong> tu primera cuota de suscripción está 100% bonificada ($0).
-                </span>
-              </div>
+                        {/* Detalle de Cuotas */}
+                        <div className="mt-5 grid grid-cols-2 gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4">
+                          <div>
+                            <p className="text-[11px] font-medium text-slate-500">Cuotas 1 a 4</p>
+                            <p className="mt-1 text-lg font-bold text-[#1d497f] sm:text-xl">
+                              {plan.first}
+                            </p>
+                            <p className="text-[10px] text-slate-400">Gastos adm. iniciales</p>
+                          </div>
+                          <div>
+                            <p className="text-[11px] font-bold text-emerald-700">Desde cuota 5</p>
+                            <p className="mt-1 text-lg font-bold text-emerald-700 sm:text-xl">
+                              {plan.regular}
+                            </p>
+                            <p className="text-[10px] font-semibold text-emerald-600">
+                              300 cuotas fijas
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="mt-6 space-y-3 text-xs text-slate-700 sm:text-sm">
+                          <Benefit text="Sorteos mensuales desde cuota 1 (si ganás, no pagás más)" />
+                          <Benefit text="Disponibilidad y rescate de fondos desde cuota 18" />
+                          <Benefit text="Telemedicina 24/7 sin cargo para vos y tu familia" />
+                          <Benefit text="Seguro de vida integral bonificado" />
+                        </div>
+                      </div>
+
+                      <div className="mt-8 pt-2">
+                        <button
+                          type="button"
+                          className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 px-4 text-sm font-bold bg-[#FF5900] group-hover:bg-[#e54f00] text-white shadow-md shadow-orange-500/20 transition-all cursor-pointer"
+                        >
+                          <span>Elegir {plan.capital}</span>
+                          <ArrowRight size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
+        )}
 
-          {/* Formulario Dinámico: Paso 1 (Datos de contacto) o Paso 2 (PaymentForm) */}
-          {step === 'contact' ? (
-            <form
-              onSubmit={handleContactSubmit}
-              className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 border border-white/60 text-slate-800"
-              data-testid="form-adhesion"
-            >
-              <div className="flex items-center gap-3.5 border-b border-slate-100 pb-5">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-orange-200 bg-orange-50 text-[#FF5900]">
-                  <FileText size={22} />
+        {/* ==================================================== */}
+        {/* PASO 2: TUS DATOS DE CONTACTO (9 CAMPOS ESTRICTOS)   */}
+        {/* ==================================================== */}
+        {step === 2 && (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-2xl mx-auto"
+          >
+            <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-9 border border-slate-200">
+              {/* Header Paso 2 */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-orange-200 bg-orange-50 text-[#FF5900]">
+                    <FileText size={22} />
+                  </div>
+                  <div>
+                    <h3 className="m-0 text-xl font-bold text-[#1d497f]">Tus datos de contacto</h3>
+                    <p className="m-0 text-xs text-slate-500">Paso 2 de 4: Completá los 9 datos del titular</p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="m-0 text-lg font-bold text-[#1d497f]">Tus datos de contacto</h3>
-                  <p className="m-0 text-xs text-slate-500">
-                    Paso 1 de 2: Registrá tus datos personales
-                  </p>
+
+                <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 self-start sm:self-auto">
+                  <span className="text-xs text-slate-500">Capital:</span>
+                  <span className="text-xs font-extrabold text-[#FF5900]">{selectedPlan.capital}</span>
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    className="ml-1 text-[11px] text-[#1d497f] underline hover:text-[#FF5900] font-semibold cursor-pointer"
+                  >
+                    Cambiar
+                  </button>
                 </div>
               </div>
 
-              <div className="mt-6 space-y-4">
-                <label className="block">
-                  <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
-                    Nombre y Apellido
-                  </span>
-                  <input
-                    required
-                    value={form.name}
-                    onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/30"
-                    placeholder="Por ejemplo, Juan Pérez"
-                    data-testid="input-name"
-                  />
-                </label>
-
+              {/* Formulario Estricto de 9 Campos */}
+              <form onSubmit={handleStep2Submit} className="mt-6 space-y-4">
+                {/* 1. Nombre y 2. Apellido */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="block">
-                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
-                      DNI
+                    <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
+                      Nombre *
                     </span>
                     <input
                       required
-                      value={form.dni}
-                      onChange={(e) => setForm({ ...form, dni: e.target.value })}
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/30"
+                      value={contactForm.nombre}
+                      onChange={(e) => setContactForm({ ...contactForm, nombre: e.target.value })}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/20"
+                      placeholder="Ej: Juan"
+                      data-testid="input-nombre"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
+                      Apellido *
+                    </span>
+                    <input
+                      required
+                      value={contactForm.apellido}
+                      onChange={(e) => setContactForm({ ...contactForm, apellido: e.target.value })}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/20"
+                      placeholder="Ej: Pérez"
+                      data-testid="input-apellido"
+                    />
+                  </label>
+                </div>
+
+                {/* 3. DNI y 4. Fecha de Nacimiento */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
+                      DNI *
+                    </span>
+                    <input
+                      required
+                      value={contactForm.dni}
+                      onChange={(e) => setContactForm({ ...contactForm, dni: e.target.value.replace(/\D/g, '').slice(0, 9) })}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/20"
                       placeholder="Sin puntos ni espacios"
                       data-testid="input-dni"
                     />
                   </label>
 
                   <label className="block">
-                    <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
-                      WhatsApp
+                    <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
+                      Fecha de Nacimiento *
                     </span>
                     <input
                       required
-                      value={form.whatsapp}
-                      onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/30"
-                      placeholder="Ej: 11 5555 5555"
-                      data-testid="input-whatsapp"
+                      type="date"
+                      value={contactForm.fechaNacimiento}
+                      onChange={(e) => setContactForm({ ...contactForm, fechaNacimiento: e.target.value })}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/20"
+                      data-testid="input-fecha-nacimiento"
                     />
                   </label>
                 </div>
+
+                {/* 5. Estado Civil y 6. Provincia */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
+                      Estado Civil *
+                    </span>
+                    <select
+                      required
+                      value={contactForm.estadoCivil}
+                      onChange={(e) => setContactForm({ ...contactForm, estadoCivil: e.target.value })}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/20"
+                      data-testid="select-estado-civil"
+                    >
+                      <option value="">Seleccioná estado civil</option>
+                      {ESTADOS_CIVILES.map((ec) => (
+                        <option key={ec} value={ec}>{ec}</option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
+                      Provincia *
+                    </span>
+                    <select
+                      required
+                      value={contactForm.provincia}
+                      onChange={(e) => setContactForm({ ...contactForm, provincia: e.target.value })}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/20"
+                      data-testid="select-provincia"
+                    >
+                      <option value="">Seleccioná tu provincia</option>
+                      {PROVINCIAS_ARG.map((pr) => (
+                        <option key={pr} value={pr}>{pr}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                {/* 7. Localidad */}
+                <label className="block">
+                  <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
+                    Localidad *
+                  </span>
+                  <input
+                    required
+                    value={contactForm.localidad}
+                    onChange={(e) => setContactForm({ ...contactForm, localidad: e.target.value })}
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/20"
+                    placeholder="Ej: Córdoba Capital"
+                    data-testid="input-localidad"
+                  />
+                </label>
+
+                {/* 8. Teléfono y 9. Email */}
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
+                      Teléfono / WhatsApp *
+                    </span>
+                    <input
+                      required
+                      type="tel"
+                      value={contactForm.telefono}
+                      onChange={(e) => setContactForm({ ...contactForm, telefono: e.target.value })}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/20"
+                      placeholder="Ej: 11 5555 5555"
+                      data-testid="input-telefono"
+                    />
+                  </label>
+
+                  <label className="block">
+                    <span className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-[#1d497f]">
+                      Email *
+                    </span>
+                    <input
+                      required
+                      type="email"
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-[#1d497f] focus:bg-white focus:ring-2 focus:ring-[#1d497f]/20"
+                      placeholder="Ej: juan@ejemplo.com"
+                      data-testid="input-email"
+                    />
+                  </label>
+                </div>
+
+                {/* Botones de acción Paso 2 */}
+                <div className="mt-8 flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-slate-100">
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    className="rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 px-5 py-3.5 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
+                  >
+                    ← Volver a Selección de Plan
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={!isStep2Valid}
+                    className="flex-1 rounded-xl bg-[#FF5900] hover:bg-[#e54f00] disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold py-3.5 px-6 shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all text-sm uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
+                    data-testid="button-continuar-paso-3"
+                  >
+                    <span>CONTINUAR A CONFIRMACIÓN</span>
+                    <ArrowRight size={16} />
+                  </button>
+                </div>
+              </form>
+            </div>
+          </motion.div>
+        )}
+
+        {/* ==================================================== */}
+        {/* PASO 3: CONFIRMACIÓN Y CHECKBOXES OBLIGATORIOS       */}
+        {/* ==================================================== */}
+        {step === 3 && (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            className="max-w-2xl mx-auto"
+          >
+            <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-9 border border-slate-200">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-5">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-emerald-200 bg-emerald-50 text-emerald-600">
+                  <BadgeCheck size={24} />
+                </div>
+                <div>
+                  <h3 className="m-0 text-xl font-bold text-[#1d497f]">Resumen y Confirmación</h3>
+                  <p className="m-0 text-xs text-slate-500">Paso 3 de 4: Revisá tu orden de compra</p>
+                </div>
               </div>
 
+              {/* Tarjeta de Resumen: Orden de compra, cuotas (300) y valores */}
+              <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 p-5 space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                  <span className="text-xs font-bold uppercase text-slate-500">Orden de Compra Elegida</span>
+                  <span className="text-xl font-black text-[#FF5900]">{selectedPlan.capital}</span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 text-xs">
+                  <div className="rounded-xl bg-white border border-slate-200 p-3">
+                    <p className="m-0 text-slate-500">Cantidad de cuotas</p>
+                    <p className="m-0 mt-1 font-bold text-base text-[#1d497f]">300 meses</p>
+                  </div>
+                  <div className="rounded-xl bg-white border border-slate-200 p-3">
+                    <p className="m-0 text-slate-500">Cuotas 1 a 4</p>
+                    <p className="m-0 mt-1 font-bold text-base text-[#1d497f]">{selectedPlan.first} / mes</p>
+                  </div>
+                  <div className="rounded-xl bg-white border border-slate-200 p-3">
+                    <p className="m-0 text-emerald-700 font-semibold">Desde cuota 5 en adelante</p>
+                    <p className="m-0 mt-1 font-bold text-base text-emerald-700">{selectedPlan.regular} / mes</p>
+                  </div>
+                  <div className="rounded-xl bg-orange-50 border border-orange-200 p-3">
+                    <p className="m-0 text-[#FF5900] font-semibold">Beneficio Naranja X</p>
+                    <p className="m-0 mt-1 font-bold text-sm text-[#FF5900]">Cuota 1: $0 Bonificada</p>
+                  </div>
+                </div>
+
+                {/* Datos del titular */}
+                <div className="rounded-xl bg-white border border-slate-200 p-4 text-xs space-y-1.5">
+                  <p className="m-0 font-bold text-[#1d497f] text-sm mb-2">Datos del Titular Registrado:</p>
+                  <p className="m-0 text-slate-700"><strong>Nombre:</strong> {contactForm.nombre} {contactForm.apellido}</p>
+                  <p className="m-0 text-slate-700"><strong>DNI:</strong> {contactForm.dni}</p>
+                  <p className="m-0 text-slate-700"><strong>Fecha de Nacimiento:</strong> {contactForm.fechaNacimiento} · <strong>Estado Civil:</strong> {contactForm.estadoCivil}</p>
+                  <p className="m-0 text-slate-700"><strong>Ubicación:</strong> {contactForm.localidad}, {contactForm.provincia}</p>
+                  <p className="m-0 text-slate-700"><strong>Contacto:</strong> {contactForm.telefono} · {contactForm.email}</p>
+                </div>
+              </div>
+
+              {/* Los 2 Checkboxes Obligatorios requeridos */}
               <div className="mt-6 space-y-3 border-t border-slate-100 pt-5">
                 <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-700 sm:text-sm">
                   <input
@@ -692,9 +909,9 @@ function AdhesionSection({
                     checked={understands}
                     onChange={(e) => setUnderstands(e.target.checked)}
                     className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#FF5900]"
-                    data-testid="checkbox-understands"
+                    data-testid="checkbox-understands-wizard"
                   />
-                  <span>Entiendo que me estoy suscribiendo a un sistema de capitalización y ahorro oficial (Res. IGJ 000289/11).</span>
+                  <span>Entiendo que estoy contratando un plan de capitalizacion y ahorro</span>
                 </label>
 
                 <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-700 sm:text-sm">
@@ -703,41 +920,58 @@ function AdhesionSection({
                     checked={terms}
                     onChange={(e) => setTerms(e.target.checked)}
                     className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#FF5900]"
-                    data-testid="checkbox-terms"
+                    data-testid="checkbox-terms-wizard"
                   />
-                  <span>Acepto las bases y condiciones contractuales de Fondus y Naranja X.</span>
+                  <span>Acepto los Términos y Condiciones</span>
                 </label>
               </div>
 
-              <div className="mt-8">
+              {/* Botones de acción Paso 3 */}
+              <div className="mt-8 flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-slate-100">
                 <button
-                  type="submit"
-                  disabled={!validContact}
-                  className="w-full rounded-xl bg-[#FF5900] hover:bg-[#e54f00] disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold py-4 px-6 shadow-xl shadow-orange-500/25 active:scale-[0.98] transition-all text-base uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
-                  data-testid="button-adhere"
+                  type="button"
+                  onClick={() => setStep(2)}
+                  className="rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 px-5 py-3.5 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
                 >
-                  <span>CONTINUAR A MEDIO DE PAGO</span>
-                  <ArrowRight size={18} />
+                  ← Modificar datos
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleStep3Submit}
+                  disabled={!understands || !terms}
+                  className="flex-1 rounded-xl bg-[#FF5900] hover:bg-[#e54f00] disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold py-3.5 px-6 shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all text-sm uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer"
+                  data-testid="button-continuar-paso-4"
+                >
+                  <span>CONTINUAR A PAGO NARANJA X</span>
+                  <ArrowRight size={16} />
                 </button>
               </div>
+            </div>
+          </motion.div>
+        )}
 
-              <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-slate-500">
-                <ShieldCheck size={14} className="text-[#FF5900]" />
-                <span>Tus datos están protegidos y se utilizan únicamente para la gestión de adhesión.</span>
-              </p>
-            </form>
-          ) : (
+        {/* ==================================================== */}
+        {/* PASO 4: PAGO NARANJA X (VALIDACIÓN BIN 5895 ACTIVA)  */}
+        {/* ==================================================== */}
+        {step === 4 && (
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
             <PaymentForm
-              planTitle={selectedPlan.title}
+              planTitle={selectedPlan.capital}
               planCapital={selectedPlan.capital}
               planRegular={selectedPlan.regular}
-              initialDni={form.dni}
-              initialName={form.name}
-              onBack={() => setStep('contact')}
+              initialDni={contactForm.dni}
+              initialName={`${contactForm.nombre} ${contactForm.apellido}`.trim()}
+              onBack={() => setStep(3)}
               onSubmitPayment={handlePaymentSubmit}
             />
-          )}
-        </div>
+          </motion.div>
+        )}
+
       </div>
     </section>
   );
@@ -860,7 +1094,7 @@ function LegalFooter({ onRegret }: { onRegret: () => void }) {
                   </span>
                 </div>
                 <span className="mt-2 text-[11px] leading-tight text-slate-500">
-                  Mecanismo y fechas de adjudicación mensual por Quiniela LOTBA S.E.
+                  Mecanismo y fechas de adjudicación mensual por Lotería LOTBA S.E.
                 </span>
               </button>
 
@@ -1177,7 +1411,6 @@ function Home({
   isPromo?: boolean;
   onBackToPromo?: () => void;
 }) {
-  const [selectedPlan, setSelectedPlan] = useState<Plan>(plans[1]); // default 'elegido'
   const [regret, setRegret] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -1188,13 +1421,8 @@ function Home({
     }
   };
 
-  const handleSelectPlan = (plan: Plan) => {
-    setSelectedPlan(plan);
-    scrollTo('adhesion');
-  };
-
   return (
-    <div className="min-h-screen bg-[#93c46d] text-slate-800 antialiased font-sans selection:bg-[#FF5900] selection:text-white">
+    <div className="min-h-screen bg-white text-slate-800 antialiased font-sans selection:bg-[#FF5900] selection:text-white">
       {isPromo && (
         <div className="sticky top-0 z-50 flex items-center justify-between bg-[#FF5900] px-4 py-2.5 text-xs font-bold text-white shadow-md">
           <div className="mx-auto flex items-center gap-2">
@@ -1207,7 +1435,7 @@ function Home({
             <button
               type="button"
               onClick={onBackToPromo}
-              className="ml-3 shrink-0 font-semibold underline hover:opacity-80"
+              className="ml-3 shrink-0 font-semibold underline hover:opacity-80 cursor-pointer"
             >
               ← Volver a la promo
             </button>
@@ -1219,13 +1447,8 @@ function Home({
 
       <main className="relative z-10">
         <HeroSection onStart={() => scrollTo('planes')} />
-        <PlansSection selectedPlan={selectedPlan} onSelectPlan={handleSelectPlan} />
         <HowItWorksSection />
-        <AdhesionSection
-          selectedPlan={selectedPlan}
-          onPlanChange={setSelectedPlan}
-          onSuccess={() => setSuccess(true)}
-        />
+        <WizardSection onSuccess={() => setSuccess(true)} />
         <LegalFooter onRegret={() => setRegret(true)} />
       </main>
 
@@ -1248,29 +1471,23 @@ function MainView() {
   }, []);
 
   const searchParams = new URLSearchParams(search);
-  const isPromoNaranja = searchParams.get('promo') === 'naranja';
+  const isOnlyPromoCard = searchParams.get('vista') === 'tarjeta';
 
-  const goToFunnel = () => {
-    const url = new URL(window.location.href);
-    url.searchParams.set('promo', 'naranja');
-    window.history.pushState({}, '', url.toString());
-    setSearch(url.search);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const backToPromo = () => {
-    const url = new URL(window.location.href);
-    url.searchParams.delete('promo');
-    window.history.pushState({}, '', url.toString());
-    setSearch(url.search);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  if (!isPromoNaranja) {
-    return <PromoNaranjaX onStartFunnel={goToFunnel} />;
+  if (isOnlyPromoCard) {
+    return (
+      <PromoNaranjaX
+        onStartFunnel={() => {
+          const url = new URL(window.location.href);
+          url.searchParams.delete('vista');
+          window.history.pushState({}, '', url.toString());
+          setSearch(url.search);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
+    );
   }
 
-  return <Home isPromo={true} onBackToPromo={backToPromo} />;
+  return <Home isPromo={true} />;
 }
 
 function Router() {

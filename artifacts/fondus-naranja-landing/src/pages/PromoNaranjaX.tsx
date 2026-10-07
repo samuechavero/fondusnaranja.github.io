@@ -17,15 +17,15 @@ export default function PromoNaranjaX({ onStartFunnel }: PromoNaranjaXProps) {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center bg-[#93c46d] overflow-x-hidden text-slate-800 antialiased font-sans py-8 px-4">
+    <div className="min-h-screen w-full flex flex-col items-center bg-white overflow-x-hidden text-slate-800 antialiased font-sans py-8 px-4">
       
       {/* 2. Sección Superior (Hero y Confianza) */}
       <header className="w-full max-w-md pb-5 px-4 flex flex-col items-center text-center">
-        {/* Logotipo Fondus blanco con isotipo de estrella */}
+        {/* Logotipo Fondus azul con isotipo de estrella */}
         <div className="flex flex-col items-center gap-2 select-none" data-testid="brand-logo-fondus">
           {/* Isotipo Estrella Fondus (8 puntas redondeadas) */}
           <svg
-            className="w-14 h-14 text-white drop-shadow-sm"
+            className="w-14 h-14 text-[#1d497f] drop-shadow-sm"
             viewBox="0 0 100 100"
             fill="none"
             stroke="currentColor"
@@ -39,12 +39,12 @@ export default function PromoNaranjaX({ onStartFunnel }: PromoNaranjaXProps) {
           </svg>
 
           {/* Nombre Fondus */}
-          <span className="text-4xl font-extrabold tracking-tight text-white leading-none">
+          <span className="text-4xl font-extrabold tracking-tight text-[#1d497f] leading-none">
             fondus
           </span>
 
           {/* Eslogan en letras mayúsculas pequeñas y espaciadas */}
-          <span className="text-[10px] font-bold tracking-[0.3em] text-white/95 uppercase mt-1">
+          <span className="text-[10px] font-bold tracking-[0.3em] text-[#1d497f]/80 uppercase mt-1">
             EL PODER DE TUS AHORROS
           </span>
         </div>
@@ -52,7 +52,7 @@ export default function PromoNaranjaX({ onStartFunnel }: PromoNaranjaXProps) {
         {/* Insignia Google Rating */}
         <div className="mt-6">
           <div
-            className="bg-white rounded-full shadow-md px-5 py-2 flex items-center gap-2.5 transition-transform hover:scale-[1.02]"
+            className="bg-slate-50 border border-slate-200 rounded-full shadow-sm px-5 py-2 flex items-center gap-2.5 transition-transform hover:scale-[1.02]"
             data-testid="badge-google-rating-top"
           >
             {/* Logo 'G' de Google Oficial SVG */}
@@ -88,9 +88,9 @@ export default function PromoNaranjaX({ onStartFunnel }: PromoNaranjaXProps) {
         </div>
 
         {/* Texto de Autoridad */}
-        <p className="mt-4 text-sm sm:text-base font-medium text-white leading-snug max-w-xs drop-shadow-sm">
+        <p className="mt-4 text-sm sm:text-base font-medium text-slate-700 leading-snug max-w-xs">
           La empresa de <span className="italic">capitalización y ahorro</span>{' '}
-          <strong className="font-extrabold text-white">mejor calificada</strong> de Argentina
+          <strong className="font-extrabold text-[#1d497f]">mejor calificada</strong> de Argentina
         </p>
       </header>
 
@@ -146,25 +146,21 @@ export default function PromoNaranjaX({ onStartFunnel }: PromoNaranjaXProps) {
           <span className="text-xl font-black text-[#1d497f]">fondus</span>
         </div>
 
-        {/* Oferta Principal: Texto + Imagen Scooter */}
-        <div className="w-full grid grid-cols-[1.1fr_0.9fr] items-center gap-2 my-2 text-left">
-          <div>
-            <p className="m-0 text-xs sm:text-sm font-normal text-slate-700 leading-tight">
-              Y automáticamente <br />
-              <span className="italic font-medium">participás</span> por el
-            </p>
-            <p className="m-0 mt-1 text-base sm:text-lg font-black text-[#1d497f] leading-snug uppercase tracking-tight">
-              SORTEO DE UNA <br />
-              MOTO 0KM
-            </p>
-          </div>
-
-          <div className="flex justify-center items-center">
-            <img
-              src={`${import.meta.env.BASE_URL}assets/moto-scooter.png`}
-              alt="Moto scooter 0KM color gris"
-              className="w-full max-w-[150px] object-contain drop-shadow-md"
-              data-testid="img-moto-scooter"
+        {/* Oferta Principal: Video YouTube Short */}
+        <div className="w-full my-3 flex flex-col items-center">
+          <p className="m-0 text-xs sm:text-sm text-slate-700 leading-tight text-center">
+            Y automáticamente <span className="italic font-medium">participás</span> por el
+          </p>
+          <p className="m-0 mt-0.5 text-base sm:text-lg font-black text-[#1d497f] leading-snug uppercase tracking-tight text-center mb-3">
+            SORTEO DE UNA MOTO 0KM
+          </p>
+          <div className="w-full max-w-[280px] aspect-[9/16] overflow-hidden rounded-xl shadow-lg bg-black">
+            <iframe
+              src="https://www.youtube.com/embed/HOoj83e5WRs"
+              className="w-full h-full aspect-[9/16] rounded-xl"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              title="Sorteo Oficial Fondus x Naranja X"
             />
           </div>
         </div>
