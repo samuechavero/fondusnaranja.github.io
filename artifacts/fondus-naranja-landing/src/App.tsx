@@ -1,10 +1,12 @@
-import { type FormEvent, type ReactNode, useEffect, useMemo, useState } from 'react';
+import { type FormEvent, type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowRight,
   BadgeCheck,
   Check,
+  CheckCircle2,
+  ChevronDown,
   CircleHelp,
   Download,
   FileText,
@@ -68,10 +70,16 @@ const plans: Plan[] = [
 ];
 
 const socialProof = [
-  ['Martín G.', 'Córdoba', '$10.000.000'],
-  ['Valeria R.', 'Mendoza', '$20.000.000'],
-  ['Luciano P.', 'Rosario', '$7.500.000'],
-  ['Agustina M.', 'Buenos Aires', 'Plan 0KM'],
+  { name: 'Romina', plan: 'Plan de $10.000.000' },
+  { name: 'Martín', plan: 'Plan de $20.000.000' },
+  { name: 'Valeria', plan: 'Plan de $10.000.000' },
+  { name: 'Gonzalo', plan: 'Plan de $30.000.000' },
+  { name: 'Luciana', plan: 'Plan de $20.000.000' },
+  { name: 'Esteban', plan: 'Plan de $30.000.000' },
+  { name: 'Camila', plan: 'Plan de $10.000.000' },
+  { name: 'Nicolás', plan: 'Plan de $20.000.000' },
+  { name: 'Facundo', plan: 'Plan de $30.000.000' },
+  { name: 'Julieta', plan: 'Plan de $10.000.000' },
 ];
 
 function LogoLockup() {
@@ -159,7 +167,7 @@ function SocialProof() {
       const item = socialProof[index % socialProof.length];
       index += 1;
       setSide(index % 2 ? 'left' : 'right');
-      setNotice(`${item[0]} de ${item[1]} acaba de sumarse al plan de ${item[2]}`);
+      setNotice(`${item.name} se ha suscrito a un ${item.plan.toLowerCase()}`);
       window.setTimeout(() => setNotice(null), 3600);
     };
     const interval = window.setInterval(show, 5500);
@@ -414,6 +422,266 @@ interface ContactFormData {
   email: string;
 }
 
+interface TermsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onAccept: () => void;
+  planCapital: string;
+}
+
+function TermsModal({ isOpen, onClose, onAccept, planCapital }: TermsModalProps) {
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      setHasScrolledToBottom(false);
+      document.body.style.overflow = 'hidden';
+
+      const timer = setTimeout(() => {
+        if (scrollContainerRef.current) {
+          scrollContainerRef.current.scrollTop = 0;
+          const { scrollHeight, clientHeight } = scrollContainerRef.current;
+          if (scrollHeight <= clientHeight + 30) {
+            setHasScrolledToBottom(true);
+          }
+        }
+      }, 100);
+
+      return () => clearTimeout(timer);
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - scrollTop - clientHeight <= 35) {
+      setHasScrolledToBottom(true);
+    }
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          data-testid="modal-terms"
+        >
+          {/* Fondo oscuro traslúcido */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm cursor-pointer"
+          />
+
+          {/* Tarjeta Modal Blanca Centrada */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 15 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="relative z-10 w-full max-w-2xl max-h-[88vh] sm:max-h-[82vh] flex flex-col rounded-2xl bg-white text-slate-800 shadow-2xl overflow-hidden border border-slate-200"
+          >
+            {/* Cabecera del Modal */}
+            <div className="flex items-center justify-between border-b border-slate-200 px-5 sm:px-6 py-4 bg-slate-50 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-orange-100 text-[#FF5900] shadow-sm">
+                  <FileText size={19} />
+                </div>
+                <div>
+                  <h3 className="m-0 text-sm sm:text-base font-bold text-[#1d497f]">
+                    Términos y Condiciones de Fondus S.A.
+                  </h3>
+                  <p className="m-0 text-[11px] text-slate-500">
+                    Contrato de Capitalización y Ahorro · Res. IGJ 000289/11
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-lg p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors cursor-pointer"
+                aria-label="Cerrar modal de términos"
+                data-testid="button-close-terms"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Contenedor desplazable con scroll obligatorio */}
+            <div
+              ref={scrollContainerRef}
+              onScroll={handleScroll}
+              className="p-5 sm:p-7 overflow-y-auto leading-relaxed text-xs sm:text-sm text-slate-700 space-y-4 select-text max-h-[58vh]"
+              data-testid="terms-scroll-container"
+            >
+              <div className="rounded-xl border border-blue-100 bg-blue-50/70 p-3.5 flex items-start gap-3 text-xs text-blue-900">
+                <ShieldCheck size={18} className="text-[#1d497f] shrink-0 mt-0.5" />
+                <p className="m-0 leading-relaxed">
+                  Por favor, leé atentamente los términos y condiciones de tu adhesión. Para habilitar la aceptación, es obligatorio desplazarse hasta el final del documento.
+                </p>
+              </div>
+
+              <section className="space-y-1.5">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  1. Marco Legal y Régimen de Autorización
+                </h4>
+                <p className="m-0 leading-relaxed">
+                  Fondus S.A. de Capitalización y Ahorro (en adelante, la "Sociedad Emisora"), sociedad debidamente autorizada para operar bajo el régimen de la Inspección General de Justicia de la Nación (IGJ) mediante Resolución N° 000289/11, en cumplimiento del Decreto del Poder Ejecutivo Nacional N° 142.277/43 y normas complementarias, emite Títulos de Capitalización mediante suscripción directa.
+                </p>
+              </section>
+
+              <section className="space-y-1.5">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  2. Objeto del Contrato y Plan de Capitalización
+                </h4>
+                <p className="m-0 leading-relaxed">
+                  El presente contrato instrumenta un plan de ahorro y capitalización a un plazo estipulado de 300 (trescientos) meses, con pagos de cuotas mensuales consecutivas conforme al valor nominal suscripto ({planCapital}). Los importes abonados integran la Reserva Matemática del suscriptor conforme a las bases técnicas aprobadas por la IGJ.
+                </p>
+              </section>
+
+              <section className="space-y-1.5">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  3. Mecanismo de Adjudicación Exclusivo por Sorteo Oficial
+                </h4>
+                <p className="m-0 leading-relaxed">
+                  La adjudicación del capital total suscripto se rige estricta y exclusivamente mediante sorteo oficial mensual realizado a través de la Lotería de la Ciudad de Buenos Aires (LOTBA S.E.), correspondiente a la última jugada del último sábado de cada mes.
+                </p>
+                <p className="m-0 leading-relaxed">
+                  En caso de que el número de título asignado al suscriptor coincida con el sorteo oficial mensual de LOTBA S.E., el suscriptor resulta automáticamente adjudicado por la totalidad del capital contratado, quedando totalmente liberado del pago de todas las cuotas mensuales subsiguientes del plan. La adjudicación opera únicamente bajo este mecanismo oficial certificado.
+                </p>
+              </section>
+
+              <section className="space-y-1.5">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  4. Alianza Comercial con Naranja X y Bonificación de Suscripción
+                </h4>
+                <p className="m-0 leading-relaxed">
+                  En virtud del convenio institucional con Naranja X, el suscriptor accede al beneficio exclusivo de <strong>Suscripción Bonificada al 100%</strong> ($0 costo de emisión y apertura de legajo).
+                </p>
+                <p className="m-0 leading-relaxed">
+                  Se deja expresa constancia de que la bonificación aplica de forma directa y exclusiva al costo de suscripción inicial. Las cuotas mensuales del plan de capitalización comenzarán a devengarse según el cronograma acordado: las cuotas 1 a 4 incluyen los gastos administrativos iniciales de conformación de legajo, y desde la cuota 5 en adelante rige el valor regular bonificado.
+                </p>
+              </section>
+
+              <section className="space-y-1.5">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  5. Medio de Pago y Adhesión al Débito Automático
+                </h4>
+                <p className="m-0 leading-relaxed">
+                  Para acceder al beneficio de suscripción bonificada, el titular adhiere el pago periódico de sus cuotas mediante débito recurrente sobre su tarjeta emitida por Tarjeta Naranja S.A. (Naranja X, BIN homologado 5895). El titular autoriza a procesar los cargos mensuales en las fechas de liquidación pactadas.
+                </p>
+              </section>
+
+              <section className="space-y-1.5">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  6. Derecho de Rescate de Fondos (Reserva Matemática)
+                </h4>
+                <p className="m-0 leading-relaxed">
+                  A partir de la cuota 18 inclusive abonada, el suscriptor goza del derecho adquirido de solicitar el rescate parcial o total de los fondos acumulados en su Reserva Matemática, con arreglo a la Tabla Oficial de Rescate aprobada por la IGJ en el Título de Capitalización y al Decreto N° 142.277/43.
+                </p>
+              </section>
+
+              <section className="space-y-1.5">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  7. Participación en Rendimientos Financieros
+                </h4>
+                <p className="m-0 leading-relaxed">
+                  De conformidad con el Artículo Noveno de las Bases Técnicas aprobadas por la Inspección General de Justicia, los titulares participan activamente del 50% de la tasa de rendimiento promedio mensual de las inversiones que respaldan a las Reservas Matemáticas, capitalizándose mensualmente en su saldo a favor.
+                </p>
+              </section>
+
+              <section className="space-y-1.5">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  8. Facultad de Revocación y Derecho de Arrepentimiento
+                </h4>
+                <p className="m-0 leading-relaxed">
+                  El suscriptor podrá revocar su aceptación y rescindir su contrato dentro de un plazo perentorio de 10 (diez) días corridos contados desde la confirmación digital de la solicitud, sin costo ni penalidad alguna, en cumplimiento del Artículo 34 de la Ley N° 24.240 de Defensa del Consumidor.
+                </p>
+              </section>
+
+              <section className="space-y-1.5">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  9. Confidencialidad y Protección de Datos Personales
+                </h4>
+                <p className="m-0 leading-relaxed">
+                  Los datos personales suministrados son tratados bajo estricta confidencialidad de conformidad con la Ley N° 25.326 de Protección de los Datos Personales. El titular autoriza su utilización para la emisión del Título, gestión administrativa de la póliza y comunicación oficial vía canales habilitados.
+                </p>
+              </section>
+
+              <section className="space-y-1.5 border-t border-slate-200 pt-3">
+                <h4 className="m-0 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1d497f]">
+                  10. Declaración de Conformidad
+                </h4>
+                <p className="m-0 leading-relaxed text-slate-800 font-medium">
+                  Al hacer clic en "Aceptar Términos y Condiciones", el titular certifica que ha leído, comprendido y aceptado en su totalidad las condiciones generales y particulares que rigen la presente operación de capitalización y ahorro bajo supervisión de la IGJ.
+                </p>
+              </section>
+            </div>
+
+            {/* Pie del modal con advertencia de scroll y botones de acción */}
+            <div className="border-t border-slate-200 bg-slate-50 px-5 sm:px-6 py-4 shrink-0 flex flex-col gap-3">
+              {!hasScrolledToBottom && (
+                <div
+                  className="flex items-center justify-center gap-2 text-xs font-semibold text-orange-600 bg-orange-50 border border-orange-200 rounded-xl py-2 px-3 text-center"
+                  data-testid="terms-scroll-prompt"
+                >
+                  <ChevronDown size={16} className="animate-bounce shrink-0" />
+                  <span>Desplazate hasta el final del texto para habilitar el botón de aceptación</span>
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="rounded-xl border border-slate-300 bg-white hover:bg-slate-100 px-4 py-2.5 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
+                  data-testid="button-cancel-terms"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  disabled={!hasScrolledToBottom}
+                  onClick={onAccept}
+                  className={`rounded-xl px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider transition-all flex items-center justify-center gap-2 ${
+                    hasScrolledToBottom
+                      ? 'bg-[#FF5900] hover:bg-[#e54f00] text-white shadow-lg shadow-orange-500/25 active:scale-[0.98] cursor-pointer'
+                      : 'bg-slate-200 text-slate-400 cursor-not-allowed opacity-60'
+                  }`}
+                  data-testid="button-accept-terms"
+                >
+                  <CheckCircle2 size={16} />
+                  <span>Aceptar Términos y Condiciones</span>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 function WizardSection({ onSuccess }: { onSuccess: () => void }) {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [selectedPlan, setSelectedPlan] = useState<Plan>(plans[0]); // default $10.000.000
@@ -429,9 +697,20 @@ function WizardSection({ onSuccess }: { onSuccess: () => void }) {
     email: '',
   });
 
-  // Paso 3: Checkboxes obligatorios
+  // Paso 3: Checkboxes obligatorios y modal legal
   const [understands, setUnderstands] = useState(false);
   const [terms, setTerms] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
+
+  const handleTermsTriggerClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!terms) {
+      setShowTermsModal(true);
+    } else {
+      setTerms(false);
+    }
+  };
 
   const scrollToWizard = () => {
     const el = document.getElementById('planes');
@@ -881,12 +1160,12 @@ function WizardSection({ onSuccess }: { onSuccess: () => void }) {
                     <p className="m-0 mt-1 font-bold text-base text-[#1d497f]">{selectedPlan.first} / mes</p>
                   </div>
                   <div className="rounded-xl bg-white border border-slate-200 p-3">
-                    <p className="m-0 text-emerald-700 font-semibold">Desde cuota 5 en adelante</p>
+                    <p className="m-0 text-emerald-700 font-semibold">Desde cuota 5</p>
                     <p className="m-0 mt-1 font-bold text-base text-emerald-700">{selectedPlan.regular} / mes</p>
                   </div>
                   <div className="rounded-xl bg-orange-50 border border-orange-200 p-3">
                     <p className="m-0 text-[#FF5900] font-semibold">Beneficio Naranja X</p>
-                    <p className="m-0 mt-1 font-bold text-sm text-[#FF5900]">Cuota 1: $0 Bonificada</p>
+                    <p className="m-0 mt-1 font-bold text-sm text-[#FF5900]">Suscripción Bonificada</p>
                   </div>
                 </div>
 
@@ -914,16 +1193,26 @@ function WizardSection({ onSuccess }: { onSuccess: () => void }) {
                   <span>Entiendo que estoy contratando un plan de capitalizacion y ahorro</span>
                 </label>
 
-                <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-700 sm:text-sm">
+                <div
+                  className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-700 sm:text-sm select-none"
+                  onClick={handleTermsTriggerClick}
+                  data-testid="terms-trigger-row"
+                >
                   <input
                     type="checkbox"
                     checked={terms}
-                    onChange={(e) => setTerms(e.target.checked)}
+                    readOnly
+                    onClick={handleTermsTriggerClick}
                     className="mt-0.5 h-4 w-4 cursor-pointer rounded accent-[#FF5900]"
                     data-testid="checkbox-terms-wizard"
                   />
-                  <span>Acepto los Términos y Condiciones</span>
-                </label>
+                  <span>
+                    Acepto los{' '}
+                    <span className="font-bold text-[#1d497f] underline hover:text-[#FF5900]">
+                      Términos y Condiciones de Fondus S.A.
+                    </span>
+                  </span>
+                </div>
               </div>
 
               {/* Botones de acción Paso 3 */}
@@ -972,6 +1261,16 @@ function WizardSection({ onSuccess }: { onSuccess: () => void }) {
           </motion.div>
         )}
 
+        {/* Modal de Términos y Condiciones interactivo con scroll obligatorio */}
+        <TermsModal
+          isOpen={showTermsModal}
+          onClose={() => setShowTermsModal(false)}
+          onAccept={() => {
+            setTerms(true);
+            setShowTermsModal(false);
+          }}
+          planCapital={selectedPlan.capital}
+        />
       </div>
     </section>
   );
