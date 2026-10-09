@@ -682,8 +682,63 @@ function TermsModal({ isOpen, onClose, onAccept, planCapital }: TermsModalProps)
   );
 }
 
+interface SuccessScreenProps {
+  onReset: () => void;
+}
+
+function SuccessScreen({ onReset }: SuccessScreenProps) {
+  return (
+    <div
+      className="flex flex-col items-center justify-center text-center p-6 bg-white w-full"
+      data-testid="pantalla-de-exito"
+    >
+      {/* 2. Encabezado y Texto de Confirmación */}
+      <h2 className="text-3xl font-bold text-[#1d497f] mb-4">
+        ¡Adhesión Registrada con Éxito!
+      </h2>
+
+      <p className="text-gray-600 mb-6 max-w-md text-sm sm:text-base leading-relaxed">
+        Recibimos tus datos y la vinculación de tu medio de pago correctamente. Tu cuota de suscripción inicial se encuentra bonificada por la alianza con Naranja X. Te contactaremos por WhatsApp con tu póliza digital y número de sorteo oficial de LOTBA S.E.
+      </p>
+
+      {/* 3. Incrustar Video (YouTube Shorts) */}
+      <iframe
+        src="https://www.youtube.com/embed/-5DSp3pNvmI"
+        className="w-full max-w-[300px] aspect-[9/16] rounded-2xl shadow-xl mx-auto mb-8 border-none"
+        title="Video Bienvenida Fondus"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+      ></iframe>
+
+      {/* 4. Botones de Acción (Finalizar y Reiniciar) */}
+      <button
+        type="button"
+        onClick={onReset}
+        className="bg-[#FF5900] text-white font-bold py-4 px-8 rounded-xl w-full max-w-md mb-4 hover:bg-[#e54f00] transition-colors cursor-pointer shadow-lg shadow-orange-500/20 active:scale-[0.99]"
+        data-testid="button-finalizar-exito"
+      >
+        Finalizar
+      </button>
+
+      <button
+        type="button"
+        onClick={onReset}
+        className="text-sm text-gray-500 underline cursor-pointer mb-8 hover:text-gray-800 transition-colors bg-transparent border-none p-0"
+        data-testid="button-inicio-exito"
+      >
+        Toca acá para ir al inicio
+      </button>
+
+      {/* 5. Footer Final */}
+      <div className="text-xs text-gray-400 font-medium select-none" data-testid="footer-institucional-exito">
+        fondus | Agencia Digital
+      </div>
+    </div>
+  );
+}
+
 function WizardSection({ onSuccess }: { onSuccess: () => void }) {
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [selectedPlan, setSelectedPlan] = useState<Plan>(plans[0]); // default $10.000.000
   const [contactForm, setContactForm] = useState<ContactFormData>({
     nombre: '',
@@ -750,8 +805,29 @@ function WizardSection({ onSuccess }: { onSuccess: () => void }) {
     scrollToWizard();
   };
 
+  const handleResetWizard = () => {
+    setStep(1);
+    setSelectedPlan(plans[0]);
+    setContactForm({
+      nombre: '',
+      apellido: '',
+      dni: '',
+      fechaNacimiento: '',
+      estadoCivil: '',
+      provincia: '',
+      localidad: '',
+      telefono: '',
+      email: '',
+    });
+    setUnderstands(false);
+    setTerms(false);
+    scrollToWizard();
+  };
+
   const handlePaymentSubmit = (data: PaymentData) => {
     console.log('Pago de adhesión procesado:', data);
+    setStep(5);
+    scrollToWizard();
     onSuccess();
   };
 
@@ -760,48 +836,50 @@ function WizardSection({ onSuccess }: { onSuccess: () => void }) {
       <div className="mx-auto max-w-6xl">
 
         {/* Stepper Wizard Indicator (4 Pasos) */}
-        <div className="mb-10 max-w-3xl mx-auto">
-          <div className="flex items-center justify-between relative">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-full bg-slate-200 -z-0" />
-            <div
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#FF5900] -z-0 transition-all duration-300"
-              style={{ width: `${((step - 1) / 3) * 100}%` }}
-            />
+        {step <= 4 && (
+          <div className="mb-10 max-w-3xl mx-auto">
+            <div className="flex items-center justify-between relative">
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 w-full bg-slate-200 -z-0" />
+              <div
+                className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#FF5900] -z-0 transition-all duration-300"
+                style={{ width: `${((step - 1) / 3) * 100}%` }}
+              />
 
-            {[
-              { num: 1, label: 'Plan' },
-              { num: 2, label: 'Tus datos' },
-              { num: 3, label: 'Confirmación' },
-              { num: 4, label: 'Pago Naranja X' },
-            ].map((s) => {
-              const isPassed = step > s.num;
-              const isCurrent = step === s.num;
+              {[
+                { num: 1, label: 'Plan' },
+                { num: 2, label: 'Tus datos' },
+                { num: 3, label: 'Confirmación' },
+                { num: 4, label: 'Pago Naranja X' },
+              ].map((s) => {
+                const isPassed = step > s.num;
+                const isCurrent = step === s.num;
 
-              return (
-                <div key={s.num} className="flex flex-col items-center z-10">
-                  <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-full font-bold text-sm transition-all shadow-sm ${
-                      isPassed
-                        ? 'bg-[#1d497f] text-white'
-                        : isCurrent
-                        ? 'bg-[#FF5900] text-white ring-4 ring-orange-100 scale-110'
-                        : 'bg-white text-slate-400 border-2 border-slate-200'
-                    }`}
-                  >
-                    {isPassed ? <Check size={18} strokeWidth={3} /> : s.num}
+                return (
+                  <div key={s.num} className="flex flex-col items-center z-10">
+                    <div
+                      className={`flex h-10 w-10 items-center justify-center rounded-full font-bold text-sm transition-all shadow-sm ${
+                        isPassed
+                          ? 'bg-[#1d497f] text-white'
+                          : isCurrent
+                          ? 'bg-[#FF5900] text-white ring-4 ring-orange-100 scale-110'
+                          : 'bg-white text-slate-400 border-2 border-slate-200'
+                      }`}
+                    >
+                      {isPassed ? <Check size={18} strokeWidth={3} /> : s.num}
+                    </div>
+                    <span
+                      className={`mt-2 text-xs font-semibold whitespace-nowrap hidden sm:block ${
+                        isCurrent ? 'text-[#1d497f]' : isPassed ? 'text-slate-700' : 'text-slate-400'
+                      }`}
+                    >
+                      {s.label}
+                    </span>
                   </div>
-                  <span
-                    className={`mt-2 text-xs font-semibold whitespace-nowrap hidden sm:block ${
-                      isCurrent ? 'text-[#1d497f]' : isPassed ? 'text-slate-700' : 'text-slate-400'
-                    }`}
-                  >
-                    {s.label}
-                  </span>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* ==================================================== */}
         {/* PASO 1: SELECCIÓN DE PLAN (SOLO TARJETAS DE CAPITAL) */}
@@ -1261,6 +1339,20 @@ function WizardSection({ onSuccess }: { onSuccess: () => void }) {
           </motion.div>
         )}
 
+        {/* ==================================================== */}
+        {/* PASO FINAL: PANTALLA DE ÉXITO                        */}
+        {/* ==================================================== */}
+        {step === 5 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="w-full max-w-2xl mx-auto rounded-2xl border border-slate-100 bg-white shadow-sm overflow-hidden"
+          >
+            <SuccessScreen onReset={handleResetWizard} />
+          </motion.div>
+        )}
+
         {/* Modal de Términos y Condiciones interactivo con scroll obligatorio */}
         <TermsModal
           isOpen={showTermsModal}
@@ -1617,9 +1709,10 @@ function RegretModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-function SuccessModal({ onClose }: { onClose: () => void }) {
-  const handleRestart = () => {
-    window.location.reload();
+function SuccessModal({ onClose, onReset }: { onClose: () => void; onReset: () => void }) {
+  const handleReset = () => {
+    onReset();
+    onClose();
   };
 
   return (
@@ -1629,75 +1722,8 @@ function SuccessModal({ onClose }: { onClose: () => void }) {
       aria-modal="true"
       data-testid="modal-success"
     >
-      <div className="relative w-full max-w-lg my-8 rounded-2xl border border-slate-100 bg-white p-6 sm:p-8 text-center shadow-2xl text-slate-800">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-500/30 bg-emerald-50 text-emerald-600">
-          <Check size={32} />
-        </div>
-
-        <h2 className="mt-5 text-2xl font-extrabold text-[#1d497f] sm:text-3xl">
-          ¡Adhesión Registrada con Éxito!
-        </h2>
-        <p className="mt-3 text-sm leading-relaxed text-slate-600">
-          Recibimos tus datos y la vinculación de tu medio de pago correctamente. Tu cuota de suscripción inicial se encuentra bonificada por la alianza con Naranja X. Te contactaremos por WhatsApp con tu póliza digital y número de sorteo oficial de LOTBA S.E.
-        </p>
-
-        {/* Video en pantalla final */}
-        <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-black/5">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            poster={`${import.meta.env.BASE_URL}assets/WhatsApp_Image_2026-09-10_at_12.28.22_PM_1790143148151.jpeg`}
-            className="w-full h-44 object-cover"
-            data-testid="video-success"
-          >
-            <source src={`${import.meta.env.BASE_URL}assets/hero-video.mp4`} type="video/mp4" />
-          </video>
-        </div>
-
-        <div className="mt-6 flex flex-col items-center">
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full rounded-xl bg-[#FF5900] hover:bg-[#e54f00] py-3.5 text-sm font-bold uppercase text-white shadow-lg shadow-orange-500/25 transition-transform hover:scale-[1.01] cursor-pointer"
-            data-testid="button-success-close"
-          >
-            Finalizar
-          </button>
-
-          {/* Botón requerido: Toca acá para ir al inicio */}
-          <button
-            onClick={() => window.location.reload()}
-            className="mt-8 text-[#1d497f] underline font-medium cursor-pointer"
-            data-testid="button-reload-home"
-          >
-            Toca acá para ir al inicio
-          </button>
-
-          {/* Logo Fondus Agencia Digital en el footer envuelto en botón interactivo para reiniciar */}
-          <div className="mt-8 border-t border-slate-100 pt-5 w-full flex flex-col items-center">
-            <button
-              type="button"
-              onClick={handleRestart}
-              className="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-800 transition-colors cursor-pointer group"
-              data-testid="button-logo-reload"
-            >
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-black tracking-tight text-[#1d497f]">
-                  fondus
-                </span>
-                <span className="text-xs text-slate-300 font-medium">|</span>
-                <span className="text-xs uppercase tracking-widest text-[#93c46d] font-bold">
-                  Agencia Digital
-                </span>
-              </div>
-              <span className="text-[10px] text-slate-400 group-hover:underline">
-                Reiniciar experiencia
-              </span>
-            </button>
-          </div>
-        </div>
+      <div className="relative w-full max-w-xl my-8 rounded-2xl border border-slate-100 bg-white shadow-2xl overflow-hidden">
+        <SuccessScreen onReset={handleReset} />
       </div>
     </div>
   );
@@ -1712,12 +1738,19 @@ function Home({
 }) {
   const [regret, setRegret] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [wizardResetKey, setWizardResetKey] = useState(0);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleResetForm = () => {
+    setSuccess(false);
+    setWizardResetKey((prev) => prev + 1);
+    scrollTo('planes');
   };
 
   return (
@@ -1747,13 +1780,13 @@ function Home({
       <main className="relative z-10">
         <HeroSection onStart={() => scrollTo('planes')} />
         <HowItWorksSection />
-        <WizardSection onSuccess={() => setSuccess(true)} />
+        <WizardSection key={wizardResetKey} onSuccess={() => setSuccess(true)} />
         <LegalFooter onRegret={() => setRegret(true)} />
       </main>
 
       <SocialProof />
       {regret && <RegretModal onClose={() => setRegret(false)} />}
-      {success && <SuccessModal onClose={() => setSuccess(false)} />}
+      {success && <SuccessModal onClose={() => setSuccess(false)} onReset={handleResetForm} />}
     </div>
   );
 }
